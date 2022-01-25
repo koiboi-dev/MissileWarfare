@@ -1,28 +1,12 @@
 package me.kaiyan.advancedwarfare;
 
-import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerAdvancementDoneEvent;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
-import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
-import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.config.Config;
-import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
 
-import java.util.List;
-
-public class AdvancedWarfare extends JavaPlugin implements SlimefunAddon {
-    public static AdvancedWarfare plugin;
+public class MissileWarfare extends JavaPlugin implements SlimefunAddon {
+    public static MissileWarfare plugin;
 
     @Override
     public void onEnable() {
@@ -32,7 +16,7 @@ public class AdvancedWarfare extends JavaPlugin implements SlimefunAddon {
         CustomItems.setup();
     }
 
-    public static AdvancedWarfare getInstance(){
+    public static MissileWarfare getInstance(){
         return plugin;
     }
 

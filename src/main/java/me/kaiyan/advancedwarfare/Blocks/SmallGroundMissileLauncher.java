@@ -9,7 +9,7 @@ import io.github.thebusybiscuit.slimefun4.core.handlers.BlockDispenseHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockUseHandler;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.ItemUtils;
-import me.kaiyan.advancedwarfare.AdvancedWarfare;
+import me.kaiyan.advancedwarfare.MissileWarfare;
 import me.kaiyan.advancedwarfare.Missiles.MissileController;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -18,22 +18,17 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Dispenser;
 import org.bukkit.block.TileState;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
 import org.bukkit.conversations.*;
 import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.Vector;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 
 public class SmallGroundMissileLauncher extends SlimefunItem{
@@ -81,7 +76,7 @@ public class SmallGroundMissileLauncher extends SlimefunItem{
             public void run() {
                 fireMissile(dispenser);
             }
-        }.runTaskLater(AdvancedWarfare.getInstance(), 1);
+        }.runTaskLater(MissileWarfare.getInstance(), 1);
     }
 
     private void onBlockRightClick(PlayerRightClickEvent event) {
@@ -90,7 +85,7 @@ public class SmallGroundMissileLauncher extends SlimefunItem{
             TileState _state = (TileState) Objects.requireNonNull(event.getInteractEvent().getClickedBlock()).getState();
             PersistentDataContainer _cont = _state.getPersistentDataContainer();
             if (event.getPlayer().isSneaking()){
-                int[] coords = _cont.get(new NamespacedKey(AdvancedWarfare.getInstance(), "coords"), PersistentDataType.INTEGER_ARRAY);
+                int[] coords = _cont.get(new NamespacedKey(MissileWarfare.getInstance(), "coords"), PersistentDataType.INTEGER_ARRAY);
                 float dist = (float) new Vector(coords[0], 0, coords[1]).distanceSquared(new Vector(event.getInteractEvent().getClickedBlock().getX(),0, event.getInteractEvent().getClickedBlock().getY()));
                 event.getPlayer().sendMessage("The coords are: " + coords[0]+","+coords[1]+" And the DIST is: "+Math.sqrt(dist));
                 return;
@@ -108,7 +103,7 @@ public class SmallGroundMissileLauncher extends SlimefunItem{
                 @Override
                 public Prompt acceptInput(ConversationContext conversationContext, String s) {
                     try {
-                        cont.set(new NamespacedKey(AdvancedWarfare.getInstance(), "coords"), PersistentDataType.INTEGER_ARRAY, new int[]{cont.get(new NamespacedKey(AdvancedWarfare.getInstance(), "coords"), PersistentDataType.INTEGER_ARRAY)[0], Integer.parseInt(s)});
+                        cont.set(new NamespacedKey(MissileWarfare.getInstance(), "coords"), PersistentDataType.INTEGER_ARRAY, new int[]{cont.get(new NamespacedKey(MissileWarfare.getInstance(), "coords"), PersistentDataType.INTEGER_ARRAY)[0], Integer.parseInt(s)});
                     } catch (NumberFormatException e){
                         conversationContext.getForWhom().sendRawMessage("NOT A INT NUMBER");
                         return END_OF_CONVERSATION;
@@ -127,7 +122,7 @@ public class SmallGroundMissileLauncher extends SlimefunItem{
                 @Override
                 public Prompt acceptInput(ConversationContext conversationContext, String s) {
                     try {
-                        cont.set(new NamespacedKey(AdvancedWarfare.getInstance(), "coords"), PersistentDataType.INTEGER_ARRAY, new int[] {Integer.parseInt(s), 0});
+                        cont.set(new NamespacedKey(MissileWarfare.getInstance(), "coords"), PersistentDataType.INTEGER_ARRAY, new int[] {Integer.parseInt(s), 0});
                     } catch (NumberFormatException e){
                         conversationContext.getForWhom().sendRawMessage("NOT A COORD");
                         return END_OF_CONVERSATION;
@@ -137,7 +132,7 @@ public class SmallGroundMissileLauncher extends SlimefunItem{
                 }
             };
 
-            ConversationFactory cf = new ConversationFactory(AdvancedWarfare.getInstance());
+            ConversationFactory cf = new ConversationFactory(MissileWarfare.getInstance());
             Conversation conversation = cf.withFirstPrompt(askCoordX)
                     .withLocalEcho(false)
                     .buildConversation(event.getPlayer());
@@ -202,12 +197,12 @@ public class SmallGroundMissileLauncher extends SlimefunItem{
     public void fireMissile(Dispenser disp, int speed, double power, int accuracy, int type){
         TileState state = (TileState) disp.getBlock().getState();
         PersistentDataContainer cont = state.getPersistentDataContainer();
-        int[] coords = cont.get(new NamespacedKey(AdvancedWarfare.getInstance(), "coords"), PersistentDataType.INTEGER_ARRAY);
+        int[] coords = cont.get(new NamespacedKey(MissileWarfare.getInstance(), "coords"), PersistentDataType.INTEGER_ARRAY);
         if (coords == null) {
-            AdvancedWarfare.getInstance().getServer().broadcastMessage("Missile cannot fire at : "+disp.getBlock().getLocation() + " Invalid Coordinates!");
+            MissileWarfare.getInstance().getServer().broadcastMessage("Missile cannot fire at : "+disp.getBlock().getLocation() + " Invalid Coordinates!");
             return;
         } else if (new Vector(coords[0], 0, coords[1]).distanceSquared(new Vector(disp.getX(),0, disp.getY())) > (2000*2000)){
-            AdvancedWarfare.getInstance().getServer().broadcastMessage("Missile cannot fire at : "+disp.getBlock().getLocation() + " Too Far Away!");
+            MissileWarfare.getInstance().getServer().broadcastMessage("Missile cannot fire at : "+disp.getBlock().getLocation() + " Too Far Away!");
         }
         MissileController missile = new MissileController(true, disp.getBlock().getLocation().add(new Vector(0.5, 1, 0.5)).toVector(), new Vector(coords[0], 0, coords[1]), speed, disp.getBlock().getWorld(), power, accuracy, type);
         missile.FireMissile();

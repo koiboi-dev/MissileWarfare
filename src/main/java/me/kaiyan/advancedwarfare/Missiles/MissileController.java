@@ -1,16 +1,12 @@
 package me.kaiyan.advancedwarfare.Missiles;
 
 
-import me.kaiyan.advancedwarfare.AdvancedWarfare;
-import org.bukkit.Color;
+import me.kaiyan.advancedwarfare.MissileWarfare;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.World;
-import org.bukkit.entity.Horse;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-
-import java.awt.*;
 
 public class MissileController {
     boolean isgroundmissile;
@@ -43,7 +39,7 @@ public class MissileController {
           public void run(){
               Update(this);
           }
-        }.runTaskTimer(AdvancedWarfare.getInstance(), 25, 2);
+        }.runTaskTimer(MissileWarfare.getInstance(), 25, 2);
     }
 
     public void Update(BukkitRunnable run){
@@ -122,7 +118,7 @@ public class MissileController {
                 }
                 loops++;
             }
-        }.runTaskTimer(AdvancedWarfare.getInstance(), 13, 1);
+        }.runTaskTimer(MissileWarfare.getInstance(), 13, 1);
 
         new BukkitRunnable(){
             int loops = 0;
@@ -134,7 +130,7 @@ public class MissileController {
                 }
                 loops++;
             }
-        }.runTaskTimer(AdvancedWarfare.getInstance(), 0, 1);
+        }.runTaskTimer(MissileWarfare.getInstance(), 0, 1);
     }
     /*
     new BukkitRunnable(){
