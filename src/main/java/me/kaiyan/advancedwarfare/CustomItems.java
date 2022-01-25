@@ -4,13 +4,19 @@ import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
+import io.github.thebusybiscuit.slimefun4.api.researches.Research;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
-import me.kaiyan.advancedwarfare.Blocks.GroundMissileLauncher;
+import me.kaiyan.advancedwarfare.Blocks.SmallGroundMissileLauncher;
 import me.kaiyan.advancedwarfare.Items.SmallGtGMissile;
+import me.kaiyan.advancedwarfare.Items.SmallGtGMissileHE;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
+
+import javax.naming.Name;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CustomItems {
     public static void setup(){
@@ -34,7 +40,7 @@ public class CustomItems {
         sugarfuel.register(AdvancedWarfare.getInstance());
         //-SUGARFUEL-
         // EXPLOSIVE POWDER
-        SlimefunItemStack explosivepowderstack = new SlimefunItemStack("EXPLOSIVEPOWDER", Material.SUGAR, "Explosive Powder", "Handle with care!");
+        SlimefunItemStack explosivepowderstack = new SlimefunItemStack("EXPLOSIVEPOWDER", Material.GLOWSTONE_DUST, "Explosive Powder", "Handle with care!");
         ItemStack[] explosivepowderrecipe = {
                 SlimefunItems.MAGNESIUM_DUST, new ItemStack(Material.GUNPOWDER), SlimefunItems.MAGNESIUM_DUST,
                 new ItemStack(Material.GUNPOWDER), SlimefunItems.MAGNESIUM_DUST, new ItemStack(Material.GUNPOWDER),
@@ -48,7 +54,7 @@ public class CustomItems {
         // ROCKET FUEL
         SlimefunItemStack rocketfuelstack = new SlimefunItemStack("ROCKETFUEL", Material.GUNPOWDER, "Rocket Fuel", "Burns with the power of 1000 coal...");
         ItemStack[] rocketfuelrecipe = {
-                null, new ItemStack(Material.GUNPOWDER), null,
+                new ItemStack(Material.GLOWSTONE_DUST), new ItemStack(Material.GUNPOWDER), new ItemStack(Material.GLOWSTONE_DUST),
                 new ItemStack(Material.GUNPOWDER), SlimefunItems.COMPRESSED_CARBON, new ItemStack(Material.GUNPOWDER),
                 explosivepowderstack, new ItemStack(Material.GUNPOWDER), explosivepowderstack
         };
@@ -93,7 +99,7 @@ public class CustomItems {
         smallfin.register(AdvancedWarfare.getInstance());
         //-SMALL FINS-
         //SMALL GtG MISSILE
-        SlimefunItemStack smallmissilestack = new SlimefunItemStack("SMALLMISSILE", Material.IRON_SWORD, "SMALL GtG MISSILE", "Small Ground-to-Ground Missile", "Range: 3000 Blocks", "Use a stick to set target coords", "Shift with a stick to check if it can fire","'Little Timmy never stood a chance...'");
+        SlimefunItemStack smallmissilestack = new SlimefunItemStack("SMALLMISSILE", Material.IRON_SWORD, "SMALL GtG MISSILE", "Small Ground-to-Ground Missile","Normal Variant", "Range: 2000 Blocks", "Power: 4", "Speed: 3", "Accuracy: Within 100 blocks", "'Little Timmy never stood a chance...'");
         ItemStack[] smallmissilerecipe = {
                 explosivepowderstack, smallwarheadstack, explosivepowderstack,
                 sugarfuelstack, smallbodystack, sugarfuelstack,
@@ -104,15 +110,37 @@ public class CustomItems {
 
         smallmissile.register(AdvancedWarfare.getInstance());
         //-SMALL GtG MISSILE-
+        //SMALL GtG MISSILE HE
+        SlimefunItemStack smallmissilestackHE = new SlimefunItemStack("SMALLMISSILEHE", Material.IRON_SWORD, "SMALL GtG MISSILE HE", "Small Ground-to-Ground Missile","High-Explosive Variant", "Range: 1500 Blocks", "Power: 5.5", "Speed: 2", "Accuracy: Within 110 blocks", "'Large Timmy never stood a chance...'");
+        ItemStack[] smallmissilerecipeHE = {
+                explosivepowderstack, smallwarheadstack, explosivepowderstack,
+                explosivepowderstack, smallbodystack, sugarfuelstack,
+                sugarfuelstack, smallfinstack, sugarfuelstack
+        };
+
+        SmallGtGMissileHE smallmissileHE = new SmallGtGMissileHE(group, smallmissilestackHE, RecipeType.ENHANCED_CRAFTING_TABLE, smallmissilerecipeHE);
+
+        smallmissileHE.register(AdvancedWarfare.getInstance());
+        //-SMALL GtG MISSILE HE-
+        // SMALL GtG MISSILE LR
+        SlimefunItemStack smallmissileLRstack = new SlimefunItemStack("SMALLMISSILELR", Material.IRON_SWORD,"Small GtG Missile LR","Long-Range Variant", "Range: 3000 Blocks", "Power: 3.25", "Speed: 3", "Accuracy: Within 100 blocks", "'Far away timmy never stood a chance...'");
+        ItemStack[] smallmissileLRrecipe = {
+                explosivepowderstack, smallwarheadstack, explosivepowderstack,
+                sugarfuelstack, smallbodystack, sugarfuelstack,
+                rocketfuelstack, smallfinstack, rocketfuelstack
+        };
+        SlimefunItem smallmissileLR = new SmallGroundMissileLauncher(group, smallmissileLRstack, RecipeType.ENHANCED_CRAFTING_TABLE, smallmissileLRrecipe);
+
+        smallmissileLR.register(AdvancedWarfare.getInstance());
+        //-SMALL GtG MISSILE LR-
         //GtG MISSILE LAUNCHER 1x
-        SlimefunItemStack groundlauncherstack = new SlimefunItemStack("GROUNDLAUNCHER", Material.DISPENSER, "Ground Launcher", "Shoots a specified area on the ground.", "Needs to be built on 2 green concrete blocks.");
+        SlimefunItemStack groundlauncherstack = new SlimefunItemStack("GROUNDLAUNCHER", Material.DISPENSER, "Ground Launcher", "Shoots a specified area on the ground.", "Use a stick to set target coords", "Shift with a stick to check if it can fire", "Needs to be built on 2 green concrete blocks.");
         ItemStack[] groundlauncherrecipe = {
                 SlimefunItems.STEEL_INGOT, null, SlimefunItems.STEEL_INGOT,
                 SlimefunItems.DURALUMIN_INGOT, null, SlimefunItems.DURALUMIN_INGOT,
                 SlimefunItems.DAMASCUS_STEEL_INGOT, new ItemStack(Material.FLINT_AND_STEEL), SlimefunItems.DAMASCUS_STEEL_INGOT
         };
-
-        SlimefunItem groundlauncher = new GroundMissileLauncher(group, groundlauncherstack, RecipeType.ENHANCED_CRAFTING_TABLE, groundlauncherrecipe, smallmissile);
+        SlimefunItem groundlauncher = new SmallGroundMissileLauncher(group, groundlauncherstack, RecipeType.ENHANCED_CRAFTING_TABLE, groundlauncherrecipe);
 
         groundlauncher.register(AdvancedWarfare.getInstance());
         //-GtG MISSILE LAUNCHER-
@@ -127,5 +155,48 @@ public class CustomItems {
         SlimefunItem % = new SlimefunItem(group, %stack, RecipeType.ENHANCED_CRAFTING_TABLE, %recipe);
 
         %.register(AdvancedWarfare.getInstance());*/
+        //Missile template =================
+        /*
+        SlimefunItemStack %stack = new SlimefunItemStack("%", Material.DISPENSER,"Small % Missile","Normal Variant", "Range: % Blocks", "Power: %", "Speed: %", "Accuracy: Within % blocks", "'%'");
+        ItemStack[] %recipe = {
+                SlimefunItems.STEEL_INGOT, null, SlimefunItems.STEEL_INGOT,
+                SlimefunItems.DURALUMIN_INGOT, null, SlimefunItems.DURALUMIN_INGOT,
+                SlimefunItems.DAMASCUS_STEEL_INGOT, new ItemStack(Material.FLINT_AND_STEEL), SlimefunItems.DAMASCUS_STEEL_INGOT
+        };
+        SlimefunItem % = new SmallGroundMissileLauncher(group, %stack, RecipeType.ENHANCED_CRAFTING_TABLE, %recipe);
+
+        %.register(AdvancedWarfare.getInstance());
+         */
+
+        //ADD RESEARCH
+        NamespacedKey basicfuelkey = new NamespacedKey(AdvancedWarfare.getInstance(), "basic_fuel");
+        Research basicfuel = new Research(basicfuelkey, 3467341, "Inedible Sugar", 10);
+        basicfuel.addItems(sugarfuel);
+        basicfuel.register();
+
+        NamespacedKey explosiveskey = new NamespacedKey(AdvancedWarfare.getInstance(), "explosives");
+        Research explosives = new Research(explosiveskey, 3467321, "Explosive Diarrhea", 15);
+        explosives.addItems(explosivepowder);
+        explosives.register();
+
+        NamespacedKey groundlauncherskey = new NamespacedKey(AdvancedWarfare.getInstance(), "groundlauncher");
+        Research groundlauncherres = new Research(groundlauncherskey, 3467322, "Ground Missile Launcher", 15);
+        groundlauncherres.addItems(groundlauncher);
+        groundlauncherres.register();
+
+        NamespacedKey smallgmissilepartskey = new NamespacedKey(AdvancedWarfare.getInstance(), "smallgmissileparts");
+        Research smallgmissileparts = new Research(smallgmissilepartskey, 34673323, "Small Missile", 15);
+        smallgmissileparts.addItems(smallwarhead, smallbody, smallfin);
+        smallgmissileparts.register();
+
+        NamespacedKey smallgmissilekey = new NamespacedKey(AdvancedWarfare.getInstance(), "smallgmissile");
+        Research smallgmissile = new Research(smallgmissilekey, 34673323, "Unlocked Small Missile!", 20);
+        smallgmissile.addItems(smallmissile, smallmissileHE, smallmissileLR);
+        smallgmissile.register();
+
+        NamespacedKey advancedfuelkey = new NamespacedKey(AdvancedWarfare.getInstance(), "advancedfuel");
+        Research advancedfuel = new Research(advancedfuelkey, 34673323, "Advanced (and even less edible) Fuels!", 20);
+        advancedfuel.addItems(smallmissile, smallmissileHE, smallmissileLR);
+        advancedfuel.register();
     }
 }

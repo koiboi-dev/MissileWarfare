@@ -9,8 +9,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class SmallGtGMissile extends SlimefunItem{
-    public SmallGtGMissile(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
+public class SmallGtGMissileHE extends SlimefunItem {
+    public SmallGtGMissileHE(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(itemGroup, item, recipeType, recipe);
     }
 

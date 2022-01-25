@@ -2,12 +2,15 @@ package me.kaiyan.advancedwarfare.Missiles;
 
 
 import me.kaiyan.advancedwarfare.AdvancedWarfare;
-import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.World;
+import org.bukkit.entity.Horse;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+
+import java.awt.*;
 
 public class MissileController {
     boolean isgroundmissile;
@@ -15,16 +18,18 @@ public class MissileController {
     public Vector target;
     public float speed;
     public World world;
-    public int power;
+    public double power;
     public boolean launched;
+    public int type;
 
-    public MissileController(boolean isgroundmissile, Vector startpos, Vector target, float speed, World world, int power, float accuracy){
+    public MissileController(boolean isgroundmissile, Vector startpos, Vector target, float speed, World world, double power, float accuracy, int type){
         this.isgroundmissile = isgroundmissile;
         pos = startpos;
         this.speed = speed;
         this.world = world;
         this.power = power;
         launched = false;
+        this.type = type;
 
         target = target.add(new Vector((Math.random()-0.5)*accuracy, 0, (Math.random()-0.5)*accuracy));
 
@@ -77,10 +82,28 @@ public class MissileController {
                 velocity.setX(velocity.getX()/8);
                 velocity.setZ(velocity.getX()/8);
             }
+            velocity.setX(Math.round(velocity.getX()));
+            velocity.setZ(Math.round(velocity.getZ()));
             pos.add(velocity);
-            world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, pos.toLocation(world), 0, 0, 0, 0, 0.1);
+            if (type == 1 || type == 2 || type == 3) {
+                world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, pos.toLocation(world), 0, 0, 0, 0, 0.1, null, true);
+                if (type == 1){
+                    world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, pos.toLocation(world), 0, 0, 0, 0, 0.1, null, true);
+                } else if (type == 2){
+                    world.spawnParticle(Particle.FLAME, pos.toLocation(world), 0, -velocity.getX()+((Math.random()-0.5)*0.25), -velocity.getY()+((Math.random()-0.5)*0.25), -velocity.getZ()+((Math.random()-0.5)*0.25), 0.25, null, true);
+                    world.spawnParticle(Particle.FLAME, pos.toLocation(world), 0, -velocity.getX()+((Math.random()-0.5)*0.25), -velocity.getY()+((Math.random()-0.5)*0.25), -velocity.getZ()+((Math.random()-0.5)*0.25), 0.25, null, true);
+                } else if (type == 3){
+                    world.spawnParticle(Particle.END_ROD, pos.toLocation(world), 0, -velocity.getX()+((Math.random()-0.5)*0.25), -velocity.getY()+((Math.random()-0.5)*0.25), -velocity.getZ()+((Math.random()-0.5)*0.25), 0.3, null, true);
+                }
+            }
             if (world.getBlockAt(pos.toLocation(world)).getType() != Material.AIR) {
-                world.createExplosion(pos.toLocation(world), power);
+                for (int i = 0; i < 150; i++) {
+                    world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, pos.toLocation(world), 0, Math.random()-0.5, Math.random()*2, Math.random()-0.5, 0.25, null, true);
+                    world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, pos.toLocation(world), 0, Math.random()-0.5, Math.random()*2, Math.random()-0.5, 0.25, null, true);
+                    world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, pos.toLocation(world), 0, Math.random()-0.5, Math.random()*0.5, Math.random()-0.5, 0.15, null, true);
+                    world.spawnParticle(Particle.FLAME, pos.toLocation(world), 0, (Math.random()*2)-0.5, Math.random()*1.5, (Math.random()*2)-0.5, 0.25, null, true);
+                }
+                world.createExplosion(pos.toLocation(world), (float) power);
                 run.cancel();
             }
         }
@@ -92,7 +115,7 @@ public class MissileController {
             @Override
             public void run() {
                 world.spawnParticle(Particle.FLAME, pos.toLocation(world), 0, Math.random() - 0.5, Math.random(), Math.random() - 0.5, 0.1);
-                world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, pos.toLocation(world), 0, (Math.random() - 0.5)/0.9, Math.random()+0.25, (Math.random() - 0.5)/0.9, 0.2);
+                world.spawnParticle(Particle.CAMPFIRE_SIGNAL_SMOKE, pos.toLocation(world), 0, (Math.random() - 0.5)/0.9, Math.random()+0.25, (Math.random() - 0.5)/0.9, 0.2);
                 launched = true;
                 if (loops > 15) {
                     this.cancel();
