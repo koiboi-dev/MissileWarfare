@@ -1,4 +1,4 @@
-package me.kaiyan.advancedwarfare.Blocks;
+package me.kaiyan.missilewarfare.Blocks;
 
 import io.github.thebusybiscuit.slimefun4.api.events.PlayerRightClickEvent;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
@@ -9,8 +9,9 @@ import io.github.thebusybiscuit.slimefun4.core.handlers.BlockDispenseHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockUseHandler;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.ItemUtils;
-import me.kaiyan.advancedwarfare.MissileWarfare;
-import me.kaiyan.advancedwarfare.Missiles.MissileController;
+import me.kaiyan.missilewarfare.MissileWarfare;
+import me.kaiyan.missilewarfare.Missiles.MissileController;
+import me.kaiyan.missilewarfare.VariantsAPI;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
@@ -18,6 +19,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Dispenser;
 import org.bukkit.block.TileState;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
 import org.bukkit.conversations.*;
 import org.bukkit.event.block.BlockDispenseEvent;
@@ -44,7 +46,9 @@ public class SmallGroundMissileLauncher extends SlimefunItem{
             public void onPlayerPlace(BlockPlaceEvent event) {
                 World world = event.getBlock().getWorld();
                 Block below = world.getBlockAt(event.getBlock().getLocation().subtract(new Vector(0, 1, 0)));
-                ((Directional)event.getBlockPlaced().getState()).setFacing(BlockFace.UP);
+                BlockData data = event.getBlockPlaced().getBlockData();
+                ((Directional)data).setFacing(BlockFace.UP);
+                event.getBlockPlaced().setBlockData(data);
                 //Block bottom = world.getBlockAt(event.getBlock().getLocation().subtract(new Vector(0, 2, 0)));
                 if (below.getType() == Material.GREEN_CONCRETE){
                     event.getPlayer().sendMessage("Created Small Launcher!");
@@ -140,28 +144,6 @@ public class SmallGroundMissileLauncher extends SlimefunItem{
         }
     }
 
-    public SlimefunItem getFirstMissile(Inventory inv){
-        for (ItemStack item : inv){
-            if (item != null){
-                SlimefunItem item1 = SlimefunItem.getByItem(item);
-                ItemUtils.consumeItem(item, false);
-                return item1;
-            }
-        }
-        return null;
-    }
-    public int getIntTypeFromSlimefunitem(SlimefunItem item){
-        switch (item.getId()) {
-            case "SMALLMISSILE":
-                return 1;
-            case "SMALLMISSILEHE":
-                return 2;
-            case "SMALLMISSILELR":
-                return 3;
-        }
-        return 0;
-    }
-
     /*@Deprecated
     public void fireMissile(PlayerRightClickEvent event){
         Dispenser disp = (Dispenser) Objects.requireNonNull(event.getInteractEvent().getClickedBlock()).getState();
@@ -181,8 +163,8 @@ public class SmallGroundMissileLauncher extends SlimefunItem{
     }
      */
     public void fireMissile(Dispenser disp){
-        SlimefunItem missileitem = getFirstMissile(disp.getInventory());
-        int type = getIntTypeFromSlimefunitem(missileitem);
+        SlimefunItem missileitem = VariantsAPI.getFirstMissile(disp.getInventory());
+        int type = VariantsAPI.getIntTypeFromSlimefunitem(missileitem);
 
         // -- SmallGtGMissile --
         if (type == 1){

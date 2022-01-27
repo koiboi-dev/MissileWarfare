@@ -1,19 +1,27 @@
-package me.kaiyan.advancedwarfare;
+package me.kaiyan.missilewarfare;
 
+import me.kaiyan.missilewarfare.Listeners.MultiblockListener;
+import me.kaiyan.missilewarfare.Missiles.MissileController;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.config.Config;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MissileWarfare extends JavaPlugin implements SlimefunAddon {
     public static MissileWarfare plugin;
+    public static List<MissileController> activemissiles;
 
     @Override
     public void onEnable() {
+        activemissiles = new ArrayList<>();
         plugin = this;
         // Read something from your config.yml
         Config cfg = new Config(this);
         CustomItems.setup();
+        getServer().getPluginManager().registerEvents(new MultiblockListener(), this);
     }
 
     public static MissileWarfare getInstance(){

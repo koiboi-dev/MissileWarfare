@@ -1,18 +1,27 @@
-package me.kaiyan.advancedwarfare;
+package me.kaiyan.missilewarfare;
 
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.api.researches.Research;
+import io.github.thebusybiscuit.slimefun4.core.multiblocks.MultiBlockMachine;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
-import me.kaiyan.advancedwarfare.Blocks.SmallGroundMissileLauncher;
-import me.kaiyan.advancedwarfare.Items.SmallGtGMissile;
-import me.kaiyan.advancedwarfare.Items.SmallGtGMissileHE;
+import io.github.thebusybiscuit.slimefun4.utils.HeadTexture;
+import me.kaiyan.missilewarfare.Blocks.SmallGroundMissileLauncher;
+import me.kaiyan.missilewarfare.Items.ManPad;
+import me.kaiyan.missilewarfare.Items.SmallGtGMissile;
+import me.kaiyan.missilewarfare.Items.SmallGtGMissileHE;
+import me.kaiyan.missilewarfare.Items.SmallGtGMissileLR;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.block.Skull;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
+
+import java.util.UUID;
 
 public class CustomItems {
     public static void setup(){
@@ -125,7 +134,7 @@ public class CustomItems {
                 sugarfuelstack, smallbodystack, sugarfuelstack,
                 rocketfuelstack, smallfinstack, rocketfuelstack
         };
-        SlimefunItem smallmissileLR = new SmallGroundMissileLauncher(group, smallmissileLRstack, RecipeType.ENHANCED_CRAFTING_TABLE, smallmissileLRrecipe);
+        SmallGtGMissileLR smallmissileLR = new SmallGtGMissileLR(group, smallmissileLRstack, RecipeType.ENHANCED_CRAFTING_TABLE, smallmissileLRrecipe);
 
         smallmissileLR.register(MissileWarfare.getInstance());
         //-SMALL GtG MISSILE LR-
@@ -136,10 +145,20 @@ public class CustomItems {
                 SlimefunItems.DURALUMIN_INGOT, null, SlimefunItems.DURALUMIN_INGOT,
                 SlimefunItems.DAMASCUS_STEEL_INGOT, new ItemStack(Material.FLINT_AND_STEEL), SlimefunItems.DAMASCUS_STEEL_INGOT
         };
-        SlimefunItem groundlauncher = new SmallGroundMissileLauncher(group, groundlauncherstack, RecipeType.ENHANCED_CRAFTING_TABLE, groundlauncherrecipe);
+        SmallGroundMissileLauncher groundlauncher = new SmallGroundMissileLauncher(group, groundlauncherstack, RecipeType.ENHANCED_CRAFTING_TABLE, groundlauncherrecipe);
 
         groundlauncher.register(MissileWarfare.getInstance());
         //-GtG MISSILE LAUNCHER-
+        //MANPAD
+        SlimefunItemStack manpadstack = new SlimefunItemStack("MANPAD", "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjFiNmVlNWJiZTVhZDQyOTY4MGMxYzE1Y2Y0MjBmOTgxMWUxMTRiNzY4NTRmODk5ZjBlZjA4ZmRlMzMyNzk4YyJ9fX0=", "Manpad", "Handheld anti-missile device", "Shift+RMB to begin tracking", "Release Shift fire");
+        ItemStack[] manpadrecipe = {
+                new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_INGOT),
+                explosivepowderstack, sugarfuelstack, sugarfuelstack,
+                new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_INGOT)
+        };
+        ManPad manpad = new ManPad(group, manpadstack, RecipeType.ENHANCED_CRAFTING_TABLE, manpadrecipe);
+        manpad.register(MissileWarfare.getInstance());
+        //-MANPAD-
         //template
         /*SlimefunItemStack %stack = new SlimefunItemStack("%", Material., "N", "L");
         ItemStack[] %recipe = {

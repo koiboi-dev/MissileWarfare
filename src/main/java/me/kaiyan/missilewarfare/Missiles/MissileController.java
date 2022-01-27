@@ -1,0 +1,276 @@
+package me.kaiyan.missilewarfare.Missiles;
+
+
+import me.kaiyan.missilewarfare.MissileWarfare;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Particle;
+import org.bukkit.World;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.util.Vector;
+
+import java.util.Optional;
+
+public class MissileController {
+    public boolean isgroundmissile;
+    public Vector pos;
+    public Vector target;
+    public float speed;
+    public World world;
+    public double power;
+    public boolean launched;
+    public int type;
+    public Vector dir;
+    public BukkitTask update;
+
+    public MissileController(boolean isgroundmissile, Vector startpos, Vector target, float speed, World world, double power, float accuracy, int type){
+        this.isgroundmissile = isgroundmissile;
+        pos = startpos;
+        this.speed = speed;
+        this.world = world;
+        this.power = power;
+        launched = false;
+        this.type = type;
+
+        target = target.add(new Vector((Math.random()-0.5)*accuracy, 0, (Math.random()-0.5)*accuracy));
+
+        this.target = target;
+        dir = new Vector(0,0,0);
+
+        MissileWarfare.activemissiles.add(this);
+    }
+    public MissileController(boolean isgroundmissile, Vector startpos, Vector target, float speed, World world, double power, float accuracy, int type, Vector dir){
+        this.isgroundmissile = isgroundmissile;
+        pos = startpos;
+        this.speed = speed;
+        this.world = world;
+        this.power = power;
+        launched = false;
+        this.type = type;
+
+        target = target.add(new Vector((Math.random()-0.5)*accuracy, 0, (Math.random()-0.5)*accuracy));
+
+        this.target = target;
+        this.dir = dir;
+        System.out.println(MissileWarfare.activemissiles);
+    }
+
+    public void FireMissile(){
+        if (isgroundmissile) {
+            LaunchSeqFast();
+            update = new BukkitRunnable() {
+                @Override
+                public void run() {
+                    Update(this);
+                }
+            }.runTaskTimer(MissileWarfare.getInstance(), 25, 2);
+        }
+    }
+    public void FireMissileAtMissile(MissileController other){
+        LaunchSeqAngled(dir);
+        update = new BukkitRunnable() {
+            @Override
+            public void run() {
+                Update(this, other);
+            }
+        }.runTaskTimer(MissileWarfare.getInstance(), 5, 2);
+    }
+
+    public void Update(BukkitRunnable run){
+        Vector velocity = getVelocity();
+        pos.add(velocity);
+        if (type == 1 || type == 2 || type == 3) {
+            world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, pos.toLocation(world), 0, 0, 0, 0, 0.1, null, true);
+            if (type == 1){
+                world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, pos.toLocation(world), 0, 0, 0, 0, 0.1, null, true);
+            } else if (type == 2){
+                world.spawnParticle(Particle.FLAME, pos.toLocation(world), 0, -velocity.getX()+((Math.random()-0.5)*0.25), -velocity.getY()+((Math.random()-0.5)*0.25), -velocity.getZ()+((Math.random()-0.5)*0.25), 0.25, null, true);
+                world.spawnParticle(Particle.FLAME, pos.toLocation(world), 0, -velocity.getX()+((Math.random()-0.5)*0.25), -velocity.getY()+((Math.random()-0.5)*0.25), -velocity.getZ()+((Math.random()-0.5)*0.25), 0.25, null, true);
+            } else if (type == 3){
+                world.spawnParticle(Particle.END_ROD, pos.toLocation(world), 0, -velocity.getX()+((Math.random()-0.5)*0.25), -velocity.getY()+((Math.random()-0.5)*0.25), -velocity.getZ()+((Math.random()-0.5)*0.25), 0.3, null, true);
+            }
+        }
+        if (world.getBlockAt(pos.toLocation(world)).getType() != Material.AIR) {
+            for (int i = 0; i < 150; i++) {
+                world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, pos.toLocation(world), 0, Math.random()-0.5, Math.random()*2, Math.random()-0.5, 0.25, null, true);
+                world.spawnParticle(Particle.FLAME, pos.toLocation(world), 0, Math.random()-0.5, Math.random()*2, Math.random()-0.5, 0.25, null, true);
+                world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, pos.toLocation(world), 0, Math.random()-0.5, Math.random()*0.5, Math.random()-0.5, 0.15, null, true);
+                world.spawnParticle(Particle.FLAME, pos.toLocation(world), 0, (Math.random()*2)-0.5, Math.random()*1.5, (Math.random()*2)-0.5, 0.25, null, true);
+            }
+            world.createExplosion(pos.toLocation(world), (float) power);
+            run.cancel();
+            MissileWarfare.activemissiles.remove(this);
+        }
+    }
+    public void Update(BukkitRunnable run, MissileController other){
+        this.target = other.pos;
+        Vector velocity = getVelocityIgnoreY();
+        pos.add(velocity);
+        world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, pos.toLocation(world), 0, 0, 0, 0, 0.1, null, true);
+        world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, (pos.toLocation(world).subtract(velocity.divide(new Vector(2,2,2)))), 0, 0, 0, 0, 0.1, null, true);
+        if (target.distanceSquared(pos) < (speed*speed)*1.1){
+            world.createExplosion(pos.toLocation(world), (float) power);
+            for (int i = 0; i < 40; i++) {
+                world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, pos.toLocation(world), 0, Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5, 0.1, null, true);
+                world.spawnParticle(Particle.FLAME, pos.toLocation(world), 0, Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5, 0.1, null,true);
+            }
+            if (other.update != null) {
+                other.update.cancel();
+            }
+            MissileWarfare.activemissiles.remove(other);
+            run.cancel();
+        }
+        if (world.getBlockAt(pos.toLocation(world)).getType() != Material.AIR) {
+            world.createExplosion(pos.toLocation(world), (float) power);
+        }
+    }
+
+    public Vector getVelocity(){
+        Vector velocity = new Vector(0, 0, 0);
+        if (pos.getY() < 140) {
+            velocity.setY(speed * 0.5);
+        }
+        float xdist = (float) (target.getX() - pos.getX());
+        float zdist = (float) (target.getZ() - pos.getZ());
+
+        if (xdist != 0) {
+            if (xdist < 0) {
+                velocity.setX(-speed);
+            } else {
+                velocity.setX(speed);
+            }
+        }
+        if (zdist != 0) {
+            if (zdist < 0) {
+                velocity.setZ(-speed);
+            } else {
+                velocity.setZ(speed);
+            }
+        }
+        if (xdist < 15 && zdist < 15) {
+            velocity.setY(-speed);
+        }
+        if (pos.getY() < 80) {
+            velocity.setX(0);
+            velocity.setZ(0);
+        } else if (pos.getY() < 120) {
+            velocity.setX(velocity.getX()/4);
+            velocity.setZ(velocity.getX()/4);
+        }else if (pos.getY() < 100) {
+            velocity.setX(velocity.getX()/8);
+            velocity.setZ(velocity.getX()/8);
+        }
+        velocity.setX(Math.round(velocity.getX()));
+        velocity.setZ(Math.round(velocity.getZ()));
+        return velocity;
+    }
+    public Vector getVelocityIgnoreY(){
+        Vector velocity = new Vector(0, 0, 0);
+
+        float xdist = (float) (target.getX() - pos.getX());
+        float zdist = (float) (target.getZ() - pos.getZ());
+        float ydist = (float) (target.getY() - pos.getY());
+
+        if (xdist != 0) {
+            if (xdist < 0) {
+                velocity.setX(-speed);
+            } else {
+                velocity.setX(speed);
+            }
+        }
+        if (ydist != 0){
+            if (ydist < 0) {
+                velocity.setY(-speed);
+            } else {
+                velocity.setY(speed);
+            }
+        }
+        if (zdist != 0) {
+            if (zdist < 0) {
+                velocity.setZ(-speed);
+            } else {
+                velocity.setZ(speed);
+            }
+        }
+        velocity.setX(Math.round(velocity.getX()));
+        velocity.setZ(Math.round(velocity.getZ()));
+        return velocity;
+    }
+
+
+    public void LaunchSeqFast(){
+        new BukkitRunnable(){
+            int loops = 0;
+            @Override
+            public void run() {
+                world.spawnParticle(Particle.FLAME, pos.toLocation(world), 0, Math.random() - 0.5, Math.random(), Math.random() - 0.5, 0.1);
+                world.spawnParticle(Particle.CAMPFIRE_SIGNAL_SMOKE, pos.toLocation(world), 0, (Math.random() - 0.5)/0.9, Math.random()+0.25, (Math.random() - 0.5)/0.9, 0.2);
+                launched = true;
+                if (loops > 15) {
+                    this.cancel();
+                }
+                loops++;
+            }
+        }.runTaskTimer(MissileWarfare.getInstance(), 13, 1);
+
+        new BukkitRunnable(){
+            int loops = 0;
+            @Override
+            public void run() {
+                world.spawnParticle(Particle.CLOUD, pos.toLocation(world), 0, Math.random() - 0.5, Math.random()-1, Math.random() - 0.5, 0.1);
+                if (loops < 20) {
+                    this.cancel();
+                }
+                loops++;
+            }
+        }.runTaskTimer(MissileWarfare.getInstance(), 0, 1);
+    }
+
+    public void LaunchSeqAngled(Vector dir){
+        //First Launch
+        new BukkitRunnable(){
+            int loops = 0;
+            @Override
+            public void run() {
+                for (int i = 0; i < 3; i++) {
+                    world.spawnParticle(Particle.CAMPFIRE_SIGNAL_SMOKE, pos.toLocation(world), 0, -dir.getX()+(Math.random() - 0.5), -dir.getY()+(Math.random() - 0.5), -dir.getZ()+(Math.random() - 0.5), 0.2);
+                    world.spawnParticle(Particle.CAMPFIRE_SIGNAL_SMOKE, pos.toLocation(world), 0, -dir.getX()+(Math.random() - 0.5), -dir.getY()+(Math.random() - 0.5), -dir.getZ()+(Math.random() - 0.5), 0.2);
+                    world.spawnParticle(Particle.FLAME, pos.toLocation(world), 0, -dir.getX()+(Math.random() - 0.5), -dir.getY()+(Math.random() - 0.5), -dir.getZ()+(Math.random() - 0.5), 0.2);
+                    world.spawnParticle(Particle.CAMPFIRE_SIGNAL_SMOKE, pos.toLocation(world), 0, dir.getX()+(Math.random() - 0.5), dir.getY()+(Math.random() - 0.5), dir.getZ()+(Math.random() - 0.5), 0.2);
+                }
+                if (loops > 5) {
+                    this.cancel();
+                }
+                loops++;
+            }
+        }.runTaskTimer(MissileWarfare.getInstance(), 0, 1);
+    }
+    /*
+    new BukkitRunnable(){
+            int loops = 0;
+            @Override
+            public void run() {
+                world.spawnParticle(Particle.FLAME, pos.toLocation(world), 0, Math.random() - 0.5, Math.random(), Math.random() - 0.5, 0.1);
+                world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, pos.toLocation(world), 0, (Math.random() - 0.5)/0.9, Math.random()+0.25, (Math.random() - 0.5)/0.9, 0.2);
+                launched = true;
+                if (loops > 15) {
+                    this.cancel();
+                }
+                loops++;
+            }
+        }.runTaskTimer(AdvancedWarfare.getInstance(), 13, 1);
+
+        new BukkitRunnable(){
+            int loops = 0;
+            @Override
+            public void run() {
+                world.spawnParticle(Particle.CLOUD, pos.toLocation(world), 0, Math.random() - 0.5, Math.random()-1, Math.random() - 0.5, 0.1);
+                if (loops < 20) {
+                    this.cancel();
+                }
+                loops++;
+            }
+        }.runTaskTimer(AdvancedWarfare.getInstance(), 0, 1);
+     */
+}
