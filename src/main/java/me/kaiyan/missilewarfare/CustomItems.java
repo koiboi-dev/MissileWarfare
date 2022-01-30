@@ -141,7 +141,7 @@ public class CustomItems {
         smallmissileAC.register(MissileWarfare.getInstance());
         //-SMALL GtG MISSILE AC-
         //GtG MISSILE LAUNCHER 1x
-        SlimefunItemStack groundlauncherstack = new SlimefunItemStack("GROUNDLAUNCHER", Material.DISPENSER, "Ground Launcher", "Shoots a specified area on the ground.", "Use a stick to set target coords", "Shift with a stick to check if it can fire", "Needs to be built on 2 green concrete blocks.");
+        SlimefunItemStack groundlauncherstack = new SlimefunItemStack("GROUNDLAUNCHER", Material.DISPENSER, "Ground Launcher", "Shoots a specified area on the ground.", "Use a stick to set target coords", "Shift with a stick to check if it can fire", "Needs to be built on 1 green concrete block.");
         ItemStack[] groundlauncherrecipe = {
                 SlimefunItems.STEEL_INGOT, null, SlimefunItems.STEEL_INGOT,
                 SlimefunItems.DURALUMIN_INGOT, null, SlimefunItems.DURALUMIN_INGOT,
