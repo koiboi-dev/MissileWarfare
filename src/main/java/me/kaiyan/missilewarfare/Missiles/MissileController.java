@@ -21,8 +21,9 @@ public class MissileController {
     public int type;
     public Vector dir;
     public BukkitTask update;
+    public int cruiseAlt;
 
-    public MissileController(boolean isgroundmissile, Vector startpos, Vector target, float speed, World world, double power, float accuracy, int type){
+    public MissileController(boolean isgroundmissile, Vector startpos, Vector target, float speed, World world, double power, float accuracy, int type, int cruiseAlt){
         this.isgroundmissile = isgroundmissile;
         pos = startpos;
         this.speed = speed;
@@ -30,6 +31,7 @@ public class MissileController {
         this.power = power;
         launched = false;
         this.type = type;
+        this.cruiseAlt = cruiseAlt;
 
         target = target.add(new Vector((Math.random()-0.5)*accuracy, 0, (Math.random()-0.5)*accuracy));
 
@@ -51,7 +53,6 @@ public class MissileController {
 
         this.target = target;
         this.dir = dir;
-        System.out.println(MissileWarfare.activemissiles);
     }
 
     public void FireMissile(){
@@ -140,7 +141,7 @@ public class MissileController {
             world.loadChunk(pos.toLocation(world).getChunk());
             velocity.setY(-speed);
         }
-        if (pos.getY() < 80) {
+        if (pos.getY() < 90) {
             velocity.setX(0);
             velocity.setZ(0);
         } else if (pos.getY() < 120) {

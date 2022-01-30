@@ -56,9 +56,9 @@ public class VariantsAPI {
             case 2:
                 return new MissileClass(2,1000, 2.5, 130, 2);
             case 3:
-                return new MissileClass(3,2000,2, 100, 3);
+                return new MissileClass(3,2750,2, 100, 3);
             case 4:
-                return new MissileClass(3, 1500,2, 30, 4);
+                return new MissileClass(3, 1750,2, 30, 4);
         }
         return null;
     }
