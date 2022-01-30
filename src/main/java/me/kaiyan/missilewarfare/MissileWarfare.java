@@ -1,11 +1,10 @@
 package me.kaiyan.missilewarfare;
 
+import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.config.Config;
 import me.kaiyan.missilewarfare.Listeners.MultiblockListener;
 import me.kaiyan.missilewarfare.Missiles.MissileController;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
-import io.github.thebusybiscuit.slimefun4.libraries.dough.config.Config;
 
 import java.util.ArrayList;
 import java.util.List;

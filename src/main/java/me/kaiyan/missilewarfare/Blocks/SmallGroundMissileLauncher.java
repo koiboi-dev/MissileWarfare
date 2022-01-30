@@ -8,7 +8,7 @@ import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockDispenseHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockUseHandler;
-import io.github.thebusybiscuit.slimefun4.libraries.dough.items.ItemUtils;
+import me.kaiyan.missilewarfare.Items.MissileClass;
 import me.kaiyan.missilewarfare.MissileWarfare;
 import me.kaiyan.missilewarfare.Missiles.MissileController;
 import me.kaiyan.missilewarfare.VariantsAPI;
@@ -22,9 +22,9 @@ import org.bukkit.block.TileState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
 import org.bukkit.conversations.*;
+import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
@@ -78,7 +78,9 @@ public class SmallGroundMissileLauncher extends SlimefunItem{
         new BukkitRunnable() {
             @Override
             public void run() {
-                fireMissile(dispenser);
+                if (dispenser.getBlock().getRelative(BlockFace.DOWN).getType() == Material.GREEN_CONCRETE) {
+                    fireMissile(dispenser);
+                }
             }
         }.runTaskLater(MissileWarfare.getInstance(), 1);
     }
@@ -166,16 +168,22 @@ public class SmallGroundMissileLauncher extends SlimefunItem{
         SlimefunItem missileitem = VariantsAPI.getFirstMissile(disp.getInventory());
         int type = VariantsAPI.getIntTypeFromSlimefunitem(missileitem);
 
-        // -- SmallGtGMissile --
+        MissileClass missile = VariantsAPI.missileStatsFromType(type);
+        fireMissile(disp, missile);
+
+        /*// -- SmallGtGMissile --
         if (type == 1){
-            fireMissile(disp,3, 4, 100, 1);
+            fireMissile(disp,3, 1, 100, 1);
         } else if (type == 2){
-            fireMissile(disp,2, 5, 130, 2);
+            fireMissile(disp,2, 1.5, 130, 2);
         } else if (type == 3){
-            fireMissile(disp, 3, 3.35, 100, 3);
-        }
+            fireMissile(disp, 3, 1, 100, 3);
+        } else if (type == 4){
+            fireMissile(disp, 3, 1, 30, 4);
+        }*/
     }
 
+    @Deprecated
     public void fireMissile(Dispenser disp, int speed, double power, int accuracy, int type){
         TileState state = (TileState) disp.getBlock().getState();
         PersistentDataContainer cont = state.getPersistentDataContainer();
@@ -188,5 +196,30 @@ public class SmallGroundMissileLauncher extends SlimefunItem{
         }
         MissileController missile = new MissileController(true, disp.getBlock().getLocation().add(new Vector(0.5, 1, 0.5)).toVector(), new Vector(coords[0], 0, coords[1]), speed, disp.getBlock().getWorld(), power, accuracy, type);
         missile.FireMissile();
+    }
+    public void fireMissile(Dispenser disp, MissileClass missile){
+        TileState state = (TileState) disp.getBlock().getState();
+        PersistentDataContainer cont = state.getPersistentDataContainer();
+        int[] coords = cont.get(new NamespacedKey(MissileWarfare.getInstance(), "coords"), PersistentDataType.INTEGER_ARRAY);
+        if (coords == null) {
+            MissileWarfare.getInstance().getServer().broadcastMessage("Missile cannot fire at : "+disp.getBlock().getLocation() + " Invalid Coordinates!");
+            return;
+        } else if (VariantsAPI.isInRange((int) disp.getLocation().distanceSquared(new Vector(coords[0], 0, coords[1]).toLocation(disp.getWorld())), missile.type)){
+            MissileWarfare.getInstance().getServer().broadcastMessage("Missile cannot fire at : "+disp.getBlock().getLocation() + " Target out of distance!");
+        }
+        if (MissileWarfare.plugin.getConfig().getBoolean("logging.logMissileShots")){
+            Player result = null;
+            double lastDistance = Double.MAX_VALUE;
+            for(Player p : disp.getWorld().getPlayers()) {
+                double distance = disp.getLocation().distanceSquared(p.getLocation());
+                if(distance < lastDistance) {
+                    lastDistance = distance;
+                    result = p;
+                }
+            }
+            MissileWarfare.getInstance().getLogger().info("Missile Shot || Location: "+disp.getBlock().getLocation()+" Target: "+new Vector(coords[0], 0, coords[1])+" Nearest Player: "+result.getName());
+        }
+        MissileController _missile = new MissileController(true, disp.getBlock().getLocation().add(new Vector(0.5, 1.25, 0.5)).toVector(), new Vector(coords[0], 0, coords[1]), missile.speed, disp.getBlock().getWorld(), missile.power, missile.accuracy, missile.type);
+        _missile.FireMissile();
     }
 }

@@ -6,34 +6,29 @@ import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
-import io.github.thebusybiscuit.slimefun4.libraries.dough.items.ItemUtils;
-import io.github.thebusybiscuit.slimefun4.utils.ChestMenuUtils;
 import me.kaiyan.missilewarfare.MissileWarfare;
 import me.kaiyan.missilewarfare.Missiles.MissileController;
 import me.kaiyan.missilewarfare.VariantsAPI;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.ComponentBuilder;
+import org.bukkit.Instrument;
 import org.bukkit.Location;
+import org.bukkit.Note;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
-import java.util.logging.Logger;
 
 public class ManPad extends SlimefunItem {
-    public int range = 300;
+    public final int range = 300*300;
 
     public ManPad(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(itemGroup, item, recipeType, recipe);
         ItemUseHandler itemUseHandler = this::itemUse;
         addItemHandler(itemUseHandler);
-
-        range = range*range;
     }
 
     private void itemUse(PlayerRightClickEvent event) {
@@ -72,7 +67,7 @@ public class ManPad extends SlimefunItem {
                         Vector target = loc.add(dir.multiply(loc.distance(missile.pos.toLocation(event.getPlayer().getWorld())))).toVector();
                         float dist = (float) Math.floor(target.distanceSquared(missile.pos));
                         float acdist = (float) loc.distanceSquared(missile.pos.toLocation(event.getPlayer().getWorld()));
-                        if (target.isInSphere(missile.pos, missile.speed*((acdist/range)+1)) && dist < mindist) {
+                        if (target.isInSphere(missile.pos, missile.speed+((acdist/range)*4)) && dist < mindist) {
                             lockedmissile = missile;
                             mindist = dist;
                         }
@@ -84,12 +79,14 @@ public class ManPad extends SlimefunItem {
                             scanLinepos++;
                             scanline.append("X").color(ChatColor.BLUE);
                             scanline.append("XX").color(ChatColor.WHITE);
+                            event.getPlayer().playNote(event.getPlayer().getLocation(), Instrument.PIANO, Note.flat(1, Note.Tone.B));
                             scanLineReturn = false;
                         } else if (scanLinepos == 2) {
                             scanLinepos--;
                             scanLineReturn = true;
                             scanline.append("XX").color(ChatColor.WHITE);
                             scanline.append("X").color(ChatColor.BLUE);
+                            event.getPlayer().playNote(event.getPlayer().getLocation(), Instrument.PIANO, Note.flat(1, Note.Tone.B));
                         } else if (!scanLineReturn) {
                             scanLinepos++;
                             scanline.append("X").color(ChatColor.WHITE);
@@ -107,7 +104,10 @@ public class ManPad extends SlimefunItem {
                         scanline.append("[");
                         scanline.append("XXX").color(ChatColor.RED);
                         scanline.append("]").color(ChatColor.WHITE);
-                        scanline.append("Dist: " + event.getPlayer().getLocation().distance(lockedmissile.pos.toLocation(event.getPlayer().getWorld()))).color(ChatColor.GOLD);
+                        scanline.append("Dist: " + Math.round(event.getPlayer().getLocation().distance(lockedmissile.pos.toLocation(event.getPlayer().getWorld())))).color(ChatColor.GOLD);
+                        event.getPlayer().playNote(event.getPlayer().getLocation(), Instrument.STICKS, Note.flat(1, Note.Tone.E));
+                        event.getPlayer().playNote(event.getPlayer().getLocation(), Instrument.GUITAR, Note.flat(1, Note.Tone.F));
+                        event.getPlayer().playNote(event.getPlayer().getLocation(), Instrument.FLUTE, Note.flat(1, Note.Tone.E));
                     }
 
                     // SendScanLine
@@ -115,11 +115,11 @@ public class ManPad extends SlimefunItem {
 
                     // Check if sneaking
                     if (!event.getPlayer().isSneaking()) {
-                        if(lockedmissile == null){
+                        if (lockedmissile == null){
                             event.getPlayer().sendMessage("Failed to fire: No Target");
                             this.cancel();
                         } else {
-                            MissileController missile = new MissileController(false, event.getPlayer().getLocation().toVector(), lockedmissile.pos, 7, event.getPlayer().getWorld(), 3, 0, 1, event.getPlayer().getLocation().getDirection());
+                            MissileController missile = new MissileController(false, event.getPlayer().getLocation().toVector(), lockedmissile.pos, 5, event.getPlayer().getWorld(), 3, 0, 1, event.getPlayer().getLocation().getDirection());
                             missile.FireMissileAtMissile(lockedmissile);
                             event.getPlayer().getInventory().remove(manpad.getItem());
                             event.getPlayer().updateInventory();

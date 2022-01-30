@@ -2,15 +2,13 @@ package me.kaiyan.missilewarfare.Missiles;
 
 
 import me.kaiyan.missilewarfare.MissileWarfare;
-import org.bukkit.Location;
+import me.kaiyan.missilewarfare.VariantsAPI;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
-
-import java.util.Optional;
 
 public class MissileController {
     public boolean isgroundmissile;
@@ -80,17 +78,7 @@ public class MissileController {
     public void Update(BukkitRunnable run){
         Vector velocity = getVelocity();
         pos.add(velocity);
-        if (type == 1 || type == 2 || type == 3) {
-            world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, pos.toLocation(world), 0, 0, 0, 0, 0.1, null, true);
-            if (type == 1){
-                world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, pos.toLocation(world), 0, 0, 0, 0, 0.1, null, true);
-            } else if (type == 2){
-                world.spawnParticle(Particle.FLAME, pos.toLocation(world), 0, -velocity.getX()+((Math.random()-0.5)*0.25), -velocity.getY()+((Math.random()-0.5)*0.25), -velocity.getZ()+((Math.random()-0.5)*0.25), 0.25, null, true);
-                world.spawnParticle(Particle.FLAME, pos.toLocation(world), 0, -velocity.getX()+((Math.random()-0.5)*0.25), -velocity.getY()+((Math.random()-0.5)*0.25), -velocity.getZ()+((Math.random()-0.5)*0.25), 0.25, null, true);
-            } else if (type == 3){
-                world.spawnParticle(Particle.END_ROD, pos.toLocation(world), 0, -velocity.getX()+((Math.random()-0.5)*0.25), -velocity.getY()+((Math.random()-0.5)*0.25), -velocity.getZ()+((Math.random()-0.5)*0.25), 0.3, null, true);
-            }
-        }
+        VariantsAPI.spawnMissileTrail(world, type, pos, velocity);
         if (world.getBlockAt(pos.toLocation(world)).getType() != Material.AIR) {
             for (int i = 0; i < 150; i++) {
                 world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, pos.toLocation(world), 0, Math.random()-0.5, Math.random()*2, Math.random()-0.5, 0.25, null, true);
@@ -149,6 +137,7 @@ public class MissileController {
             }
         }
         if (xdist < 15 && zdist < 15) {
+            world.loadChunk(pos.toLocation(world).getChunk());
             velocity.setY(-speed);
         }
         if (pos.getY() < 80) {
@@ -234,10 +223,10 @@ public class MissileController {
             @Override
             public void run() {
                 for (int i = 0; i < 3; i++) {
-                    world.spawnParticle(Particle.CAMPFIRE_SIGNAL_SMOKE, pos.toLocation(world), 0, -dir.getX()+(Math.random() - 0.5), -dir.getY()+(Math.random() - 0.5), -dir.getZ()+(Math.random() - 0.5), 0.2);
-                    world.spawnParticle(Particle.CAMPFIRE_SIGNAL_SMOKE, pos.toLocation(world), 0, -dir.getX()+(Math.random() - 0.5), -dir.getY()+(Math.random() - 0.5), -dir.getZ()+(Math.random() - 0.5), 0.2);
-                    world.spawnParticle(Particle.FLAME, pos.toLocation(world), 0, -dir.getX()+(Math.random() - 0.5), -dir.getY()+(Math.random() - 0.5), -dir.getZ()+(Math.random() - 0.5), 0.2);
-                    world.spawnParticle(Particle.CAMPFIRE_SIGNAL_SMOKE, pos.toLocation(world), 0, dir.getX()+(Math.random() - 0.5), dir.getY()+(Math.random() - 0.5), dir.getZ()+(Math.random() - 0.5), 0.2);
+                    world.spawnParticle(Particle.CAMPFIRE_SIGNAL_SMOKE, pos.toLocation(world), 0, -dir.getX()+(Math.random() - 0.5), -dir.getY()+(Math.random() - 0.5), -dir.getZ()+(Math.random() - 0.5), 0.1);
+                    world.spawnParticle(Particle.CAMPFIRE_SIGNAL_SMOKE, pos.toLocation(world), 0, -dir.getX()+(Math.random() - 0.5), -dir.getY()+(Math.random() - 0.5), -dir.getZ()+(Math.random() - 0.5), 0.1);
+                    world.spawnParticle(Particle.FLAME, pos.toLocation(world), 0, -dir.getX()+(Math.random() - 0.5), -dir.getY()+(Math.random() - 0.5), -dir.getZ()+(Math.random() - 0.5), 0.1);
+                    world.spawnParticle(Particle.CAMPFIRE_SIGNAL_SMOKE, pos.toLocation(world), 0, dir.getX()+(Math.random() - 0.5), dir.getY()+(Math.random() - 0.5), dir.getZ()+(Math.random() - 0.5), 0.1);
                 }
                 if (loops > 5) {
                     this.cancel();

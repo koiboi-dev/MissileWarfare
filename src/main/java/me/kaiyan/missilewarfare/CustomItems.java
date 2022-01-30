@@ -5,23 +5,14 @@ import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.api.researches.Research;
-import io.github.thebusybiscuit.slimefun4.core.multiblocks.MultiBlockMachine;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
-import io.github.thebusybiscuit.slimefun4.utils.HeadTexture;
 import me.kaiyan.missilewarfare.Blocks.SmallGroundMissileLauncher;
 import me.kaiyan.missilewarfare.Items.ManPad;
-import me.kaiyan.missilewarfare.Items.SmallGtGMissile;
-import me.kaiyan.missilewarfare.Items.SmallGtGMissileHE;
-import me.kaiyan.missilewarfare.Items.SmallGtGMissileLR;
-import org.bukkit.ChatColor;
+import me.kaiyan.missilewarfare.Items.MissileItem;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.block.Skull;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.SkullMeta;
-
-import java.util.UUID;
 
 public class CustomItems {
     public static void setup(){
@@ -104,40 +95,51 @@ public class CustomItems {
         smallfin.register(MissileWarfare.getInstance());
         //-SMALL FINS-
         //SMALL GtG MISSILE
-        SlimefunItemStack smallmissilestack = new SlimefunItemStack("SMALLMISSILE", Material.IRON_SWORD, "SMALL GtG MISSILE", "Small Ground-to-Ground Missile","Normal Variant", "Range: 2000 Blocks", "Power: 4", "Speed: 3", "Accuracy: Within 100 blocks", "'Little Timmy never stood a chance...'");
+        SlimefunItemStack smallmissilestack = new SlimefunItemStack("SMALLMISSILE", Material.IRON_SWORD, "SMALL GtG MISSILE", "Small Ground-to-Ground Missile","Normal Variant");
         ItemStack[] smallmissilerecipe = {
                 explosivepowderstack, smallwarheadstack, explosivepowderstack,
                 sugarfuelstack, smallbodystack, sugarfuelstack,
                 sugarfuelstack, smallfinstack, sugarfuelstack
         };
 
-        SmallGtGMissile smallmissile = new SmallGtGMissile(group, smallmissilestack, RecipeType.ENHANCED_CRAFTING_TABLE, smallmissilerecipe);
+        MissileItem smallmissile = new MissileItem(group, smallmissilestack, RecipeType.ENHANCED_CRAFTING_TABLE, smallmissilerecipe, 1, "'Little Timmy never stood a chance...'");
 
         smallmissile.register(MissileWarfare.getInstance());
         //-SMALL GtG MISSILE-
         //SMALL GtG MISSILE HE
-        SlimefunItemStack smallmissilestackHE = new SlimefunItemStack("SMALLMISSILEHE", Material.IRON_SWORD, "SMALL GtG MISSILE HE", "Small Ground-to-Ground Missile","High-Explosive Variant", "Range: 1500 Blocks", "Power: 5.5", "Speed: 2", "Accuracy: Within 110 blocks", "'Large Timmy never stood a chance...'");
+        SlimefunItemStack smallmissilestackHE = new SlimefunItemStack("SMALLMISSILEHE", Material.IRON_SWORD, "SMALL GtG MISSILE HE", "Small Ground-to-Ground Missile","High-Explosive Variant");
         ItemStack[] smallmissilerecipeHE = {
                 explosivepowderstack, smallwarheadstack, explosivepowderstack,
                 explosivepowderstack, smallbodystack, sugarfuelstack,
                 sugarfuelstack, smallfinstack, sugarfuelstack
         };
 
-        SmallGtGMissileHE smallmissileHE = new SmallGtGMissileHE(group, smallmissilestackHE, RecipeType.ENHANCED_CRAFTING_TABLE, smallmissilerecipeHE);
+        MissileItem smallmissileHE = new MissileItem(group, smallmissilestackHE, RecipeType.ENHANCED_CRAFTING_TABLE, smallmissilerecipeHE, 2, "'Large Timmy never stood a chance...'");
 
         smallmissileHE.register(MissileWarfare.getInstance());
         //-SMALL GtG MISSILE HE-
         // SMALL GtG MISSILE LR
-        SlimefunItemStack smallmissileLRstack = new SlimefunItemStack("SMALLMISSILELR", Material.IRON_SWORD,"Small GtG Missile LR","Long-Range Variant", "Range: 3000 Blocks", "Power: 3.25", "Speed: 3", "Accuracy: Within 100 blocks", "'Far away timmy never stood a chance...'");
+        SlimefunItemStack smallmissileLRstack = new SlimefunItemStack("SMALLMISSILELR", Material.IRON_SWORD,"Small GtG Missile LR","Long-Range Variant");
         ItemStack[] smallmissileLRrecipe = {
                 explosivepowderstack, smallwarheadstack, explosivepowderstack,
                 sugarfuelstack, smallbodystack, sugarfuelstack,
                 rocketfuelstack, smallfinstack, rocketfuelstack
         };
-        SmallGtGMissileLR smallmissileLR = new SmallGtGMissileLR(group, smallmissileLRstack, RecipeType.ENHANCED_CRAFTING_TABLE, smallmissileLRrecipe);
+        MissileItem smallmissileLR = new MissileItem(group, smallmissileLRstack, RecipeType.ENHANCED_CRAFTING_TABLE, smallmissileLRrecipe, 3, "'Far away timmy never stood a chance...'");
 
         smallmissileLR.register(MissileWarfare.getInstance());
         //-SMALL GtG MISSILE LR-
+        // SMALL GtG MISSILE AC
+        SlimefunItemStack smallmissileACstack = new SlimefunItemStack("SMALLMISSILEAC", Material.IRON_SWORD,"Small GtG Missile AC","Accurate Variant");
+        ItemStack[] smallmissileACrecipe = {
+                explosivepowderstack, smallwarheadstack, explosivepowderstack,
+                sugarfuelstack, smallbodystack, sugarfuelstack,
+                smallfinstack, rocketfuelstack, smallfinstack
+        };
+        MissileItem smallmissileAC = new MissileItem(group, smallmissileACstack, RecipeType.ENHANCED_CRAFTING_TABLE, smallmissileACrecipe, 4, "'REALLY small timmy never stood a chance...'");
+
+        smallmissileAC.register(MissileWarfare.getInstance());
+        //-SMALL GtG MISSILE AC-
         //GtG MISSILE LAUNCHER 1x
         SlimefunItemStack groundlauncherstack = new SlimefunItemStack("GROUNDLAUNCHER", Material.DISPENSER, "Ground Launcher", "Shoots a specified area on the ground.", "Use a stick to set target coords", "Shift with a stick to check if it can fire", "Needs to be built on 2 green concrete blocks.");
         ItemStack[] groundlauncherrecipe = {
