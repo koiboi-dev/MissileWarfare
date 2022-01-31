@@ -90,85 +90,120 @@ public class SmallGroundMissileLauncher extends SlimefunItem{
             event.cancel();
             TileState state = (TileState) Objects.requireNonNull(event.getInteractEvent().getClickedBlock()).getState();
             PersistentDataContainer cont = state.getPersistentDataContainer();
-            if (event.getPlayer().isSneaking()){
-                int[] coords = cont.get(new NamespacedKey(MissileWarfare.getInstance(), "coords"), PersistentDataType.INTEGER_ARRAY);
-                float dist = (float) new Vector(coords[0], 0, coords[1]).distanceSquared(new Vector(event.getInteractEvent().getClickedBlock().getX(),0, event.getInteractEvent().getClickedBlock().getY()));
-                event.getPlayer().sendMessage("The coords are: " + coords[0]+","+coords[1]+" And the DIST is: "+Math.sqrt(dist));
-                return;
+            try {
+                if (event.getPlayer().isSneaking()) {
+                    int[] coords = cont.get(new NamespacedKey(MissileWarfare.getInstance(), "coords"), PersistentDataType.INTEGER_ARRAY);
+                    float dist = (float) new Vector(coords[0], 0, coords[1]).distanceSquared(new Vector(event.getInteractEvent().getClickedBlock().getX(), 0, event.getInteractEvent().getClickedBlock().getY()));
+                    event.getPlayer().sendMessage("The coords are: " + coords[0] + "," + coords[1] + " And the DIST is: " + Math.sqrt(dist));
+                    return;
+                }
+            } catch (NullPointerException e){
+                cont.set(new NamespacedKey(MissileWarfare.getInstance(), "coords"), PersistentDataType.INTEGER_ARRAY, new int[]{0, 0});
+                state.update();
             }
+            try {
+                if (cont.get(new NamespacedKey(MissileWarfare.getInstance(), "Conversing"), PersistentDataType.INTEGER) == 0) {
+                    Prompt askCoordY = new StringPrompt() {
+                        @Override
+                        public String getPromptText(ConversationContext conversationContext) {
+                            return "Input Coordinates Y, Input exit to cancel";
+                        }
 
-            Prompt askCoordY = new StringPrompt() {
-                @Override
-                public String getPromptText(ConversationContext conversationContext) {
-                    return "Input Coordinates Y";
-                }
+                        @Override
+                        public Prompt acceptInput(ConversationContext conversationContext, String s) {
+                            try {
+                                cont.set(new NamespacedKey(MissileWarfare.getInstance(), "coords"), PersistentDataType.INTEGER_ARRAY, new int[]{cont.get(new NamespacedKey(MissileWarfare.getInstance(), "coords"), PersistentDataType.INTEGER_ARRAY)[0], Integer.parseInt(s)});
+                            } catch (NumberFormatException e) {
+                                conversationContext.getForWhom().sendRawMessage("NOT A INT NUMBER");
+                                cont.set(new NamespacedKey(MissileWarfare.getInstance(), "Conversing"), PersistentDataType.INTEGER, 0);
+                                state.update();
+                                return END_OF_CONVERSATION;
+                            }
+                            conversationContext.getForWhom().sendRawMessage("Y: " + Integer.parseInt(s));
+                            cont.set(new NamespacedKey(MissileWarfare.getInstance(), "Conversing"), PersistentDataType.INTEGER, 0);
+                            state.update();
+                            return END_OF_CONVERSATION;
+                        }
+                    };
+                    Prompt askCoordX = new StringPrompt() {
+                        @Override
+                        public String getPromptText(ConversationContext conversationContext) {
+                            return "Input Coordinates X, Input exit to cancel";
+                        }
 
-                @Override
-                public Prompt acceptInput(ConversationContext conversationContext, String s) {
-                    try {
-                        cont.set(new NamespacedKey(MissileWarfare.getInstance(), "coords"), PersistentDataType.INTEGER_ARRAY, new int[]{cont.get(new NamespacedKey(MissileWarfare.getInstance(), "coords"), PersistentDataType.INTEGER_ARRAY)[0], Integer.parseInt(s)});
-                    } catch (NumberFormatException e){
-                        conversationContext.getForWhom().sendRawMessage("NOT A INT NUMBER");
-                        return END_OF_CONVERSATION;
-                    }
-                    conversationContext.getForWhom().sendRawMessage("Y: "+Integer.parseInt(s));
-                    state.update();
-                    return END_OF_CONVERSATION;
-                }
-            };
-            Prompt askCoordX = new StringPrompt() {
-                @Override
-                public String getPromptText(ConversationContext conversationContext) {
-                    return "Input Coordinates X";
-                }
+                        @Override
+                        public Prompt acceptInput(ConversationContext conversationContext, String s) {
+                            try {
+                                cont.set(new NamespacedKey(MissileWarfare.getInstance(), "coords"), PersistentDataType.INTEGER_ARRAY, new int[]{Integer.parseInt(s), 0});
+                            } catch (NumberFormatException e) {
+                                conversationContext.getForWhom().sendRawMessage("NOT A COORD");
+                                cont.set(new NamespacedKey(MissileWarfare.getInstance(), "Conversing"), PersistentDataType.INTEGER, 0);
+                                state.update();
+                                return END_OF_CONVERSATION;
+                            }
+                            conversationContext.getForWhom().sendRawMessage("X: " + Integer.parseInt(s));
+                            return askCoordY;
+                        }
+                    };
 
-                @Override
-                public Prompt acceptInput(ConversationContext conversationContext, String s) {
-                    try {
-                        cont.set(new NamespacedKey(MissileWarfare.getInstance(), "coords"), PersistentDataType.INTEGER_ARRAY, new int[] {Integer.parseInt(s), 0});
-                    } catch (NumberFormatException e){
-                        conversationContext.getForWhom().sendRawMessage("NOT A COORD");
-                        return END_OF_CONVERSATION;
-                    }
-                    conversationContext.getForWhom().sendRawMessage("X: "+Integer.parseInt(s));
-                    return askCoordY;
+                    ConversationFactory cf = new ConversationFactory(MissileWarfare.getInstance());
+                    Conversation conversation = cf.withFirstPrompt(askCoordX)
+                            .withLocalEcho(false)
+                            .withEscapeSequence("exit")
+                            .withTimeout(20)
+                            .buildConversation(event.getPlayer());
+                    conversation.begin();
+                    cont.set(new NamespacedKey(MissileWarfare.getInstance(), "Conversing"), PersistentDataType.INTEGER, 1);
+                } else {
+                    event.getPlayer().sendMessage("Someone is already interacting with this");
                 }
-            };
-
-            ConversationFactory cf = new ConversationFactory(MissileWarfare.getInstance());
-            Conversation conversation = cf.withFirstPrompt(askCoordX)
-                    .withLocalEcho(false)
-                    .buildConversation(event.getPlayer());
-            conversation.begin();
+            } catch (NullPointerException e){
+                cont.set(new NamespacedKey(MissileWarfare.getInstance(), "Conversing"), PersistentDataType.INTEGER, 0);
+                state.update();
+            }
         } else if (event.getItem().getType() == Material.BLAZE_ROD){
             event.cancel();
             TileState state = (TileState) Objects.requireNonNull(event.getInteractEvent().getClickedBlock()).getState();
             PersistentDataContainer cont = state.getPersistentDataContainer();
 
-            Prompt askCruiseAlt = new StringPrompt() {
-                @Override
-                public String getPromptText(ConversationContext conversationContext) {
-                    return "Input Cruise Altitude";
-                }
+            try{
+                if (cont.get(new NamespacedKey(MissileWarfare.getInstance(), "Conversing"), PersistentDataType.INTEGER) == 0) {
+                    Prompt askCruiseAlt = new StringPrompt() {
+                        @Override
+                        public String getPromptText(ConversationContext conversationContext) {
+                            return "Input Cruise Altitude, Input exit to cancel";
+                        }
 
-                @Override
-                public Prompt acceptInput(ConversationContext conversationContext, String s) {
-                    try {
-                        cont.set(new NamespacedKey(MissileWarfare.getInstance(), "alt"), PersistentDataType.INTEGER, Integer.valueOf(s));
-                    } catch (NumberFormatException e){
-                        conversationContext.getForWhom().sendRawMessage("NOT A INT NUMBER");
-                        return END_OF_CONVERSATION;
-                    }
-                    conversationContext.getForWhom().sendRawMessage("Cruise Alt: "+Integer.parseInt(s));
-                    state.update();
-                    return END_OF_CONVERSATION;
+                        @Override
+                        public Prompt acceptInput(ConversationContext conversationContext, String s) {
+                            try {
+                                cont.set(new NamespacedKey(MissileWarfare.getInstance(), "alt"), PersistentDataType.INTEGER, Integer.valueOf(s));
+                            } catch (NumberFormatException e) {
+                                conversationContext.getForWhom().sendRawMessage("NOT A INT NUMBER");
+                                cont.set(new NamespacedKey(MissileWarfare.getInstance(), "Conversing"), PersistentDataType.INTEGER, 0);
+                                state.update();
+                                return END_OF_CONVERSATION;
+                            }
+                            conversationContext.getForWhom().sendRawMessage("Cruise Alt: " + Integer.parseInt(s));
+                            cont.set(new NamespacedKey(MissileWarfare.getInstance(), "Conversing"), PersistentDataType.INTEGER, 0);
+                            state.update();
+                            return END_OF_CONVERSATION;
+                        }
+                    };
+                    ConversationFactory cf = new ConversationFactory(MissileWarfare.getInstance());
+                    Conversation conversation = cf.withFirstPrompt(askCruiseAlt)
+                            .withLocalEcho(false)
+                            .withEscapeSequence("exit")
+                            .withTimeout(20)
+                            .buildConversation(event.getPlayer());
+                    conversation.begin();
+                } else {
+                    event.getPlayer().sendMessage("Someone is already interacting with this");
                 }
-            };
-            ConversationFactory cf = new ConversationFactory(MissileWarfare.getInstance());
-            Conversation conversation = cf.withFirstPrompt(askCruiseAlt)
-                    .withLocalEcho(false)
-                    .buildConversation(event.getPlayer());
-            conversation.begin();
+            } catch (NullPointerException e){
+                cont.set(new NamespacedKey(MissileWarfare.getInstance(), "Conversing"), PersistentDataType.INTEGER, 0);
+                state.update();
+            }
         }
     }
 
@@ -220,6 +255,7 @@ public class SmallGroundMissileLauncher extends SlimefunItem{
         } else if (new Vector(coords[0], 0, coords[1]).distanceSquared(new Vector(disp.getX(),0, disp.getY())) > (2000*2000)){
             MissileWarfare.getInstance().getServer().broadcastMessage("Missile cannot fire at : "+disp.getBlock().getLocation() + " Too Far Away!");
         }
+        System.out.println("Alt: "+cont.get(new NamespacedKey(MissileWarfare.getInstance(), "alt"), PersistentDataType.INTEGER));
         MissileController missile = new MissileController(true, disp.getBlock().getLocation().add(new Vector(0.5, 1, 0.5)).toVector(), new Vector(coords[0], 0, coords[1]), speed, disp.getBlock().getWorld(), power, accuracy, type, cont.get(new NamespacedKey(MissileWarfare.getInstance(), "alt"), PersistentDataType.INTEGER));
         missile.FireMissile();
     }
@@ -234,7 +270,7 @@ public class SmallGroundMissileLauncher extends SlimefunItem{
         } else if (VariantsAPI.isInRange((int) disp.getLocation().distanceSquared(new Vector(coords[0], 0, coords[1]).toLocation(disp.getWorld())), missile.type)){
             MissileWarfare.getInstance().getServer().broadcastMessage("Missile cannot fire at : "+disp.getBlock().getLocation() + " Target out of distance!");
         }
-        if (alt == null || alt == 0){
+        if (alt == null){
             alt = 120;
         }
         if (MissileWarfare.plugin.getConfig().getBoolean("logging.logMissileShots")){
@@ -249,7 +285,7 @@ public class SmallGroundMissileLauncher extends SlimefunItem{
             }
             MissileWarfare.getInstance().getLogger().info("Missile Shot || Location: "+disp.getBlock().getLocation()+" Target: "+new Vector(coords[0], 0, coords[1])+" Nearest Player: "+result.getName());
         }
-        MissileController _missile = new MissileController(true, disp.getBlock().getLocation().add(new Vector(0.5, 1.25, 0.5)).toVector(), new Vector(coords[0], 0, coords[1]), missile.speed, disp.getBlock().getWorld(), missile.power, missile.accuracy, missile.type, alt);
+        MissileController _missile = new MissileController(true, disp.getBlock().getLocation().add(new Vector(0.5, 1.35, 0.5)).toVector(), new Vector(coords[0], 0, coords[1]), missile.speed, disp.getBlock().getWorld(), missile.power, missile.accuracy, missile.type, alt);
         _missile.FireMissile();
     }
 }
