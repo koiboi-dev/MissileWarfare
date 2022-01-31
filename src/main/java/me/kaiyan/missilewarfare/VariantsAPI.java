@@ -52,13 +52,13 @@ public class VariantsAPI {
     public static MissileClass missileStatsFromType(int type){
         switch (type){
             case 1:
-                return new MissileClass(3,1500, 2, 100, 1);
+                return new MissileClass(2,1500, 2, 100, 1);
             case 2:
-                return new MissileClass(2,1000, 2.5, 130, 2);
+                return new MissileClass(1,1000, 2.5, 130, 2);
             case 3:
-                return new MissileClass(3,2750,2, 100, 3);
+                return new MissileClass(2,2750,2, 100, 3);
             case 4:
-                return new MissileClass(3, 1750,2, 30, 4);
+                return new MissileClass(2, 1750,2, 30, 4);
         }
         return null;
     }

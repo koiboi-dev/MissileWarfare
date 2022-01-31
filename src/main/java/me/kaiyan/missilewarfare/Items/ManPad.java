@@ -67,7 +67,7 @@ public class ManPad extends SlimefunItem {
                         Vector target = loc.add(dir.multiply(loc.distance(missile.pos.toLocation(event.getPlayer().getWorld())))).toVector();
                         float dist = (float) Math.floor(target.distanceSquared(missile.pos));
                         float acdist = (float) loc.distanceSquared(missile.pos.toLocation(event.getPlayer().getWorld()));
-                        if (target.isInSphere(missile.pos, missile.speed+((acdist/range)*4)) && dist < mindist) {
+                        if (target.isInSphere(missile.pos, missile.speed+((acdist/range)*8)) && dist < mindist) {
                             lockedmissile = missile;
                             mindist = dist;
                         }

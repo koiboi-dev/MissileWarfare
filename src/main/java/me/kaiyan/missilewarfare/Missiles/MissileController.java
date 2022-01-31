@@ -6,9 +6,15 @@ import me.kaiyan.missilewarfare.VariantsAPI;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.World;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
+
+import java.util.Random;
 
 public class MissileController {
     public boolean isgroundmissile;
@@ -22,6 +28,7 @@ public class MissileController {
     public Vector dir;
     public BukkitTask update;
     public int cruiseAlt;
+    public Entity armourStand;
 
     public MissileController(boolean isgroundmissile, Vector startpos, Vector target, float speed, World world, double power, float accuracy, int type, int cruiseAlt){
         this.isgroundmissile = isgroundmissile;
@@ -33,10 +40,18 @@ public class MissileController {
         this.type = type;
         this.cruiseAlt = cruiseAlt;
 
-        target = target.add(new Vector((Math.random()-0.5)*accuracy, 0, (Math.random()-0.5)*accuracy));
+        Random rand = new Random(System.nanoTime());
+        target = target.add(new Vector((rand.nextDouble()-0.5)*accuracy, 0, (rand.nextDouble()-0.5)*accuracy));
 
         this.target = target;
         dir = new Vector(0,0,0);
+
+        armourStand = world.spawnEntity(pos.toLocation(world), EntityType.ARMOR_STAND);
+        ((LivingEntity) armourStand).getEquipment().setHelmet(new ItemStack(Material.BLACK_CONCRETE));
+        armourStand.setInvulnerable(true);
+        armourStand.setGravity(false);
+        ((LivingEntity) armourStand).setInvisible(true);
+        //((LivingEntity) armorStand).addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, Integer.MAX_VALUE, 1, true, false));
 
         MissileWarfare.activemissiles.add(this);
     }
@@ -63,7 +78,7 @@ public class MissileController {
                 public void run() {
                     Update(this);
                 }
-            }.runTaskTimer(MissileWarfare.getInstance(), 25, 2);
+            }.runTaskTimer(MissileWarfare.getInstance(), 20, 2);
         }
     }
     public void FireMissileAtMissile(MissileController other){
@@ -80,6 +95,7 @@ public class MissileController {
         Vector velocity = getVelocity();
         pos.add(velocity);
         VariantsAPI.spawnMissileTrail(world, type, pos, velocity);
+        armourStand.teleport(pos.toLocation(world).clone().subtract(new Vector(0, 1.75, 0)));
         if (world.getBlockAt(pos.toLocation(world)).getType() != Material.AIR) {
             for (int i = 0; i < 150; i++) {
                 world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, pos.toLocation(world), 0, Math.random()-0.5, Math.random()*2, Math.random()-0.5, 0.25, null, true);
@@ -88,6 +104,7 @@ public class MissileController {
                 world.spawnParticle(Particle.FLAME, pos.toLocation(world), 0, (Math.random()*2)-0.5, Math.random()*1.5, (Math.random()*2)-0.5, 0.25, null, true);
             }
             world.createExplosion(pos.toLocation(world), (float) power);
+            armourStand.remove();
             run.cancel();
             MissileWarfare.activemissiles.remove(this);
         }
@@ -117,8 +134,8 @@ public class MissileController {
 
     public Vector getVelocity(){
         Vector velocity = new Vector(0, 0, 0);
-        if (pos.getY() < 140) {
-            velocity.setY(speed * 0.5);
+        if (pos.getY() < cruiseAlt) {
+            velocity.setY(speed * 0.75);
         }
         float xdist = (float) (target.getX() - pos.getX());
         float zdist = (float) (target.getZ() - pos.getZ());
@@ -141,13 +158,13 @@ public class MissileController {
             world.loadChunk(pos.toLocation(world).getChunk());
             velocity.setY(-speed);
         }
-        if (pos.getY() < 90) {
+        if (pos.getY() < cruiseAlt-40) {
             velocity.setX(0);
             velocity.setZ(0);
-        } else if (pos.getY() < 120) {
+        } else if (pos.getY() < cruiseAlt) {
             velocity.setX(velocity.getX()/4);
             velocity.setZ(velocity.getX()/4);
-        }else if (pos.getY() < 100) {
+        }else if (pos.getY() < cruiseAlt-20) {
             velocity.setX(velocity.getX()/8);
             velocity.setZ(velocity.getX()/8);
         }
@@ -202,7 +219,7 @@ public class MissileController {
                 }
                 loops++;
             }
-        }.runTaskTimer(MissileWarfare.getInstance(), 13, 1);
+        }.runTaskTimer(MissileWarfare.getInstance(), 5, 1);
 
         new BukkitRunnable(){
             int loops = 0;

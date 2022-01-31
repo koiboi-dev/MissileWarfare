@@ -23,3 +23,7 @@ api-version: 1.14
 ## This is required and marks Slimefun as a plugin dependency.
 depend:
 - Slimefun
+
+## increase entity view dist
+entity-tracking-range:
+    armour_stand: 128
