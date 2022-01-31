@@ -154,7 +154,7 @@ public class SmallGroundMissileLauncher extends SlimefunItem{
                 @Override
                 public Prompt acceptInput(ConversationContext conversationContext, String s) {
                     try {
-                        cont.set(new NamespacedKey(MissileWarfare.getInstance(), "alt"), PersistentDataType.INTEGER_ARRAY, new int[]{cont.get(new NamespacedKey(MissileWarfare.getInstance(), "alt"), PersistentDataType.INTEGER_ARRAY)[0], Integer.parseInt(s)});
+                        cont.set(new NamespacedKey(MissileWarfare.getInstance(), "alt"), PersistentDataType.INTEGER, Integer.valueOf(s));
                     } catch (NumberFormatException e){
                         conversationContext.getForWhom().sendRawMessage("NOT A INT NUMBER");
                         return END_OF_CONVERSATION;
@@ -234,7 +234,7 @@ public class SmallGroundMissileLauncher extends SlimefunItem{
         } else if (VariantsAPI.isInRange((int) disp.getLocation().distanceSquared(new Vector(coords[0], 0, coords[1]).toLocation(disp.getWorld())), missile.type)){
             MissileWarfare.getInstance().getServer().broadcastMessage("Missile cannot fire at : "+disp.getBlock().getLocation() + " Target out of distance!");
         }
-        if (alt == null){
+        if (alt == null || alt == 0){
             alt = 120;
         }
         if (MissileWarfare.plugin.getConfig().getBoolean("logging.logMissileShots")){

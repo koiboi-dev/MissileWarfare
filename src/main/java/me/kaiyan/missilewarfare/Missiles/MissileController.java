@@ -6,9 +6,15 @@ import me.kaiyan.missilewarfare.VariantsAPI;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.World;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
+
+import java.util.Random;
 
 public class MissileController {
     public boolean isgroundmissile;
@@ -22,6 +28,7 @@ public class MissileController {
     public Vector dir;
     public BukkitTask update;
     public int cruiseAlt;
+    public Entity armorStand;
 
     public MissileController(boolean isgroundmissile, Vector startpos, Vector target, float speed, World world, double power, float accuracy, int type, int cruiseAlt){
         this.isgroundmissile = isgroundmissile;
@@ -33,10 +40,18 @@ public class MissileController {
         this.type = type;
         this.cruiseAlt = cruiseAlt;
 
-        target = target.add(new Vector((Math.random()-0.5)*accuracy, 0, (Math.random()-0.5)*accuracy));
+        Random rand = new Random(System.nanoTime());
+
+        target = target.add(new Vector(Math.round(rand.nextDouble()-0.5)*accuracy, 0, Math.round(rand.nextDouble()-0.5)*accuracy));
 
         this.target = target;
         dir = new Vector(0,0,0);
+
+
+
+        armorStand = world.spawnEntity(pos.subtract(new Vector(0, 1.8, 0)).toLocation(world), EntityType.ARMOR_STAND);
+        ((LivingEntity)armorStand).getEquipment().setHelmet(new ItemStack(Material.BLACK_CONCRETE));
+        ((LivingEntity) armorStand).setInvisible(true);
 
         MissileWarfare.activemissiles.add(this);
     }
@@ -91,6 +106,7 @@ public class MissileController {
             run.cancel();
             MissileWarfare.activemissiles.remove(this);
         }
+        armorStand.teleport(pos.toLocation(world));
     }
     public void Update(BukkitRunnable run, MissileController other){
         this.target = other.pos;
