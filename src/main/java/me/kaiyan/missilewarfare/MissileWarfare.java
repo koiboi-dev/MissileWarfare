@@ -2,7 +2,6 @@ package me.kaiyan.missilewarfare;
 
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.config.Config;
-import me.kaiyan.missilewarfare.Listeners.MultiblockListener;
 import me.kaiyan.missilewarfare.Missiles.MissileController;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -20,7 +19,6 @@ public class MissileWarfare extends JavaPlugin implements SlimefunAddon {
         // Read something from your config.yml
         Config cfg = new Config(this);
         CustomItems.setup();
-        getServer().getPluginManager().registerEvents(new MultiblockListener(), this);
     }
 
     public static MissileWarfare getInstance(){

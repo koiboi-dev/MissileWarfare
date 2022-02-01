@@ -12,6 +12,8 @@ import org.bukkit.util.Vector;
 public class VariantsAPI {
     public static String getStrVariantFromInt(int type){
         switch (type) {
+            case 0:
+                return "UNKNOWN";
             case 1:
                 return "SMR";
             case 2:

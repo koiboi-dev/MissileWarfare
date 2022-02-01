@@ -94,8 +94,8 @@ public class MissileController {
     public void Update(BukkitRunnable run){
         Vector velocity = getVelocity();
         pos.add(velocity);
-        VariantsAPI.spawnMissileTrail(world, type, pos, velocity);
         armourStand.teleport(pos.toLocation(world).clone().subtract(new Vector(0, 1.75, 0)));
+        VariantsAPI.spawnMissileTrail(world, type, pos, velocity);
         if (world.getBlockAt(pos.toLocation(world)).getType() != Material.AIR) {
             for (int i = 0; i < 150; i++) {
                 world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, pos.toLocation(world), 0, Math.random()-0.5, Math.random()*2, Math.random()-0.5, 0.25, null, true);
@@ -124,6 +124,7 @@ public class MissileController {
             if (other.update != null) {
                 other.update.cancel();
             }
+            other.armourStand.remove();
             MissileWarfare.activemissiles.remove(other);
             run.cancel();
         }
