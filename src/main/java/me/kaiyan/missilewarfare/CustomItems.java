@@ -61,7 +61,7 @@ public class CustomItems {
         ultraliteingot.register(MissileWarfare.getInstance());
         //-ULTRALITE INGOT-
         // ULTRALITE PLATE
-        SlimefunItemStack ultraliteplatestack = new SlimefunItemStack("ULTRALITE_PLATE", Material.IRON_INGOT, "Ultra-Lite Plate", "Super Lightweight Plate used in the creation of advanced missiles");
+        SlimefunItemStack ultraliteplatestack = new SlimefunItemStack("ULTRALITE_PLATE", Material.IRON_INGOT, "Ultra-Lite Plate", "A super lightweight plate for missiles");
         ItemStack[] ultraliteplaterecipe = {
                 ultraliteingotstack, null, ultraliteingotstack,
                 null, new ItemStack(Material.COAL), null,
@@ -84,6 +84,18 @@ public class CustomItems {
 
         simpleflightcomputer.register(MissileWarfare.getInstance());
         //-Flight Computer Simple-
+        // Radar Part
+        SlimefunItemStack radarstack = new SlimefunItemStack("RADAR", Material.ACTIVATOR_RAIL, "Radar", "Used when guiding anti-air missiles");
+        ItemStack[] radarrecipe = {
+                null, ultraliteplatestack, null,
+                ultraliteplatestack, simpleflightcomputerstack, ultraliteplatestack,
+                new ItemStack(Material.REDSTONE), null, new ItemStack(Material.REDSTONE)
+        };
+
+        SlimefunItem radar = new SlimefunItem(group, radarstack, RecipeType.ENHANCED_CRAFTING_TABLE, radarrecipe);
+
+        radar.register(MissileWarfare.getInstance());
+        //-Radar Part-
         // ROCKET FUEL
         SlimefunItemStack rocketfuelstack = new SlimefunItemStack("ROCKETFUEL", Material.GUNPOWDER, "Rocket Fuel", "Burns with the power of 1000 coal...");
         ItemStack[] rocketfuelrecipe = {
@@ -189,7 +201,7 @@ public class CustomItems {
         groundlauncher.register(MissileWarfare.getInstance());
         //- Small GtG MISSILE LAUNCHER-
         //MISSILE BODY
-        SlimefunItemStack missilebodystack = new SlimefunItemStack("MISSILE_BODY", Material.SMOOTH_STONE, "Missile Body", "A more advanced missile type");
+        SlimefunItemStack missilebodystack = new SlimefunItemStack("MISSILE_BODY", Material.SMOOTH_STONE, "Missile Body", "Missile body containing a flight computer");
         ItemStack[] missilebodyrecipe = {
                 ultraliteplatestack, simpleflightcomputerstack, ultraliteplatestack,
                 ultraliteplatestack, rocketfuelstack, ultraliteplatestack,
@@ -200,19 +212,31 @@ public class CustomItems {
 
         missilebody.register(MissileWarfare.getInstance());
         // - MISSILE BODY-
-        // GtA MISSILE
-        SlimefunItemStack antiAirMissilestack = new SlimefunItemStack("ANTIAIRMISSILE", Material.IRON_SWORD,"AntiAirMissile","Can Shoot Down Air Targets");
-        ItemStack[] antiAirMissilerecipe = {
+        // Advanced Fins
+        SlimefunItemStack finsstack = new SlimefunItemStack("MISSILE_FINS", Material.GOLDEN_BOOTS, "Missile Fins", "Able to move and direct the missile better");
+        ItemStack[] finsrecipe = {
                 null, null, null,
-                null, null, null,
-                null, null, null
+                ultraliteplatestack, null, ultraliteplatestack,
+                ultraliteplatestack, null, ultraliteplatestack
         };
-        MissileItem antiAirMissile = new MissileItem(group, antiAirMissilestack, RecipeType.ENHANCED_CRAFTING_TABLE, antiAirMissilerecipe, 0, "'Airborne Timmy Never Stood A Chance'");
+
+        SlimefunItem fins = new SlimefunItem(group, finsstack, RecipeType.ENHANCED_CRAFTING_TABLE, finsrecipe);
+
+        fins.register(MissileWarfare.getInstance());
+        // - ADVANCED FINS-
+        // GtA MISSILE
+        SlimefunItemStack antiAirMissilestack = new SlimefunItemStack("ANTIAIRMISSILE", Material.IRON_SWORD,"Anti Air Missile","Can Shoot Down Air Targets", "Used in a Anti Missile Launcher");
+        ItemStack[] antiAirMissilerecipe = {
+                null, radarstack, null,
+                explosivepowderstack, missilebodystack, explosivepowderstack,
+                rocketfuelstack, finsstack, rocketfuelstack
+        };
+        MissileItem antiAirMissile = new MissileItem(group, antiAirMissilestack, RecipeType.ENHANCED_CRAFTING_TABLE, antiAirMissilerecipe, 5, "'Airborne Timmy Never Stood A Chance'");
 
         antiAirMissile.register(MissileWarfare.getInstance());
         //-GtA MISSILE
         // GtA MISSILE LAUNCHER 1x
-        SlimefunItemStack antiairlauncherstack = new SlimefunItemStack("ANTIMISSILELAUNCHER", Material.DISPENSER, "Anti-Missile Launcher", "Targets and shoots down other missiles in the area.", "Use redstone to disable it", "Needs to be built surrounded by at least 3 Coal Blocks.");
+        SlimefunItemStack antiairlauncherstack = new SlimefunItemStack("ANTIMISSILELAUNCHER", Material.DISPENSER, "Anti-Missile Launcher", "Targets and shoots down other missiles in the area.", "Use redstone to disable it", "Needs to be built surrounded by Coal Blocks.", "(Not Along Diagonals)");
         ItemStack[] antiairlauncherrecipe = {
                 SlimefunItems.SILVER_INGOT, SlimefunItems.BASIC_CIRCUIT_BOARD, SlimefunItems.SILVER_INGOT,
                 SlimefunItems.SILVER_INGOT, null, SlimefunItems.SILVER_INGOT,

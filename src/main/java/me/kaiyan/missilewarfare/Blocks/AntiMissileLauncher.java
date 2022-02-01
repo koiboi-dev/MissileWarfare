@@ -12,7 +12,6 @@ import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -41,7 +40,6 @@ public class AntiMissileLauncher extends SlimefunItem{
         BlockPlaceHandler blockPlaceHandler = new BlockPlaceHandler(false) {
             @Override
             public void onPlayerPlace(BlockPlaceEvent event) {
-                World world = event.getBlock().getWorld();
                 BlockData data = event.getBlockPlaced().getBlockData();
                 ((Directional)data).setFacing(BlockFace.UP);
                 event.getBlockPlaced().setBlockData(data);
@@ -117,20 +115,12 @@ public class AntiMissileLauncher extends SlimefunItem{
     public void fireMissile(Dispenser disp, MissileController target){
         SlimefunItem missileitem = VariantsAPI.getFirstMissile(disp.getInventory());
         if (missileitem == SlimefunItem.getById("ANTIAIRMISSILE")) {
+            System.out.println("Wow");
             MissileController missile = new MissileController(false, disp.getBlock().getLocation().add(new Vector(0.5, 1.35, 0.5)).toVector(), new Vector(0, 0, 0), 3, disp.getWorld(), 3, 0, 0, new Vector(0, 0, 0));
+            System.out.println("Nearly");
             missile.FireMissileAtMissile(target);
+            System.out.println("DONE!");
         }
-
-        /*// -- SmallGtGMissile --
-        if (type == 1){
-            fireMissile(disp,3, 1, 100, 1);
-        } else if (type == 2){
-            fireMissile(disp,2, 1.5, 130, 2);
-        } else if (type == 3){
-            fireMissile(disp, 3, 1, 100, 3);
-        } else if (type == 4){
-            fireMissile(disp, 3, 1, 30, 4);
-        }*/
     }
 
     public boolean correctlyBuilt(Block block) {

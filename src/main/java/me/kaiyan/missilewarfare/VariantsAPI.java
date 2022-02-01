@@ -22,6 +22,8 @@ public class VariantsAPI {
                 return "SMLR";
             case 4:
                 return "SMAC";
+            case 5:
+                return "GAAM";
         }
         return "NONE";
     }
@@ -36,6 +38,8 @@ public class VariantsAPI {
                 return 3;
             case "SMALLMISSILEAC":
                 return 4;
+            case "ANTIAIRMISSILE":
+                return 5;
         }
         return 0;
     }
@@ -43,9 +47,9 @@ public class VariantsAPI {
     public static SlimefunItem getFirstMissile(Inventory inv){
         for (ItemStack item : inv){
             if (item != null){
-                SlimefunItem item1 = SlimefunItem.getByItem(item);
+                SlimefunItem _item = SlimefunItem.getByItem(item);
                 ItemUtils.consumeItem(item, false);
-                return item1;
+                return _item;
             }
         }
         return null;
@@ -61,6 +65,8 @@ public class VariantsAPI {
                 return new MissileClass(2,2750,2, 100, 3);
             case 4:
                 return new MissileClass(2, 1750,2, 30, 4);
+            case 5:
+                return new MissileClass(3, 1000,3, 0, 5);
         }
         return null;
     }
