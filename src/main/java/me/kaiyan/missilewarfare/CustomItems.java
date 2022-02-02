@@ -8,7 +8,8 @@ import io.github.thebusybiscuit.slimefun4.api.researches.Research;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
 import me.kaiyan.missilewarfare.Blocks.AntiMissileLauncher;
-import me.kaiyan.missilewarfare.Blocks.SmallGroundMissileLauncher;
+import me.kaiyan.missilewarfare.Blocks.GroundMissileLauncher;
+import me.kaiyan.missilewarfare.Items.GuideBook;
 import me.kaiyan.missilewarfare.Items.ManPad;
 import me.kaiyan.missilewarfare.Items.MissileItem;
 import org.bukkit.Material;
@@ -33,9 +34,20 @@ public class CustomItems {
         };
 
         SlimefunItem sugarfuel = new SlimefunItem(group, sugarfuelstack, RecipeType.ENHANCED_CRAFTING_TABLE, sugarfuelrecipe);
-
-        sugarfuel.register(MissileWarfare.getInstance());
         //-SUGARFUEL-
+        //INFOITEM
+        SlimefunItemStack guidestack = new SlimefunItemStack("GUIDEBOOK", Material.WRITTEN_BOOK, "Guide Book", "It will guide you?!?");
+        ItemStack[] guiderecipe = {
+                null, sugarfuelstack, null,
+                sugarfuelstack, new ItemStack(Material.BOOK), sugarfuelstack,
+                null, sugarfuelstack, null
+        };
+
+        GuideBook guide = new GuideBook(group, guidestack, RecipeType.ENHANCED_CRAFTING_TABLE, guiderecipe);
+
+        guide.register(MissileWarfare.getInstance());
+        sugarfuel.register(MissileWarfare.getInstance());
+        //-INFOITEM-
         // EXPLOSIVE POWDER
         SlimefunItemStack explosivepowderstack = new SlimefunItemStack("EXPLOSIVEPOWDER", Material.GLOWSTONE_DUST, "Explosive Powder", "Handle with care!");
         ItemStack[] explosivepowderrecipe = {
@@ -48,6 +60,16 @@ public class CustomItems {
 
         explosivepowder.register(MissileWarfare.getInstance());
         //-EXPLOSIVE POWDER-
+        SlimefunItemStack compressedpowderstack = new SlimefunItemStack("COMPRESSEDEXPLOSIVES", Material.YELLOW_CONCRETE, "Solid Explosive Powder", "Compressed so hard it became a solid");
+        ItemStack[] compressedpowderrecipe = {
+                explosivepowderstack, new ItemStack(Material.GUNPOWDER), explosivepowderstack,
+                SlimefunItems.MAGNESIUM_DUST, explosivepowderstack, SlimefunItems.MAGNESIUM_DUST,
+                explosivepowderstack, new ItemStack(Material.GUNPOWDER), explosivepowderstack
+        };
+
+        SlimefunItem compressedpowder = new SlimefunItem(group, compressedpowderstack, RecipeType.COMPRESSOR, compressedpowderrecipe);
+
+        compressedpowder.register(MissileWarfare.getInstance());
         // ULTRALITE INGOT
         SlimefunItemStack ultraliteingotstack = new SlimefunItemStack("ULTRALITE_INGOT", Material.BRICK, "Ultra-Lite Ingot", "Super Lightweight ingot used for missiles");
         ItemStack[] ultraliteingotrecipe = {
@@ -73,15 +95,17 @@ public class CustomItems {
         ultraliteplate.register(MissileWarfare.getInstance());
         //-ULTRALITE PLATE-
         // Flight Computer Simple
-        SlimefunItemStack simpleflightcomputerstack = new SlimefunItemStack("SIMPLE_FLIGHT_COMPUTER", Material.IRON_INGOT, "Basic Flight Computer", "A simple computer capable of guiding a missile");
+        SlimefunItemStack simpleflightcomputerstacks = new SlimefunItemStack("SIMPLE_FLIGHT_COMPUTER", Material.POWERED_RAIL, "Basic Flight Computer", "A simple computer capable of guiding a missile");
+        ItemStack simpleflightcomputerstack = simpleflightcomputerstacks.clone();
+        simpleflightcomputerstacks.setAmount(2);
+        simpleflightcomputerstack.setAmount(1);
         ItemStack[] simpleflightcomputerrecipe = {
                 ultraliteingotstack, ultraliteplatestack, ultraliteingotstack,
                 new ItemStack(Material.REDSTONE), SlimefunItems.BASIC_CIRCUIT_BOARD, new ItemStack(Material.REDSTONE),
                 ultraliteingotstack, ultraliteplatestack, ultraliteingotstack
         };
 
-        SlimefunItem simpleflightcomputer = new SlimefunItem(group, simpleflightcomputerstack, RecipeType.ENHANCED_CRAFTING_TABLE, simpleflightcomputerrecipe);
-
+        SlimefunItem simpleflightcomputer = new SlimefunItem(group, simpleflightcomputerstacks, RecipeType.ENHANCED_CRAFTING_TABLE, simpleflightcomputerrecipe);
         simpleflightcomputer.register(MissileWarfare.getInstance());
         //-Flight Computer Simple-
         // Radar Part
@@ -111,7 +135,7 @@ public class CustomItems {
         SlimefunItemStack smallwarheadstack = new SlimefunItemStack("SMALLWARHEAD", Material.TNT, "Simple Missile Warhead", "Used in creation of a missile.", "'Dont touch the red bit'");
         ItemStack[] smallwarheadrecipe = {
                 null, SlimefunItems.ALUMINUM_INGOT, null,
-                SlimefunItems.ALUMINUM_INGOT, null, SlimefunItems.ALUMINUM_INGOT,
+                SlimefunItems.ALUMINUM_INGOT, explosivepowderstack, SlimefunItems.ALUMINUM_INGOT,
                 null, null, null
         };
 
@@ -123,7 +147,7 @@ public class CustomItems {
         SlimefunItemStack smallbodystack = new SlimefunItemStack("SMALLBODY", Material.IRON_BLOCK, "Simple Missile Body", "Used in the creation of a missile", "'You better not dent that'");
         ItemStack[] smallbodyrecipe = {
                 SlimefunItems.ALUMINUM_INGOT, null, SlimefunItems.ALUMINUM_INGOT,
-                ultraliteingotstack, null, ultraliteingotstack,
+                ultraliteingotstack, simpleflightcomputerstack, ultraliteingotstack,
                 SlimefunItems.ALUMINUM_INGOT, null, SlimefunItems.ALUMINUM_INGOT
         };
 
@@ -135,7 +159,7 @@ public class CustomItems {
         SlimefunItemStack smallfinstack = new SlimefunItemStack("SMALLFIN", Material.IRON_BOOTS, "Simple Missile Fins", "Used in the creation of a missile");
         ItemStack[] smallfinrecipe = {
                 null, null, null,
-                null, null, null,
+                null, simpleflightcomputerstack, null,
                 SlimefunItems.ALUMINUM_INGOT, null, SlimefunItems.ALUMINUM_INGOT
         };
 
@@ -196,7 +220,7 @@ public class CustomItems {
                 SlimefunItems.DURALUMIN_INGOT, null, SlimefunItems.DURALUMIN_INGOT,
                 SlimefunItems.DAMASCUS_STEEL_INGOT, new ItemStack(Material.FLINT_AND_STEEL), SlimefunItems.DAMASCUS_STEEL_INGOT
         };
-        SmallGroundMissileLauncher groundlauncher = new SmallGroundMissileLauncher(group, groundlauncherstack, RecipeType.ENHANCED_CRAFTING_TABLE, groundlauncherrecipe);
+        GroundMissileLauncher groundlauncher = new GroundMissileLauncher(group, groundlauncherstack, RecipeType.ENHANCED_CRAFTING_TABLE, groundlauncherrecipe);
 
         groundlauncher.register(MissileWarfare.getInstance());
         //- Small GtG MISSILE LAUNCHER-
@@ -256,6 +280,52 @@ public class CustomItems {
         ManPad manpad = new ManPad(group, manpadstack, RecipeType.ENHANCED_CRAFTING_TABLE, manpadrecipe);
         manpad.register(MissileWarfare.getInstance());
         //-MANPAD-
+
+        // GtGMissile
+        SlimefunItemStack missilestack = new SlimefunItemStack("MISSILE", Material.GOLDEN_SWORD,"GtG Missile","Normal Variant");
+        ItemStack[] missilerecipe = {
+                null, smallwarheadstack, null,
+                rocketfuelstack, missilebodystack, rocketfuelstack,
+                rocketfuelstack, smallfinstack, rocketfuelstack,
+        };
+        MissileItem missile = new MissileItem(group, missilestack, RecipeType.ENHANCED_CRAFTING_TABLE, missilerecipe, 6, "'Your friendly neighbourhood missile'");
+
+        missile.register(MissileWarfare.getInstance());
+        //-GtGMissile-
+        // GtGMissileHE
+        SlimefunItemStack missileHEstack = new SlimefunItemStack("MISSILEHE", Material.GOLDEN_SWORD,"GtG Missile HE","High Explosive Variant");
+        ItemStack[] missileHErecipe = {
+                compressedpowderstack, smallwarheadstack, compressedpowderstack,
+                rocketfuelstack, missilebodystack, rocketfuelstack,
+                rocketfuelstack, smallfinstack, rocketfuelstack,
+        };
+        MissileItem missileHE = new MissileItem(group, missileHEstack, RecipeType.ENHANCED_CRAFTING_TABLE, missileHErecipe, 7, "'Your not-so friendly neighbourhood missile'");
+
+        missileHE.register(MissileWarfare.getInstance());
+        //-GtGMissileHE-
+        // GtGMissileLR
+        SlimefunItemStack missileLRstack = new SlimefunItemStack("MISSILELR", Material.GOLDEN_SWORD,"GtG Missile LR","Long Range Variant");
+        ItemStack[] missileLRrecipe = {
+                compressedpowderstack, smallwarheadstack, compressedpowderstack,
+                rocketfuelstack, missilebodystack, rocketfuelstack,
+                rocketfuelstack, smallfinstack, rocketfuelstack,
+        };
+        MissileItem missileLR = new MissileItem(group, missileLRstack, RecipeType.ENHANCED_CRAFTING_TABLE, missileLRrecipe, 8, "'Your friendly state missile'");
+
+        missileLR.register(MissileWarfare.getInstance());
+        //-GtGMissileLR-
+        // GtGMissileLR
+        SlimefunItemStack missileACstack = new SlimefunItemStack("MISSILEAC", Material.GOLDEN_SWORD,"GtG Missile AC","Long Range Variant");
+        ItemStack[] missileACrecipe = {
+                compressedpowderstack, smallwarheadstack, compressedpowderstack,
+                rocketfuelstack, missilebodystack, rocketfuelstack,
+                rocketfuelstack, smallfinstack, rocketfuelstack,
+        };
+        MissileItem missileAC = new MissileItem(group, missileACstack, RecipeType.ENHANCED_CRAFTING_TABLE, missileACrecipe, 9, "'Your friendly home-defending missile'");
+
+        missileAC.register(MissileWarfare.getInstance());
+        //-GtGMissileLR-
+
         //template
         /*SlimefunItemStack %stack = new SlimefunItemStack("%", Material., "N", "L");
         ItemStack[] %recipe = {
@@ -287,28 +357,33 @@ public class CustomItems {
         basicfuel.register();
 
         NamespacedKey explosiveskey = new NamespacedKey(MissileWarfare.getInstance(), "explosives");
-        Research explosives = new Research(explosiveskey, 3467321, "Explosive Diarrhea", 15);
+        Research explosives = new Research(explosiveskey, 3447321, "Explosive Diarrhea", 15);
         explosives.addItems(explosivepowder);
         explosives.register();
 
         NamespacedKey groundlauncherskey = new NamespacedKey(MissileWarfare.getInstance(), "groundlauncher");
-        Research groundlauncherres = new Research(groundlauncherskey, 3467322, "Ground Missile Launcher", 15);
+        Research groundlauncherres = new Research(groundlauncherskey, 34117322, "Ground Missile Launcher", 15);
         groundlauncherres.addItems(groundlauncher);
         groundlauncherres.register();
 
         NamespacedKey smallgmissilepartskey = new NamespacedKey(MissileWarfare.getInstance(), "smallgmissileparts");
-        Research smallgmissileparts = new Research(smallgmissilepartskey, 34673323, "Small Missile", 15);
+        Research smallgmissileparts = new Research(smallgmissilepartskey, 2667313, "Missile with extra steps", 15);
         smallgmissileparts.addItems(smallwarhead, smallbody, smallfin);
         smallgmissileparts.register();
 
         NamespacedKey smallgmissilekey = new NamespacedKey(MissileWarfare.getInstance(), "smallgmissile");
-        Research smallgmissile = new Research(smallgmissilekey, 34673323, "Unlocked Small Missile!", 20);
-        smallgmissile.addItems(smallmissile, smallmissileHE, smallmissileLR);
+        Research smallgmissile = new Research(smallgmissilekey, 35673323, "The colors of the rainbows", 20);
+        smallgmissile.addItems(smallmissile, smallmissileHE, smallmissileLR, smallmissileLR);
         smallgmissile.register();
 
         NamespacedKey advancedfuelkey = new NamespacedKey(MissileWarfare.getInstance(), "advancedfuel");
-        Research advancedfuel = new Research(advancedfuelkey, 34673323, "Advanced (and even less edible) Fuels!", 20);
-        advancedfuel.addItems(smallmissile, smallmissileHE, smallmissileLR);
+        Research advancedfuel = new Research(advancedfuelkey, 3461423, "Advanced (and even less edible) Fuels!", 20);
+        advancedfuel.addItems(rocketfuel);
         advancedfuel.register();
+
+        NamespacedKey missilepartskey = new NamespacedKey(MissileWarfare.getInstance(), "missileparts");
+        Research missileparts = new Research(missilepartskey, 4461423, "Missile with even more steps", 25);
+        missileparts.addItems(ultraliteingot, ultraliteplate, simpleflightcomputer, radar);
+        missileparts.register();
     }
 }

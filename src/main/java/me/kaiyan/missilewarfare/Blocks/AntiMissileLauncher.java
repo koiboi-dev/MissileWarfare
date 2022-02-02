@@ -4,7 +4,9 @@ import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
+import io.github.thebusybiscuit.slimefun4.core.handlers.BlockDispenseHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.items.ItemUtils;
 import me.kaiyan.missilewarfare.MissileWarfare;
 import me.kaiyan.missilewarfare.Missiles.MissileController;
 import me.kaiyan.missilewarfare.VariantsAPI;
@@ -18,17 +20,17 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.Dispenser;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
+import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AntiMissileLauncher extends SlimefunItem{
-    public final int range = 60000;
+    public final int range = 40000;
 
     public AntiMissileLauncher(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(itemGroup, item, recipeType, recipe);
@@ -54,6 +56,9 @@ public class AntiMissileLauncher extends SlimefunItem{
         };
         addItemHandler(blockPlaceHandler);
 
+        BlockDispenseHandler blockDispenseHandler = this::blockDispense;
+        addItemHandler(blockDispenseHandler);
+
         addItemHandler(new BlockTicker(){
 
             @Override
@@ -67,22 +72,21 @@ public class AntiMissileLauncher extends SlimefunItem{
                 PersistentDataContainer cont = state.getChunk().getPersistentDataContainer();
                 if (!block.isBlockPowered()) {
                     List<MissileController> missiles = MissileWarfare.activemissiles;
-                    List<MissileController> nearmissiles = new ArrayList<>();
-                    MissileController locked;
+                    MissileController locked = null;
                     if (!missiles.isEmpty()) {
                         for (MissileController missile : missiles) {
                             if (block.getLocation().distanceSquared(missile.pos.toLocation(missile.world)) < range) {
-                                nearmissiles.add(missile);
+                                locked = missile;
+                                break;
                             }
                         }
                     }
                     try {
-                        if (!nearmissiles.isEmpty() && cont.get(new NamespacedKey(MissileWarfare.getInstance(), "timesincelastshot"), PersistentDataType.INTEGER) >= System.currentTimeMillis()) {
-                            locked = nearmissiles.get(0);
+                        if (locked != null && cont.get(new NamespacedKey(MissileWarfare.getInstance(), "timesincelastshot"), PersistentDataType.INTEGER) <= System.currentTimeMillis()) {
                             MissileWarfare.activemissiles.remove(locked);
                             MissileWarfare.activemissiles.add(locked);
                             fireMissile((Dispenser) block.getState(), locked);
-                            cont.set(new NamespacedKey(MissileWarfare.getInstance(), "timesincelastshot"), PersistentDataType.INTEGER, (int)System.currentTimeMillis());
+                            cont.set(new NamespacedKey(MissileWarfare.getInstance(), "timesincelastshot"), PersistentDataType.INTEGER, (int)System.currentTimeMillis()+3000);
                             state.update();
                         }
                     } catch (NullPointerException e){
@@ -92,6 +96,10 @@ public class AntiMissileLauncher extends SlimefunItem{
                 }
             }
         });
+    }
+
+    private void blockDispense(BlockDispenseEvent event, Dispenser dispenser, Block block, SlimefunItem item) {
+        event.setCancelled(true);
     }
 
     /*@Deprecated
@@ -113,13 +121,11 @@ public class AntiMissileLauncher extends SlimefunItem{
         }
          */
     public void fireMissile(Dispenser disp, MissileController target){
-        SlimefunItem missileitem = VariantsAPI.getFirstMissile(disp.getInventory());
-        if (missileitem == SlimefunItem.getById("ANTIAIRMISSILE")) {
-            System.out.println("Wow");
+        ItemStack missileitem = VariantsAPI.getFirstMissile(disp.getInventory());
+        if (SlimefunItem.getByItem(missileitem) == SlimefunItem.getById("ANTIAIRMISSILE")) {
             MissileController missile = new MissileController(false, disp.getBlock().getLocation().add(new Vector(0.5, 1.35, 0.5)).toVector(), new Vector(0, 0, 0), 3, disp.getWorld(), 3, 0, 0, new Vector(0, 0, 0));
-            System.out.println("Nearly");
             missile.FireMissileAtMissile(target);
-            System.out.println("DONE!");
+            ItemUtils.consumeItem(missileitem, false);
         }
     }
 
