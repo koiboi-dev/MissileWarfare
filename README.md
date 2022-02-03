@@ -5,4 +5,7 @@
 
 This plugin adds missiles and others to Slimefun!
 
+Contacts:
+Coder/Creator: pain.#3884
+Wiki Editor: kiease#2203
 

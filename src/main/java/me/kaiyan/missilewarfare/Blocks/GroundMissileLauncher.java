@@ -8,6 +8,7 @@ import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockDispenseHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockUseHandler;
+import io.github.thebusybiscuit.slimefun4.libraries.dough.items.ItemUtils;
 import me.kaiyan.missilewarfare.Items.MissileClass;
 import me.kaiyan.missilewarfare.MissileWarfare;
 import me.kaiyan.missilewarfare.Missiles.MissileController;
@@ -33,8 +34,8 @@ import org.bukkit.util.Vector;
 
 import java.util.Objects;
 
-public class SmallGroundMissileLauncher extends SlimefunItem{
-    public SmallGroundMissileLauncher(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
+public class GroundMissileLauncher extends SlimefunItem{
+    public GroundMissileLauncher(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(itemGroup, item, recipeType, recipe);
     }
 
@@ -86,6 +87,7 @@ public class SmallGroundMissileLauncher extends SlimefunItem{
     }
 
     private void onBlockRightClick(PlayerRightClickEvent event) {
+        // Stick/Blaze Rod Method
         if (event.getItem().getType() == Material.STICK){
             event.cancel();
             TileState state = (TileState) Objects.requireNonNull(event.getInteractEvent().getClickedBlock()).getState();
@@ -226,11 +228,13 @@ public class SmallGroundMissileLauncher extends SlimefunItem{
     }
      */
     public void fireMissile(Dispenser disp){
-        SlimefunItem missileitem = VariantsAPI.getFirstMissile(disp.getInventory());
-        int type = VariantsAPI.getIntTypeFromSlimefunitem(missileitem);
+        ItemStack missileitem = VariantsAPI.getFirstMissile(disp.getInventory());
+        int type = VariantsAPI.getIntTypeFromSlimefunitem(SlimefunItem.getByItem(missileitem));
 
         MissileClass missile = VariantsAPI.missileStatsFromType(type);
         fireMissile(disp, missile);
+
+        ItemUtils.consumeItem(missileitem, false);
 
         /*// -- SmallGtGMissile --
         if (type == 1){

@@ -47,13 +47,15 @@ public class MissileController {
         dir = new Vector(0,0,0);
 
         armourStand = world.spawnEntity(pos.toLocation(world), EntityType.ARMOR_STAND);
-        ((LivingEntity) armourStand).getEquipment().setHelmet(new ItemStack(Material.BLACK_CONCRETE));
-        armourStand.setInvulnerable(true);
+        armourStand.setPersistent(true);
+        ((LivingEntity) armourStand).getEquipment().setHelmet(new ItemStack(Material.GREEN_CONCRETE));
         armourStand.setGravity(false);
         ((LivingEntity) armourStand).setInvisible(true);
         //((LivingEntity) armorStand).addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, Integer.MAX_VALUE, 1, true, false));
 
         MissileWarfare.activemissiles.add(this);
+
+        System.out.println("Target:"+ this.target);
     }
     public MissileController(boolean isgroundmissile, Vector startpos, Vector target, float speed, World world, double power, float accuracy, int type, Vector dir){
         this.isgroundmissile = isgroundmissile;
@@ -94,13 +96,13 @@ public class MissileController {
     public void Update(BukkitRunnable run){
         Vector velocity = getVelocity();
         pos.add(velocity);
-        VariantsAPI.spawnMissileTrail(world, type, pos, velocity);
         armourStand.teleport(pos.toLocation(world).clone().subtract(new Vector(0, 1.75, 0)));
+        VariantsAPI.spawnMissileTrail(world, type, pos, velocity);
         if (world.getBlockAt(pos.toLocation(world)).getType() != Material.AIR) {
             for (int i = 0; i < 150; i++) {
-                world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, pos.toLocation(world), 0, Math.random()-0.5, Math.random()*2, Math.random()-0.5, 0.25, null, true);
+                world.spawnParticle(Particle.CAMPFIRE_SIGNAL_SMOKE, pos.toLocation(world), 0, Math.random()-0.5, Math.random()*2, Math.random()-0.5, 0.25, null, true);
                 world.spawnParticle(Particle.FLAME, pos.toLocation(world), 0, Math.random()-0.5, Math.random()*2, Math.random()-0.5, 0.25, null, true);
-                world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, pos.toLocation(world), 0, Math.random()-0.5, Math.random()*0.5, Math.random()-0.5, 0.15, null, true);
+                world.spawnParticle(Particle.CAMPFIRE_SIGNAL_SMOKE, pos.toLocation(world), 0, Math.random()-0.5, Math.random()*0.5, Math.random()-0.5, 0.15, null, true);
                 world.spawnParticle(Particle.FLAME, pos.toLocation(world), 0, (Math.random()*2)-0.5, Math.random()*1.5, (Math.random()*2)-0.5, 0.25, null, true);
             }
             world.createExplosion(pos.toLocation(world), (float) power);
@@ -124,6 +126,7 @@ public class MissileController {
             if (other.update != null) {
                 other.update.cancel();
             }
+            other.armourStand.remove();
             MissileWarfare.activemissiles.remove(other);
             run.cancel();
         }
@@ -154,7 +157,7 @@ public class MissileController {
                 velocity.setZ(speed);
             }
         }
-        if (xdist < 15 && zdist < 15) {
+        if (Math.abs(xdist) < 10 && Math.abs(zdist) < 10) {
             world.loadChunk(pos.toLocation(world).getChunk());
             velocity.setY(-speed);
         }
@@ -170,6 +173,7 @@ public class MissileController {
         }
         velocity.setX(Math.round(velocity.getX()));
         velocity.setZ(Math.round(velocity.getZ()));
+        System.out.println(velocity);
         return velocity;
     }
     public Vector getVelocityIgnoreY(){
