@@ -22,6 +22,7 @@ import org.bukkit.block.Dispenser;
 import org.bukkit.block.TileState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
+import org.bukkit.conversations.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -86,23 +87,8 @@ public class GroundMissileLauncher extends SlimefunItem{
     }
 
     private void onBlockRightClick(PlayerRightClickEvent event) {
-        if (!event.getSlimefunItem().isPresent()){
-            return;
-        }
-        if (event.getSlimefunItem().get().getId().equals("CONFIGURATOR")){
-            PersistentDataContainer itemcont = event.getItem().getItemMeta().getPersistentDataContainer();
-
-            TileState state = (TileState) Objects.requireNonNull(event.getInteractEvent().getClickedBlock()).getState();
-            PersistentDataContainer cont = state.getPersistentDataContainer();
-
-            cont.set(new NamespacedKey(MissileWarfare.getInstance(), "coords"), PersistentDataType.INTEGER_ARRAY, itemcont.get(new NamespacedKey(MissileWarfare.getInstance(), "coords"), PersistentDataType.INTEGER_ARRAY));
-            cont.set(new NamespacedKey(MissileWarfare.getInstance(), "alt"), PersistentDataType.INTEGER, itemcont.get(new NamespacedKey(MissileWarfare.getInstance(), "alt"), PersistentDataType.INTEGER));
-            state.update();
-
-            event.cancel();
-        }
         // Stick/Blaze Rod Method
-        /*if (event.getItem().getType() == Material.STICK){
+        if (event.getItem().getType() == Material.STICK){
             event.cancel();
             TileState state = (TileState) Objects.requireNonNull(event.getInteractEvent().getClickedBlock()).getState();
             PersistentDataContainer cont = state.getPersistentDataContainer();
@@ -221,7 +207,6 @@ public class GroundMissileLauncher extends SlimefunItem{
                 state.update();
             }
         }
-         */
     }
 
     /*@Deprecated

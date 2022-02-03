@@ -54,6 +54,8 @@ public class MissileController {
         //((LivingEntity) armorStand).addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, Integer.MAX_VALUE, 1, true, false));
 
         MissileWarfare.activemissiles.add(this);
+
+        System.out.println("Target:"+ this.target);
     }
     public MissileController(boolean isgroundmissile, Vector startpos, Vector target, float speed, World world, double power, float accuracy, int type, Vector dir){
         this.isgroundmissile = isgroundmissile;
@@ -155,7 +157,7 @@ public class MissileController {
                 velocity.setZ(speed);
             }
         }
-        if (xdist < 15 && zdist < 15) {
+        if (Math.abs(xdist) < 10 && Math.abs(zdist) < 10) {
             world.loadChunk(pos.toLocation(world).getChunk());
             velocity.setY(-speed);
         }
@@ -171,6 +173,7 @@ public class MissileController {
         }
         velocity.setX(Math.round(velocity.getX()));
         velocity.setZ(Math.round(velocity.getZ()));
+        System.out.println(velocity);
         return velocity;
     }
     public Vector getVelocityIgnoreY(){
@@ -235,7 +238,7 @@ public class MissileController {
         }.runTaskTimer(MissileWarfare.getInstance(), 0, 1);
     }
 
-    public void     LaunchSeqAngled(Vector dir){
+    public void LaunchSeqAngled(Vector dir){
         //First Launch
         new BukkitRunnable(){
             int loops = 0;

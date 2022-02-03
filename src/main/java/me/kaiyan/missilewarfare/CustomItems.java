@@ -96,16 +96,17 @@ public class CustomItems {
         //-ULTRALITE PLATE-
         // Flight Computer Simple
         SlimefunItemStack simpleflightcomputerstacks = new SlimefunItemStack("SIMPLE_FLIGHT_COMPUTER", Material.POWERED_RAIL, "Basic Flight Computer", "A simple computer capable of guiding a missile");
-        ItemStack simpleflightcomputerstack = simpleflightcomputerstacks.clone();
-        simpleflightcomputerstacks.setAmount(2);
+        SlimefunItemStack simpleflightcomputerstack = (SlimefunItemStack) simpleflightcomputerstacks.clone();
+        simpleflightcomputerstacks.setAmount(16);
         simpleflightcomputerstack.setAmount(1);
         ItemStack[] simpleflightcomputerrecipe = {
-                ultraliteingotstack, ultraliteplatestack, ultraliteingotstack,
+                ultraliteingotstack, SlimefunItems.BASIC_CIRCUIT_BOARD, ultraliteingotstack,
                 new ItemStack(Material.REDSTONE), SlimefunItems.BASIC_CIRCUIT_BOARD, new ItemStack(Material.REDSTONE),
-                ultraliteingotstack, ultraliteplatestack, ultraliteingotstack
+                ultraliteingotstack, SlimefunItems.BASIC_CIRCUIT_BOARD, ultraliteingotstack
         };
 
-        SlimefunItem simpleflightcomputer = new SlimefunItem(group, simpleflightcomputerstacks, RecipeType.ENHANCED_CRAFTING_TABLE, simpleflightcomputerrecipe);
+        SlimefunItem simpleflightcomputer = new SlimefunItem(group, simpleflightcomputerstack, RecipeType.ENHANCED_CRAFTING_TABLE, simpleflightcomputerrecipe);
+        simpleflightcomputer.setRecipeOutput(simpleflightcomputerstacks);
         simpleflightcomputer.register(MissileWarfare.getInstance());
         //-Flight Computer Simple-
         // Radar Part
@@ -124,7 +125,7 @@ public class CustomItems {
         SlimefunItemStack rocketfuelstack = new SlimefunItemStack("ROCKETFUEL", Material.GUNPOWDER, "Rocket Fuel", "Burns with the power of 1000 coal...");
         ItemStack[] rocketfuelrecipe = {
                 new ItemStack(Material.GLOWSTONE_DUST), new ItemStack(Material.GUNPOWDER), new ItemStack(Material.GLOWSTONE_DUST),
-                new ItemStack(Material.GUNPOWDER), SlimefunItems.COMPRESSED_CARBON, new ItemStack(Material.GUNPOWDER),
+                new ItemStack(Material.GUNPOWDER), new ItemStack(Material.COAL), new ItemStack(Material.GUNPOWDER),
                 explosivepowderstack, new ItemStack(Material.GUNPOWDER), explosivepowderstack
         };
         SlimefunItem rocketfuel = new SlimefunItem(group, rocketfuelstack, RecipeType.ENHANCED_CRAFTING_TABLE, rocketfuelrecipe);
@@ -314,8 +315,8 @@ public class CustomItems {
 
         missileLR.register(MissileWarfare.getInstance());
         //-GtGMissileLR-
-        // GtGMissileLR
-        SlimefunItemStack missileACstack = new SlimefunItemStack("MISSILEAC", Material.GOLDEN_SWORD,"GtG Missile AC","Long Range Variant");
+        // GtGMissileAC
+        SlimefunItemStack missileACstack = new SlimefunItemStack("MISSILEAC", Material.GOLDEN_SWORD,"GtG Missile AC","Accurate Variant");
         ItemStack[] missileACrecipe = {
                 compressedpowderstack, smallwarheadstack, compressedpowderstack,
                 rocketfuelstack, missilebodystack, rocketfuelstack,
@@ -324,7 +325,7 @@ public class CustomItems {
         MissileItem missileAC = new MissileItem(group, missileACstack, RecipeType.ENHANCED_CRAFTING_TABLE, missileACrecipe, 9, "'Your friendly home-defending missile'");
 
         missileAC.register(MissileWarfare.getInstance());
-        //-GtGMissileLR-
+        //-GtGMissileAC-
 
         //template
         /*SlimefunItemStack %stack = new SlimefunItemStack("%", Material., "N", "L");

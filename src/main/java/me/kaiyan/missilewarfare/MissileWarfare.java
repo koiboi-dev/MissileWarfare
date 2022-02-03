@@ -27,6 +27,9 @@ public class MissileWarfare extends JavaPlugin implements SlimefunAddon {
 
     @Override
     public void onDisable() {
+        for (MissileController missile : activemissiles){
+            missile.armourStand.remove();
+        }
         // Logic for disabling the plugin...
     }
 
