@@ -5,6 +5,7 @@ import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.api.researches.Research;
+import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
 import me.kaiyan.missilewarfare.Blocks.AntiElytraLauncher;
@@ -17,6 +18,8 @@ import me.kaiyan.missilewarfare.Items.PlayerList;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 public class CustomItems {
     public static void setup(){
@@ -207,7 +210,7 @@ public class CustomItems {
                 ultraliteplatestack, rocketfuelstack, ultraliteplatestack
         };
         SlimefunItemStack missilebodystacks = (SlimefunItemStack) missilebodystack.clone();
-        missilebodystacks.setAmount(2);
+        missilebodystacks.setAmount(4);
 
         SlimefunItem missilebody = new SlimefunItem(group, missilebodystack, RecipeType.ENHANCED_CRAFTING_TABLE, missilebodyrecipe);
 
@@ -363,6 +366,36 @@ public class CustomItems {
         };
         MissileItem missileAPtr = new MissileItem(group, missileAPtrstack, RecipeType.ENHANCED_CRAFTING_TABLE, missileAPtrrecipe, 12, "'Your bunker definitely isnt safe for long!'");
         //</editor-fold>
+        //<editor-fold desc="CHLORINE">
+        SlimefunItemStack chlorinestack = new SlimefunItemStack("CHLORINE", Material.SUGAR,"Chlorine","Poisonous", "Causes a slow and painful death!");
+        ItemStack[] chlorinerecipe = {
+                new ItemStack(Material.SOUL_SAND), null, null,
+                null, null, null,
+                null, null, null
+        };
+        SlimefunItem chlorine = new SlimefunItem(group, chlorinestack, RecipeType.ORE_WASHER, chlorinerecipe);
+        RecipeType.ORE_WASHER.register(chlorinerecipe, chlorinestack);
+        chlorine.addItemHandler((ItemUseHandler) playerRightClickEvent -> playerRightClickEvent.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 80, 2)));
+        //</editor-fold>
+        //<editor-fold desc="CHLORINEPELLET">
+        SlimefunItemStack chlorinepelletstack = new SlimefunItemStack("CHLORINEPELLET", Material.LIME_DYE,"Chlorine Pellet","A pellet of chlorine");
+        ItemStack[] chlorinepelletrecipe = {
+                chlorinestack, SlimefunItems.SULFATE, chlorinestack,
+                SlimefunItems.SULFATE, SlimefunItems.SALT, SlimefunItems.SULFATE,
+                chlorinestack, SlimefunItems.SULFATE, chlorinestack
+        };
+        SlimefunItem chlorinepellet = new SlimefunItem(group, chlorinepelletstack, RecipeType.COMPRESSOR, chlorinepelletrecipe);
+        chlorine.addItemHandler((ItemUseHandler) playerRightClickEvent -> playerRightClickEvent.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 10, 2)));
+        //</editor-fold>
+        //<editor-fold desc="GASMISSILE">
+        SlimefunItemStack missilegasstack = new SlimefunItemStack("MISSILEGAS", Material.GOLDEN_SWORD,"GtG Gas Missile","Gas Deploying Variant", "Deploys gas on hitting a target");
+        ItemStack[] missilegasrecipe = {
+                chlorinepelletstack, chlorinepelletstack, chlorinepelletstack,
+                rocketfuelstack, missilebodystack, rocketfuelstack,
+                rocketfuelstack, finsstack, rocketfuelstack
+        };
+        MissileItem missilegas = new MissileItem(group, missilegasstack, RecipeType.ENHANCED_CRAFTING_TABLE, missilegasrecipe, 13, "'Why level the place when its empty?'");
+        //</editor-fold>
         //</editor-fold>
         //Register All
         //<editor-fold desc="Register Items">
@@ -381,6 +414,8 @@ public class CustomItems {
         compressedpowder.register(main);
         ultraliteingot.register(main);
         ultraliteplate.register(main);
+        chlorine.register(main);
+        chlorinepellet.register(main);
         simpleflightcomputer.register(main);
         radar.register(main);
         rocketfuel.register(main);
@@ -406,6 +441,7 @@ public class CustomItems {
         missileAP.register(main);
         missileAPt.register(main);
         missileAPtr.register(main);
+        missilegas.register(main);
         //</editor-fold>
 
         //templates

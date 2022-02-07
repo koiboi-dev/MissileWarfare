@@ -6,6 +6,7 @@ import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
+import io.github.thebusybiscuit.slimefun4.core.handlers.WeaponUseHandler;
 import me.kaiyan.missilewarfare.VariantsAPI;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -30,5 +31,8 @@ public class MissileItem extends SlimefunItem {
 
         ItemUseHandler use = PlayerRightClickEvent::cancel;
         addItemHandler(use);
+
+        WeaponUseHandler attack = (event, player, itemStack) -> event.setCancelled(true);
+        addItemHandler(attack);
     }
 }

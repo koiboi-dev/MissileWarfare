@@ -114,7 +114,8 @@ public class ElytraMissileController {
                 player.getEquipment().setChestplate(elytra);
                 run.cancel();
                 PlayerID.targets.remove(player);
-            } else {
+            }
+            else {
                 run.cancel();
                 PlayerID.targets.remove(player);
             }

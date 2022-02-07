@@ -14,10 +14,7 @@ import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.Dispenser;
+import org.bukkit.block.*;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
 import org.bukkit.event.block.BlockDispenseEvent;
@@ -68,8 +65,8 @@ public class AntiMissileLauncher extends SlimefunItem{
 
             @Override
             public void tick(Block block, SlimefunItem slimefunItem, Config config) {
-                BlockState state = block.getState();
-                PersistentDataContainer cont = state.getChunk().getPersistentDataContainer();
+                TileState state = (TileState) block.getState();
+                PersistentDataContainer cont = state.getPersistentDataContainer();
                 if (!block.isBlockPowered()) {
                     List<MissileController> missiles = MissileWarfare.activemissiles;
                     MissileController locked = null;
