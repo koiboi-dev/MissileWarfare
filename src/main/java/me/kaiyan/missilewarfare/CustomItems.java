@@ -346,7 +346,7 @@ public class CustomItems {
                 rocketfuelstack, missilebodystack, rocketfuelstack,
                 smallfinstack, finsstack, smallfinstack,
         };
-        MissileItem missileAP = new MissileItem(group, missileAPstack, RecipeType.ENHANCED_CRAFTING_TABLE, missileAPrecipe, 10, "'Your bunker isnt safe for long!'");
+        MissileItem missileAP = new MissileItem(group, missileAPstack, RecipeType.ENHANCED_CRAFTING_TABLE, missileAPrecipe, 10, "'Your Basement Isnt Safe For Long!'");
         //</editor-fold>
         //<editor-fold desc="APMISSILET2">
         SlimefunItemStack missileAPtstack = new SlimefunItemStack("MISSILEAPTWO", Material.DIAMOND_SWORD,"GtG Missile AP Tier 2","Armour Piercing Variant", "Goes through 1 block before exploding", "50% Chance to go through obsidian", "10% chance to break the hit obsidian");
@@ -398,14 +398,14 @@ public class CustomItems {
         //</editor-fold>
         //</editor-fold>
         //Register All
-        //<editor-fold desc="Register Items">
+        //<editor-fold desc="== Register Items ==">
         //Guides
         guide.register(main);
         playerList.register(main);
         //Missile Launchers
         groundlauncher.register(main);
-        antiairlauncher.register(main);
         antiElytraLauncher.register(main);
+        antiairlauncher.register(main);
         //Handhelds
         manpad.register(main);
         // Materials
@@ -469,6 +469,7 @@ public class CustomItems {
          */
 
         //ADD RESEARCH
+        //<editor-fold desc="RESEARCH">
         NamespacedKey basicfuelkey = new NamespacedKey(main, "basic_fuel");
         Research basicfuel = new Research(basicfuelkey, 3467341, "Inedible Sugar", 10);
         basicfuel.addItems(sugarfuel);
@@ -476,22 +477,42 @@ public class CustomItems {
 
         NamespacedKey explosiveskey = new NamespacedKey(main, "explosives");
         Research explosives = new Research(explosiveskey, 3447321, "Explosive Diarrhea", 15);
-        explosives.addItems(explosivepowder);
+        explosives.addItems(explosivepowder, compressedpowder);
         explosives.register();
+
+        NamespacedKey chlorinekey = new NamespacedKey(main, "chlorine");
+        Research chlorineres = new Research(chlorinekey, 214141, "Cleaner Pools!", 15);
+        chlorineres.addItems(chlorine, chlorinepellet);
+        chlorineres.register();
 
         NamespacedKey groundlauncherskey = new NamespacedKey(main, "groundlauncher");
         Research groundlauncherres = new Research(groundlauncherskey, 34117322, "Ground Missile Launcher", 15);
         groundlauncherres.addItems(groundlauncher);
         groundlauncherres.register();
 
+        NamespacedKey antimissilekey = new NamespacedKey(main, "antimissilelauncher");
+        Research antimissileres = new Research(antimissilekey, 3424321, "Iron Dome.", 15);
+        antimissileres.addItems(antiairlauncher, manpad, antiAirMissile);
+        antimissileres.register();
+
+        NamespacedKey antielytramissilekey = new NamespacedKey(main, "antielytramissilelauncher");
+        Research antielytramissileres = new Research(antielytramissilekey, 34213253, "Ender Dome?", 20);
+        antielytramissileres.addItems(antiElytraLauncher, antielytramissile);
+        antielytramissileres.register();
+
         NamespacedKey smallgmissilepartskey = new NamespacedKey(main, "smallgmissileparts");
         Research smallgmissileparts = new Research(smallgmissilepartskey, 2667313, "Missile with extra steps", 15);
         smallgmissileparts.addItems(smallwarhead, smallbody, smallfin);
         smallgmissileparts.register();
 
+        NamespacedKey gmissilepartskey = new NamespacedKey(main, "gmissileparts");
+        Research gmissileparts = new Research(gmissilepartskey, 2667313, "Missile with extra steps", 15);
+        gmissileparts.addItems(warhead, warheadAP, missilebody, fins);
+        gmissileparts.register();
+
         NamespacedKey smallgmissilekey = new NamespacedKey(main, "smallgmissile");
-        Research smallgmissile = new Research(smallgmissilekey, 35673323, "The colors of the rainbows", 20);
-        smallgmissile.addItems(smallmissile, smallmissileHE, smallmissileLR, smallmissileLR);
+        Research smallgmissile = new Research(smallgmissilekey, 35673323, "5 Shades Of Gray", 20);
+        smallgmissile.addItems(smallmissile, smallmissileHE, smallmissileLR, smallmissileLR, smallmissileAC);
         smallgmissile.register();
 
         NamespacedKey advancedfuelkey = new NamespacedKey(main, "advancedfuel");
@@ -503,5 +524,18 @@ public class CustomItems {
         Research missileparts = new Research(missilepartskey, 4461423, "Missile with even more steps", 25);
         missileparts.addItems(ultraliteingot, ultraliteplate, simpleflightcomputer, radar);
         missileparts.register();
+
+        NamespacedKey gmissilekey = new NamespacedKey(main, "gmissile");
+        Research gmissile = new Research(gmissilekey, 341243, "The Colors Of The Rainbow!", 20);
+        gmissile.addItems(missile, missileHE, missileLR, missileAC);
+
+        NamespacedKey gmissileAPkey = new NamespacedKey(main, "gmissileAP");
+        Research gmissileAP = new Research(gmissileAPkey, 341246,"The Penetrator Trio", 15);
+        gmissileAP.addItems(missileAP, missileAPt, missileAPtr);
+
+        NamespacedKey gmissileGASkey = new NamespacedKey(main, "gmissileGAS");
+        Research gmissileGAS = new Research(gmissileGASkey, 341226,"One Ball Man", 15);
+        gmissileGAS.addItems(missilegas);
+        //</editor-fold>
     }
 }
