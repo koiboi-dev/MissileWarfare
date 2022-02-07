@@ -26,9 +26,19 @@ public class VariantsAPI {
             case 5:
                 return "GAAM";
             case 6:
-                return "NMR";
+                return "MR";
             case 7:
-                return "NMHE";
+                return "MHE";
+            case 8:
+                return "MLR";
+            case 9:
+                return "MAC";
+            case 10:
+                return "MAPT1";
+            case 11:
+                return "MAPT2";
+            case 12:
+                return "MAPT3";
         }
         return "NONE";
     }
@@ -53,6 +63,12 @@ public class VariantsAPI {
                 return 8;
             case "MISSILEAC":
                 return 9;
+            case "MISSILEAPONE":
+                return 10;
+            case "MISSILEAPTWO":
+                return 11;
+            case "MISSILEAPTHR":
+                return 12;
         }
         return 0;
     }
@@ -70,31 +86,36 @@ public class VariantsAPI {
     public static MissileClass missileStatsFromType(int type){
         switch (type){
             case 1:
-                return new MissileClass(2,500, 2, 100, 1);
+                return new MissileClass(2,500, 3, 100, 1);
             case 2:
-                return new MissileClass(1,400, 2.5, 120, 2);
+                return new MissileClass(1,400, 3.5, 120, 2);
             case 3:
-                return new MissileClass(2,600,2, 100, 3);
+                return new MissileClass(2,600,3, 100, 3);
             case 4:
-                return new MissileClass(2, 550,2, 60, 4);
+                return new MissileClass(2, 550,3, 60, 4);
             case 5:
-                return new MissileClass(3, 400,3, 0, 5);
+                return new MissileClass(3, 400,4, 0, 5);
             case 6:
-                return new MissileClass(2.5f, 650, 3.5, 80, 6);
+                return new MissileClass(2.5f, 650, 4.5, 80, 6);
             case 7:
-                return new MissileClass(2, 600, 4, 100, 7);
+                return new MissileClass(2, 600, 5, 100, 7);
             case 8:
-                return new MissileClass(2.5f, 800, 3.5, 80, 8);
+                return new MissileClass(2.5f, 800, 4.5, 80, 8);
             case 9:
-                return new MissileClass(2.5f, 600, 3.5,50, 9);
+                return new MissileClass(2.5f, 600, 4.5,50, 9);
+            case 10:
+                return new MissileClass(2, 550, 3.5, 40, 10);
+            case 11:
+                return new MissileClass(2.5, 700, 4, 30, 11);
+            case 12:
+                return new MissileClass(3, 850, 4.5, 20, 12);
         }
         return null;
     }
 
     public static boolean isInRange(int dist, int type){
         MissileClass missile = missileStatsFromType(type);
-        return dist <= missile.range;
-
+        return dist >= missile.range;
     }
 
     public static void spawnMissileTrail(World world, int type, Vector pos, Vector velocity){
@@ -113,9 +134,12 @@ public class VariantsAPI {
             //ACCURATE MISSILES
             world.spawnParticle(Particle.CRIT, pos.toLocation(world), 0, -velocity.getX()+((rand.nextDouble()-0.5)*0.25), -velocity.getY()+((rand.nextDouble()-0.5)*0.25), -velocity.getZ()+((rand.nextDouble()-0.5)*0.25), 0.3, null, true);
         }
-        if (type == 6 || type == 7 || type == 8 || type == 9){
+        if (type == 6 || type == 7 || type == 8 || type == 9 || type == 10){
             // 'Missile' TYPES
             world.spawnParticle(Particle.VILLAGER_HAPPY, pos.toLocation(world), 1);
+        }
+        if (type == 10 || type == 11 || type == 12){
+            world.spawnParticle(Particle.DRAGON_BREATH, pos.toLocation(world), 1);
         }
     }
 }

@@ -1,38 +1,52 @@
 package me.kaiyan.missilewarfare.Blocks;
 
+import io.github.thebusybiscuit.slimefun4.api.events.PlayerRightClickEvent;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockDispenseHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
+import io.github.thebusybiscuit.slimefun4.core.handlers.BlockUseHandler;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.ItemUtils;
 import me.kaiyan.missilewarfare.MissileWarfare;
-import me.kaiyan.missilewarfare.Missiles.MissileController;
+import me.kaiyan.missilewarfare.Missiles.ElytraMissileController;
+import me.kaiyan.missilewarfare.PlayerID;
 import me.kaiyan.missilewarfare.VariantsAPI;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.ComponentBuilder;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Dispenser;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
+import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
-public class AntiMissileLauncher extends SlimefunItem{
-    public final int range = 40000;
+public class AntiElytraLauncher extends SlimefunItem{
+    public final int range = 490000;
+    public final int warnrange = 625;
+    public static List<Player> locked = new ArrayList<>();
 
-    public AntiMissileLauncher(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
+    public AntiElytraLauncher(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(itemGroup, item, recipeType, recipe);
     }
 
@@ -70,62 +84,69 @@ public class AntiMissileLauncher extends SlimefunItem{
             public void tick(Block block, SlimefunItem slimefunItem, Config config) {
                 BlockState state = block.getState();
                 PersistentDataContainer cont = state.getChunk().getPersistentDataContainer();
+                Player locked = null;
                 if (!block.isBlockPowered()) {
-                    List<MissileController> missiles = MissileWarfare.activemissiles;
-                    MissileController locked = null;
+                    Collection<? extends Player> missiles = MissileWarfare.getInstance().getServer().getOnlinePlayers();
                     if (!missiles.isEmpty()) {
-                        for (MissileController missile : missiles) {
-                            if (block.getLocation().distanceSquared(missile.pos.toLocation(missile.world)) < range) {
-                                locked = missile;
-                                break;
+                        for (Player player : missiles) {
+                            if (block.getLocation().distanceSquared(player.getLocation()) < range) {
+                                if (player.isGliding() && !PlayerID.targets.contains(player)) {
+                                    List<OfflinePlayer> ignore = PlayerID.players.get(cont.get(new NamespacedKey(MissileWarfare.getInstance(), "groupid"), PersistentDataType.STRING));
+                                    if (ignore == null){
+                                        locked = player;
+                                        break;
+                                    } else if (ignore.contains(player)) {
+                                        locked = player;
+                                        break;
+                                    }
+                                }
                             }
                         }
                     }
-                    try {
-                        if (locked != null && cont.get(new NamespacedKey(MissileWarfare.getInstance(), "timesincelastshot"), PersistentDataType.INTEGER) <= System.currentTimeMillis()) {
-                            MissileWarfare.activemissiles.remove(locked);
-                            MissileWarfare.activemissiles.add(locked);
-                            state.update();
-                            fireMissile((Dispenser) block.getState(), locked);
-                            cont.set(new NamespacedKey(MissileWarfare.getInstance(), "timesincelastshot"), PersistentDataType.INTEGER, (int)System.currentTimeMillis()+1000);
-                        }
-                    } catch (NullPointerException e){
-                        cont.set(new NamespacedKey(MissileWarfare.getInstance(), "timesincelastshot"), PersistentDataType.INTEGER, Integer.MIN_VALUE);
-                        state.update();
+                    state.update();
+                    if (locked != null){
+                        UUID playerUUID = locked.getUniqueId();
+                        locked.spigot().sendMessage(ChatMessageType.ACTION_BAR, new ComponentBuilder("!!MISSILE LOCKING ON!!").color(ChatColor.RED).create());
+
+                        PlayerID.targets.add(MissileWarfare.getInstance().getServer().getPlayer(playerUUID));
+
+                        new BukkitRunnable(){
+                            @Override
+                            public void run() {
+                                if (MissileWarfare.getInstance().getServer().getPlayer(playerUUID) == null){
+                                    PlayerID.targets = new ArrayList<>();
+                                    return;
+                                }
+                                if (MissileWarfare.getInstance().getServer().getPlayer(playerUUID).isGliding()) {
+                                    fireMissile((Dispenser) block.getState(), MissileWarfare.getInstance().getServer().getPlayer(playerUUID));
+                                }
+                            }
+                        }.runTaskLater(MissileWarfare.getInstance(), 80);
                     }
                 }
             }
         });
+
+        BlockUseHandler blockUseHandler = this::onBlockRightClick;
+        addItemHandler(blockUseHandler);
+    }
+
+    private void onBlockRightClick(PlayerRightClickEvent event) {
+
     }
 
     private void blockDispense(BlockDispenseEvent event, Dispenser dispenser, Block block, SlimefunItem item) {
         event.setCancelled(true);
     }
 
-    /*@Deprecated
-        public void fireMissile(PlayerRightClickEvent event){
-            Dispenser disp = (Dispenser) Objects.requireNonNull(event.getInteractEvent().getClickedBlock()).getState();
-            int type = hasAmmo(disp.getInventory(), (SmallGtGMissile) itemMissile);
-            if (type !=0){
-                TileState state = (TileState) Objects.requireNonNull(event.getInteractEvent().getClickedBlock()).getState();
-                PersistentDataContainer cont = state.getPersistentDataContainer();
-                int[] coords = cont.get(new NamespacedKey(AdvancedWarfare.getInstance(), "coords"), PersistentDataType.INTEGER_ARRAY);
-                event.getPlayer().sendMessage(Arrays.toString(coords));
-                if (coords == null) {
-                    event.getPlayer().sendMessage("You need to input coordinates!");
-                    return;
-                }
-                MissileController missile = new MissileController(true, event.getInteractEvent().getClickedBlock().getLocation().add(new Vector(0.5, 1, 0.5)).toVector(), new Vector(coords[0], 0, coords[1]), 1, event.getPlayer().getWorld(), 3, 30);
-                missile.FireMissile();
-            }
-        }
-         */
-    public void fireMissile(Dispenser disp, MissileController target){
+    public void fireMissile(Dispenser disp, Player target){
         ItemStack missileitem = VariantsAPI.getFirstMissile(disp.getInventory());
         if (SlimefunItem.getByItem(missileitem) == SlimefunItem.getById("ANTIAIRMISSILE")) {
             ItemUtils.consumeItem(missileitem, false);
-            MissileController missile = new MissileController(false, disp.getBlock().getLocation().add(new Vector(0.5, 1.35, 0.5)).toVector(), new Vector(0, 0, 0), 3, disp.getWorld(), 3, 0, 0, new Vector(0, 0, 0));
-            missile.FireMissileAtMissile(target);
+            ElytraMissileController missile = new ElytraMissileController(5, 2.5f, disp.getBlock().getLocation().add(new Vector(0.5, 1.5, 0.5)).toVector(), disp.getWorld(), target);
+            missile.FireMissile(target);
+        } else {
+            PlayerID.targets.remove(target);
         }
     }
 

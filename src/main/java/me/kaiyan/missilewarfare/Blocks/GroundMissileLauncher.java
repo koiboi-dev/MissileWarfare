@@ -95,8 +95,8 @@ public class GroundMissileLauncher extends SlimefunItem{
             try {
                 if (event.getPlayer().isSneaking()) {
                     int[] coords = cont.get(new NamespacedKey(MissileWarfare.getInstance(), "coords"), PersistentDataType.INTEGER_ARRAY);
-                    float dist = (float) new Vector(coords[0], 0, coords[1]).distanceSquared(new Vector(event.getInteractEvent().getClickedBlock().getX(), 0, event.getInteractEvent().getClickedBlock().getY()));
-                    event.getPlayer().sendMessage("The coords are: " + coords[0] + "," + coords[1] + " And the DIST is: " + Math.sqrt(dist));
+                    float dist = (float) new Vector(coords[0], 0, coords[1]).distance(new Vector(event.getInteractEvent().getClickedBlock().getX(), 0, event.getInteractEvent().getClickedBlock().getY()));
+                    event.getPlayer().sendMessage("The coords are: " + coords[0] + "," + coords[1] + " And the DIST is: " + dist);
                     return;
                 }
             } catch (NullPointerException e){
@@ -108,7 +108,7 @@ public class GroundMissileLauncher extends SlimefunItem{
                     Prompt askCoordY = new StringPrompt() {
                         @Override
                         public String getPromptText(ConversationContext conversationContext) {
-                            return "Input Coordinates Y, Input exit to cancel";
+                            return "Input Coordinates Z, Input exit to cancel";
                         }
 
                         @Override
@@ -121,7 +121,7 @@ public class GroundMissileLauncher extends SlimefunItem{
                                 state.update();
                                 return END_OF_CONVERSATION;
                             }
-                            conversationContext.getForWhom().sendRawMessage("Y: " + Integer.parseInt(s));
+                            conversationContext.getForWhom().sendRawMessage("Z: " + Integer.parseInt(s));
                             cont.set(new NamespacedKey(MissileWarfare.getInstance(), "Conversing"), PersistentDataType.INTEGER, 0);
                             state.update();
                             return END_OF_CONVERSATION;
@@ -232,9 +232,10 @@ public class GroundMissileLauncher extends SlimefunItem{
         int type = VariantsAPI.getIntTypeFromSlimefunitem(SlimefunItem.getByItem(missileitem));
 
         MissileClass missile = VariantsAPI.missileStatsFromType(type);
-        fireMissile(disp, missile);
-
-        ItemUtils.consumeItem(missileitem, false);
+        boolean fired = fireMissile(disp, missile);
+        if (fired) {
+            ItemUtils.consumeItem(missileitem, false);
+        }
 
         /*// -- SmallGtGMissile --
         if (type == 1){
@@ -248,31 +249,17 @@ public class GroundMissileLauncher extends SlimefunItem{
         }*/
     }
 
-    @Deprecated
-    public void fireMissile(Dispenser disp, int speed, double power, int accuracy, int type){
-        TileState state = (TileState) disp.getBlock().getState();
-        PersistentDataContainer cont = state.getPersistentDataContainer();
-        int[] coords = cont.get(new NamespacedKey(MissileWarfare.getInstance(), "coords"), PersistentDataType.INTEGER_ARRAY);
-        if (coords == null) {
-            MissileWarfare.getInstance().getServer().broadcastMessage("Missile cannot fire at : "+disp.getBlock().getLocation() + " Invalid Coordinates!");
-            return;
-        } else if (new Vector(coords[0], 0, coords[1]).distanceSquared(new Vector(disp.getX(),0, disp.getY())) > (2000*2000)){
-            MissileWarfare.getInstance().getServer().broadcastMessage("Missile cannot fire at : "+disp.getBlock().getLocation() + " Too Far Away!");
-        }
-        System.out.println("Alt: "+cont.get(new NamespacedKey(MissileWarfare.getInstance(), "alt"), PersistentDataType.INTEGER));
-        MissileController missile = new MissileController(true, disp.getBlock().getLocation().add(new Vector(0.5, 1, 0.5)).toVector(), new Vector(coords[0], 0, coords[1]), speed, disp.getBlock().getWorld(), power, accuracy, type, cont.get(new NamespacedKey(MissileWarfare.getInstance(), "alt"), PersistentDataType.INTEGER));
-        missile.FireMissile();
-    }
-    public void fireMissile(Dispenser disp, MissileClass missile){
+    public boolean fireMissile(Dispenser disp, MissileClass missile){
         TileState state = (TileState) disp.getBlock().getState();
         PersistentDataContainer cont = state.getPersistentDataContainer();
         int[] coords = cont.get(new NamespacedKey(MissileWarfare.getInstance(), "coords"), PersistentDataType.INTEGER_ARRAY);
         Integer alt = cont.get(new NamespacedKey(MissileWarfare.getInstance(), "alt"), PersistentDataType.INTEGER);
         if (coords == null) {
             MissileWarfare.getInstance().getServer().broadcastMessage("Missile cannot fire at : "+new Vector(disp.getBlock().getLocation().getX(), disp.getBlock().getLocation().getY(), disp.getBlock().getLocation().getZ()) + " Invalid Coordinates!");
-            return;
+            return false;
         } else if (VariantsAPI.isInRange((int) disp.getLocation().distanceSquared(new Vector(coords[0], 0, coords[1]).toLocation(disp.getWorld())), missile.type)){
             MissileWarfare.getInstance().getServer().broadcastMessage("Missile cannot fire at : "+disp.getBlock().getLocation() + " Target out of distance!");
+            return false;
         }
         if (alt == null){
             alt = 120;
@@ -289,7 +276,8 @@ public class GroundMissileLauncher extends SlimefunItem{
             }
             MissileWarfare.getInstance().getLogger().info("Missile Shot || Location: "+disp.getBlock().getLocation()+" Target: "+new Vector(coords[0], 0, coords[1])+" Nearest Player: "+result.getName());
         }
-        MissileController _missile = new MissileController(true, disp.getBlock().getLocation().add(new Vector(0.5, 1.35, 0.5)).toVector(), new Vector(coords[0], 0, coords[1]), missile.speed, disp.getBlock().getWorld(), missile.power, missile.accuracy, missile.type, alt);
+        MissileController _missile = new MissileController(true, disp.getBlock().getLocation().add(new Vector(0.5, 1.35, 0.5)).toVector(), new Vector(coords[0], 0, coords[1]), (float) missile.speed, disp.getBlock().getWorld(), missile.power, missile.accuracy, missile.type, alt);
         _missile.FireMissile();
+        return true;
     }
 }
