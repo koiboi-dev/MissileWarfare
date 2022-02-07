@@ -20,7 +20,7 @@ public class MissileController {
     public boolean isgroundmissile;
     public Vector pos;
     public Vector target;
-    public float speed;
+    public double speed;
     public World world;
     public double power;
     public boolean launched;
@@ -29,6 +29,7 @@ public class MissileController {
     public BukkitTask update;
     public int cruiseAlt;
     public Entity armourStand;
+    public int blockcount = 0;
 
     public MissileController(boolean isgroundmissile, Vector startpos, Vector target, float speed, World world, double power, float accuracy, int type, int cruiseAlt){
         this.isgroundmissile = isgroundmissile;
@@ -54,8 +55,6 @@ public class MissileController {
         //((LivingEntity) armorStand).addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, Integer.MAX_VALUE, 1, true, false));
 
         MissileWarfare.activemissiles.add(this);
-
-        System.out.println("Target:"+ this.target);
     }
     public MissileController(boolean isgroundmissile, Vector startpos, Vector target, float speed, World world, double power, float accuracy, int type, Vector dir){
         this.isgroundmissile = isgroundmissile;
@@ -99,16 +98,19 @@ public class MissileController {
         armourStand.teleport(pos.toLocation(world).clone().subtract(new Vector(0, 1.75, 0)));
         VariantsAPI.spawnMissileTrail(world, type, pos, velocity);
         if (world.getBlockAt(pos.toLocation(world)).getType() != Material.AIR) {
-            for (int i = 0; i < 150; i++) {
-                world.spawnParticle(Particle.CAMPFIRE_SIGNAL_SMOKE, pos.toLocation(world), 0, Math.random()-0.5, Math.random()*2, Math.random()-0.5, 0.25, null, true);
-                world.spawnParticle(Particle.FLAME, pos.toLocation(world), 0, Math.random()-0.5, Math.random()*2, Math.random()-0.5, 0.25, null, true);
-                world.spawnParticle(Particle.CAMPFIRE_SIGNAL_SMOKE, pos.toLocation(world), 0, Math.random()-0.5, Math.random()*0.5, Math.random()-0.5, 0.15, null, true);
-                world.spawnParticle(Particle.FLAME, pos.toLocation(world), 0, (Math.random()*2)-0.5, Math.random()*1.5, (Math.random()*2)-0.5, 0.25, null, true);
+            if (type == 10 || type == 11) {
+                if (blockcount >= 1) {
+                    explode(run);
+                }
+                blockcount++;
+            }else if (type == 12){
+                if (blockcount >= 2) {
+                    explode(run);
+                }
+                blockcount++;
+            } else {
+                explode(run);
             }
-            world.createExplosion(pos.toLocation(world), (float) power);
-            armourStand.remove();
-            run.cancel();
-            MissileWarfare.activemissiles.remove(this);
         }
     }
     public void Update(BukkitRunnable run, MissileController other){
@@ -135,6 +137,20 @@ public class MissileController {
         }
     }
 
+    public void explode(BukkitRunnable run){
+        for (int i = 0; i < 150; i++) {
+            world.spawnParticle(Particle.CAMPFIRE_SIGNAL_SMOKE, pos.toLocation(world), 0, Math.random() - 0.5, Math.random() * 2, Math.random() - 0.5, 0.25, null, true);
+            world.spawnParticle(Particle.FLAME, pos.toLocation(world), 0, Math.random() - 0.5, Math.random() * 2, Math.random() - 0.5, 0.25, null, true);
+            world.spawnParticle(Particle.CAMPFIRE_SIGNAL_SMOKE, pos.toLocation(world), 0, Math.random() - 0.5, Math.random() * 0.5, Math.random() - 0.5, 0.15, null, true);
+            world.spawnParticle(Particle.FLAME, pos.toLocation(world), 0, (Math.random() * 2) - 0.5, Math.random() * 1.5, (Math.random() * 2) - 0.5, 0.25, null, true);
+        }
+        world.createExplosion(pos.toLocation(world), (float) power);
+
+        armourStand.remove();
+        run.cancel();
+        MissileWarfare.activemissiles.remove(this);
+    }
+
     public Vector getVelocity(){
         Vector velocity = new Vector(0, 0, 0);
         if (pos.getY() < cruiseAlt) {
@@ -143,14 +159,14 @@ public class MissileController {
         float xdist = (float) (target.getX() - pos.getX());
         float zdist = (float) (target.getZ() - pos.getZ());
 
-        if (xdist != 0) {
+        if (Math.abs(xdist) > speed) {
             if (xdist < 0) {
                 velocity.setX(-speed);
             } else {
                 velocity.setX(speed);
             }
         }
-        if (zdist != 0) {
+        if (Math.abs(zdist) > speed) {
             if (zdist < 0) {
                 velocity.setZ(-speed);
             } else {
@@ -173,7 +189,6 @@ public class MissileController {
         }
         velocity.setX(Math.round(velocity.getX()));
         velocity.setZ(Math.round(velocity.getZ()));
-        System.out.println(velocity);
         return velocity;
     }
     public Vector getVelocityIgnoreY(){
