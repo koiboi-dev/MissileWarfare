@@ -39,6 +39,8 @@ public class VariantsAPI {
                 return "MAPT2";
             case 12:
                 return "MAPT3";
+            case 13:
+                return "MGAS";
         }
         return "NONE";
     }
@@ -69,6 +71,8 @@ public class VariantsAPI {
                 return 11;
             case "MISSILEAPTHR":
                 return 12;
+            case "MISSILEGAS":
+                return 13;
         }
         return 0;
     }
@@ -109,6 +113,8 @@ public class VariantsAPI {
                 return new MissileClass(2.5, 700, 4, 30, 11);
             case 12:
                 return new MissileClass(3, 850, 4.5, 20, 12);
+            case 13:
+                return new MissileClass(3, 600, 0.5, 80, 13);
         }
         return null;
     }

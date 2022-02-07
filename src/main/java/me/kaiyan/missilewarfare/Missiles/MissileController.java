@@ -3,13 +3,17 @@ package me.kaiyan.missilewarfare.Missiles;
 
 import me.kaiyan.missilewarfare.MissileWarfare;
 import me.kaiyan.missilewarfare.VariantsAPI;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
@@ -97,18 +101,69 @@ public class MissileController {
         pos.add(velocity);
         armourStand.teleport(pos.toLocation(world).clone().subtract(new Vector(0, 1.75, 0)));
         VariantsAPI.spawnMissileTrail(world, type, pos, velocity);
+        Random rand = new Random();
         if (world.getBlockAt(pos.toLocation(world)).getType() != Material.AIR) {
-            if (type == 10 || type == 11) {
+            if (type == 10) {
+                //<editor-fold desc="APT1">
+                if (blockcount >= 1 || world.getBlockAt(pos.toLocation(world)).getType() == Material.OBSIDIAN) {
+                    explode(run);
+                }
+                blockcount++;
+                //</editor-fold>
+            }
+            else if (type == 11){
+                //<editor-fold desc="APT2">
+                if (world.getBlockAt(pos.toLocation(world)).getType() == Material.OBSIDIAN && rand.nextBoolean()){
+                    explode(run);
+                }
+                if (rand.nextDouble() < 0.1){
+                    world.getBlockAt(pos.toLocation(world)).setType(Material.AIR);
+                    explode(run);
+                }
                 if (blockcount >= 1) {
                     explode(run);
                 }
                 blockcount++;
-            }else if (type == 12){
+                //</editor-fold>
+            }
+            else if (type == 12){
+                //<editor-fold desc="APT3">
                 if (blockcount >= 2) {
                     explode(run);
                 }
+                if (world.getBlockAt(pos.toLocation(world)).getType() == Material.OBSIDIAN && rand.nextDouble() < 0.75){
+                    explode(run);
+                }
+                if (rand.nextDouble() < 0.25){
+                    world.getBlockAt(pos.toLocation(world)).setType(Material.AIR);
+                    explode(run);
+                }
                 blockcount++;
-            } else {
+                //</editor-fold>
+            }
+            else if (type == 13){
+                //<editor-fold desc="GASMISSILE">
+                new BukkitRunnable() {
+                    int loops = 0;
+                    @Override
+                    public void run() {
+                        world.spawnParticle(Particle.REDSTONE, pos.toLocation(world), 5,5, 3, 5, new Particle.DustOptions(Color.fromRGB(0, 255, 0), 20f));
+                        for (Player player : world.getPlayers()){
+                            if (player.getLocation().toVector().isInSphere(pos, 6)) {
+                                player.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 80, 3));
+                                player.damage(0.25);
+                            }
+                        }
+                        if (loops >= 400){
+                            this.cancel();
+                        }
+                        loops++;
+                    }
+                }.runTaskTimer(MissileWarfare.getInstance(), 0, 1);
+                explode(run);
+                //</editor-fold>
+            }
+            else {
                 explode(run);
             }
         }
@@ -175,12 +230,12 @@ public class MissileController {
         }
         if (Math.abs(xdist) < 10 && Math.abs(zdist) < 10) {
             world.loadChunk(pos.toLocation(world).getChunk());
-            velocity.setY(-speed);
+            velocity.setY(-1);
         }
         if (pos.getY() < cruiseAlt-40) {
             velocity.setX(0);
             velocity.setZ(0);
-        } else if (pos.getY() < cruiseAlt) {
+        }else if (pos.getY() < cruiseAlt) {
             velocity.setX(velocity.getX()/4);
             velocity.setZ(velocity.getX()/4);
         }else if (pos.getY() < cruiseAlt-20) {
