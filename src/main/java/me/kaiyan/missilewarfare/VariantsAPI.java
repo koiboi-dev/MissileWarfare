@@ -87,6 +87,16 @@ public class VariantsAPI {
         return null;
     }
 
+    public static ItemStack getOtherFirstMissile(Inventory inv, SlimefunItem slimefunItem){
+        for (ItemStack item : inv){
+            SlimefunItem _item = SlimefunItem.getByItem(item);
+            if (_item != null && _item == slimefunItem){
+                return item;
+            }
+        }
+        return null;
+    }
+
     public static MissileClass missileStatsFromType(int type){
         switch (type){
             case 1:

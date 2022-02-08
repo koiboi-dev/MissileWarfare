@@ -109,6 +109,7 @@ public class AntiElytraLauncher extends SlimefunItem{
                         PlayerID.targets.add(MissileWarfare.getInstance().getServer().getPlayer(playerUUID));
 
                         Player finalLocked = locked;
+                        finalLocked.spigot().sendMessage(ChatMessageType.ACTION_BAR, new ComponentBuilder("!!MISSILE LOCKING ON!!").color(ChatColor.RED).create());
                         new BukkitRunnable(){
                             @Override
                             public void run() {
@@ -118,11 +119,11 @@ public class AntiElytraLauncher extends SlimefunItem{
                                     return;
                                 }
                                 if (player.isGliding()) {
-                                    finalLocked.spigot().sendMessage(ChatMessageType.ACTION_BAR, new ComponentBuilder("!!MISSILE LOCKING ON!!").color(ChatColor.RED).create());
+                                    finalLocked.spigot().sendMessage(ChatMessageType.ACTION_BAR, new ComponentBuilder("!!MISSILE LOCKED ON!!").color(ChatColor.DARK_RED).create());
                                     fireMissile((Dispenser) block.getState(), MissileWarfare.getInstance().getServer().getPlayer(playerUUID));
                                 }else if (player.isInsideVehicle()){
                                     if (!player.getVehicle().isOnGround()){
-                                        finalLocked.spigot().sendMessage(ChatMessageType.ACTION_BAR, new ComponentBuilder("!!MISSILE LOCKING ON!!").color(ChatColor.RED).create());
+                                        finalLocked.spigot().sendMessage(ChatMessageType.ACTION_BAR, new ComponentBuilder("!!MISSILE LOCKED ON!!").color(ChatColor.DARK_RED).create());
                                         fireMissile((Dispenser) block.getState(), MissileWarfare.getInstance().getServer().getPlayer(playerUUID));
                                     }
                                 }
@@ -152,8 +153,9 @@ public class AntiElytraLauncher extends SlimefunItem{
     }
 
     public void fireMissile(Dispenser disp, Player target){
-        ItemStack missileitem = VariantsAPI.getFirstMissile(disp.getInventory());
-        if (SlimefunItem.getByItem(missileitem) == SlimefunItem.getById("ANTIELYTRA")) {
+        ItemStack missileitem = VariantsAPI.getOtherFirstMissile(disp.getInventory(), SlimefunItem.getById("ANTIELYTRAMISSILE"));
+        System.out.println(missileitem);
+        if (SlimefunItem.getByItem(missileitem) == SlimefunItem.getById("ANTIELYTRAMISSILE")) {
             ItemUtils.consumeItem(missileitem, false);
             ElytraMissileController missile = new ElytraMissileController(5, 2.5f, disp.getBlock().getLocation().add(new Vector(0.5, 1.5, 0.5)).toVector(), disp.getWorld(), target);
             missile.FireMissile(target);
