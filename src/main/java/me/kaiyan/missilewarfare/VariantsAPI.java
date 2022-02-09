@@ -41,6 +41,12 @@ public class VariantsAPI {
                 return "MAPT3";
             case 13:
                 return "MGAS";
+            case 14:
+                return "EXCAV";
+            case 15:
+                return "STCK";
+            case 16:
+                return "ICBM";
         }
         return "NONE";
     }
@@ -73,6 +79,12 @@ public class VariantsAPI {
                 return 12;
             case "MISSILEGAS":
                 return 13;
+            case "MISSILEEXCAV":
+                return 14;
+            case "MISSILESTICK":
+                return 15;
+            case "MISSILEICBM":
+                return 16;
         }
         return 0;
     }
@@ -125,6 +137,12 @@ public class VariantsAPI {
                 return new MissileClass(3, 850, 4.5, 20, 12);
             case 13:
                 return new MissileClass(3, 600, 0.5, 80, 13);
+            case 14:
+                return new MissileClass(0.5, 100, 8, 50, 14);
+            case 15:
+                return new MissileClass(4, 600, 1, 70, 15);
+            case 16:
+                return new MissileClass(4, 1500, 6, 50, 16);
         }
         return null;
     }

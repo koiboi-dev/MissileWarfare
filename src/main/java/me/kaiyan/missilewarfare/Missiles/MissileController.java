@@ -3,10 +3,9 @@ package me.kaiyan.missilewarfare.Missiles;
 
 import me.kaiyan.missilewarfare.MissileWarfare;
 import me.kaiyan.missilewarfare.VariantsAPI;
-import org.bukkit.Color;
-import org.bukkit.Material;
-import org.bukkit.Particle;
-import org.bukkit.World;
+import org.bukkit.*;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -16,6 +15,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
 import java.util.Random;
@@ -34,6 +34,7 @@ public class MissileController {
     public int cruiseAlt;
     public Entity armourStand;
     public int blockcount = 0;
+    public String id = "";
 
     public MissileController(boolean isgroundmissile, Vector startpos, Vector target, float speed, World world, double power, float accuracy, int type, int cruiseAlt){
         this.isgroundmissile = isgroundmissile;
@@ -73,6 +74,8 @@ public class MissileController {
 
         this.target = target;
         this.dir = dir;
+
+        MissileWarfare.activemissiles.add(this);
     }
 
     public void FireMissile(){
@@ -193,14 +196,32 @@ public class MissileController {
     }
 
     public void explode(BukkitRunnable run){
-        for (int i = 0; i < 150; i++) {
+        for (int i = 0; i < 100; i++) {
             world.spawnParticle(Particle.CAMPFIRE_SIGNAL_SMOKE, pos.toLocation(world), 0, Math.random() - 0.5, Math.random() * 2, Math.random() - 0.5, 0.25, null, true);
             world.spawnParticle(Particle.FLAME, pos.toLocation(world), 0, Math.random() - 0.5, Math.random() * 2, Math.random() - 0.5, 0.25, null, true);
-            world.spawnParticle(Particle.CAMPFIRE_SIGNAL_SMOKE, pos.toLocation(world), 0, Math.random() - 0.5, Math.random() * 0.5, Math.random() - 0.5, 0.15, null, true);
-            world.spawnParticle(Particle.FLAME, pos.toLocation(world), 0, (Math.random() * 2) - 0.5, Math.random() * 1.5, (Math.random() * 2) - 0.5, 0.25, null, true);
         }
-        world.createExplosion(pos.toLocation(world), (float) power);
-
+        world.createExplosion(pos.toLocation(world).add(new Vector(0,1,0)), (float) power);
+        Random rand = new Random();
+        if (type == 15){
+            for (int i = 0; i < 50; i++){
+                Vector dir = new Vector((rand.nextFloat()-0.5)*2, (rand.nextFloat()-0.5)*2, (rand.nextFloat()-0.5)*2);
+                RayTraceResult result = world.rayTraceBlocks(pos.toLocation(world).add(0,3,0), dir, 10, FluidCollisionMode.ALWAYS, true);
+                if (result != null) {
+                    Block hitblock = result.getHitBlock();
+                    hitblock.getRelative(result.getHitBlockFace()).setType(Material.COBWEB);
+                } else {
+                    Vector hit = dir.clone();
+                    for (int _i = 0; _i < 10; _i++){
+                        hit.subtract(new Vector(0,1,0));
+                        if (world.getBlockAt(hit.toLocation(world)) != null){
+                            Block hitblock = world.getBlockAt(hit.toLocation(world));
+                            hitblock.getRelative(BlockFace.UP).setType(Material.COBWEB);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
         armourStand.remove();
         run.cancel();
         MissileWarfare.activemissiles.remove(this);
@@ -242,8 +263,8 @@ public class MissileController {
             velocity.setX(velocity.getX()/8);
             velocity.setZ(velocity.getX()/8);
         }
-        velocity.setX(Math.round(velocity.getX()));
-        velocity.setZ(Math.round(velocity.getZ()));
+        velocity.setX(velocity.getX());
+        velocity.setZ(velocity.getZ());
         return velocity;
     }
     public Vector getVelocityIgnoreY(){

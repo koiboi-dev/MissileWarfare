@@ -206,6 +206,12 @@ public class GroundMissileLauncher extends SlimefunItem{
                 cont.set(new NamespacedKey(MissileWarfare.getInstance(), "Conversing"), PersistentDataType.INTEGER, 0);
                 state.update();
             }
+        } else if (SlimefunItem.getByItem(event.getItem()) == SlimefunItem.getById("PLAYERLIST")){
+            event.cancel();
+            TileState state = (TileState) event.getClickedBlock().get().getBlockData();
+            PersistentDataContainer cont = state.getPersistentDataContainer();
+            cont.set(new NamespacedKey(MissileWarfare.getInstance(), "groupid"), PersistentDataType.STRING, event.getItem().getItemMeta().getPersistentDataContainer().get(new NamespacedKey(MissileWarfare.getInstance(), "id"), PersistentDataType.STRING));
+            state.update();
         }
     }
 

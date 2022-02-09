@@ -1,5 +1,8 @@
 logging:
     logMissileShots: true
 
+other:
+    storage-minecarts-load-chunks: true
+
 options:
   auto-update: true
