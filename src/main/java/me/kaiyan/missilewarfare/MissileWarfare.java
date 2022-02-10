@@ -34,12 +34,31 @@ public class MissileWarfare extends JavaPlugin implements SlimefunAddon {
         CustomItems.setup();
         PlayerID.loadPlayers(saveFile);
 
+        cfg.createFile();
+
         new BukkitRunnable() {
             @Override
             public void run() {
                 PlayerID.targets = new ArrayList<>();
             }
         }.runTaskTimer(this, 20, 200);
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                if (activemissiles.isEmpty()) {
+                    for (World world : getServer().getWorlds()) {
+                        for (Entity entity : world.getEntities()) {
+                            if (entity.getCustomName() != null) {
+                                if (entity.getCustomName().equals("MissileHolder")) {
+                                    entity.remove();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }.runTaskTimer(this, 0, cfg.getInt("other.cleanup-wait-time"));
 
         if (cfg.getBoolean("other.storage-minecarts-load-chunks")){
             getServer().getPluginManager().registerEvents(new MinecartListener(), this);
@@ -60,7 +79,8 @@ public class MissileWarfare extends JavaPlugin implements SlimefunAddon {
     @Override
     public void onDisable() {
         for (MissileController missile : activemissiles){
-            missile.explode((BukkitRunnable) missile.update);
+            missile.armourStand.remove();
+            missile.update.cancel();
         }
         PlayerID.savePlayers(new Config(new File(this.getDataFolder()+"/saveID.yml")));
         // Logic for disabling the plugin...

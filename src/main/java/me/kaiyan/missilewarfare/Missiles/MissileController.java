@@ -34,7 +34,7 @@ public class MissileController {
     public int cruiseAlt;
     public Entity armourStand;
     public int blockcount = 0;
-    public String id = "";
+    public boolean deployedCluster = false;
 
     public MissileController(boolean isgroundmissile, Vector startpos, Vector target, float speed, World world, double power, float accuracy, int type, int cruiseAlt){
         this.isgroundmissile = isgroundmissile;
@@ -57,7 +57,12 @@ public class MissileController {
         ((LivingEntity) armourStand).getEquipment().setHelmet(new ItemStack(Material.GREEN_CONCRETE));
         armourStand.setGravity(false);
         ((LivingEntity) armourStand).setInvisible(true);
+        armourStand.setCustomName("MissileHolder");
         //((LivingEntity) armorStand).addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, Integer.MAX_VALUE, 1, true, false));
+
+        if (type != 17){
+            deployedCluster = true;
+        }
 
         MissileWarfare.activemissiles.add(this);
     }
@@ -74,6 +79,10 @@ public class MissileController {
 
         this.target = target;
         this.dir = dir;
+
+        if (type != 17){
+            deployedCluster = true;
+        }
 
         MissileWarfare.activemissiles.add(this);
     }
@@ -222,6 +231,46 @@ public class MissileController {
                 }
             }
         }
+        else if (type == 18){
+            //Lava
+            for (int i = 0; i < 2; i++){
+                Vector dir = new Vector((rand.nextFloat()-0.5)*2, (rand.nextFloat()-0.5)*2, (rand.nextFloat()-0.5)*2);
+                RayTraceResult result = world.rayTraceBlocks(pos.toLocation(world).add(0,3,0), dir, 10, FluidCollisionMode.ALWAYS, true);
+                if (result != null) {
+                    Block hitblock = result.getHitBlock();
+                    hitblock.getRelative(result.getHitBlockFace()).setType(Material.LAVA);
+                } else {
+                    Vector hit = dir.clone();
+                    for (int _i = 0; _i < 20; _i++){
+                        hit.subtract(new Vector(0,1,0));
+                        if (world.getBlockAt(hit.toLocation(world)) != null){
+                            Block hitblock = world.getBlockAt(hit.toLocation(world));
+                            hitblock.getRelative(BlockFace.UP).setType(Material.LAVA);
+                            break;
+                        }
+                    }
+                }
+            }
+            //Fire
+            for (int i = 0; i < 75; i++){
+                Vector dir = new Vector((rand.nextFloat()-0.5)*2, (rand.nextFloat()-0.5)*2, (rand.nextFloat()-0.5)*2);
+                RayTraceResult result = world.rayTraceBlocks(pos.toLocation(world).add(0,3,0), dir, 10, FluidCollisionMode.ALWAYS, true);
+                if (result != null) {
+                    Block hitblock = result.getHitBlock();
+                    hitblock.getRelative(result.getHitBlockFace()).setType(Material.FIRE);
+                } else {
+                    Vector hit = dir.clone();
+                    for (int _i = 0; _i < 10; _i++){
+                        hit.subtract(new Vector(0,1,0));
+                        if (world.getBlockAt(hit.toLocation(world)) != null){
+                            Block hitblock = world.getBlockAt(hit.toLocation(world));
+                            hitblock.getRelative(BlockFace.UP).setType(Material.FIRE);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
         armourStand.remove();
         run.cancel();
         MissileWarfare.activemissiles.remove(this);
@@ -249,9 +298,17 @@ public class MissileController {
                 velocity.setZ(speed);
             }
         }
-        if (Math.abs(xdist) < 10 && Math.abs(zdist) < 10) {
+        if (Math.abs(xdist) < 20 && Math.abs(zdist) < 20) {
             world.loadChunk(pos.toLocation(world).getChunk());
             velocity.setY(-1);
+            if (!deployedCluster){
+                for (int i = 0; i < Math.round(Math.random()*10); i++) {
+                    deployedCluster = true;
+                    MissileController missile = new MissileController(true, pos.clone(), target.clone(), 2, world, 2, 40, 17, 120);
+                    missile.deployedCluster = true;
+                    missile.FireMissile();
+                }
+            }
         }
         if (pos.getY() < cruiseAlt-40) {
             velocity.setX(0);
