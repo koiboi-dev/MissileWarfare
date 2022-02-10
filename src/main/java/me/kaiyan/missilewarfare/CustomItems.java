@@ -435,7 +435,7 @@ public class CustomItems {
         SlimefunItem heavywarhead = new SlimefunItem(group, heavywarheadstack, RecipeType.ENHANCED_CRAFTING_TABLE, heavywarheadrecipe);
         //</editor-fold>
         //<editor-fold desc="ICBMMISSILEBODY">
-        SlimefunItemStack icbmmissilebodystack = new SlimefunItemStack("ADVANCEDMISSILEBODY", Material.GREEN_CONCRETE, "Advanced Missile Body", "An upgraded version ofthe missile body");
+        SlimefunItemStack icbmmissilebodystack = new SlimefunItemStack("ICBMMISSILEBODY", Material.GREEN_CONCRETE, "Advanced Missile Body", "An upgraded version ofthe missile body");
         ItemStack[] icbmmissilebodyrecipe = {
                 compressedpowderstack, SlimefunItems.URANIUM, compressedpowderstack,
                 SlimefunItems.URANIUM, advancedmissilebodystack, SlimefunItems.URANIUM,
@@ -475,7 +475,7 @@ public class CustomItems {
         MissileItem napalmmissile = new MissileItem(group, napalmmissilestack, RecipeType.ENHANCED_CRAFTING_TABLE, napalmmissilerecipe, 18, "'Kindergarten Remover! Tried and tested™'");
         //</editor-fold>
         //<editor-fold desc="ADVANCEDMISSILE">
-        SlimefunItemStack advmissilestack = new SlimefunItemStack("MISSILE", Material.DIAMOND_SWORD,"GtG Advanced Missile","Normal Missile");
+        SlimefunItemStack advmissilestack = new SlimefunItemStack("MISSILEADV", Material.DIAMOND_SWORD,"GtG Advanced Missile","Normal Missile");
         ItemStack[] advmissilerecipe = {
                 null, warheadstack, null,
                 rocketfuelstack, advancedmissilebodystack, rocketfuelstack,
@@ -571,6 +571,7 @@ public class CustomItems {
         icbm.register(main);
         cluster.register(main);
         napalmmissile.register(main);
+        advmissile.register(main);
         advmissileHE.register(main);
         advmissileLR.register(main);
         advmissileAC.register(main);

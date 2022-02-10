@@ -51,6 +51,14 @@ public class VariantsAPI {
                 return "CLST";
             case 18:
                 return "NPLM";
+            case 19:
+                return "AVMS";
+            case 20:
+                return "AVHE";
+            case 21:
+                return "AVLR";
+            case 22:
+                return "AVAC";
         }
         return "NONE";
     }
@@ -93,6 +101,14 @@ public class VariantsAPI {
                 return 17;
             case "MISSILENAPALM":
                 return 18;
+            case "MISSILEADV":
+                return 19;
+            case "MISSILEHEADV":
+                return 20;
+            case "MISSILELRADV":
+                return 21;
+            case "MISSILEACADV":
+                return 22;
         }
         return 0;
     }

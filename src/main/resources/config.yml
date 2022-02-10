@@ -2,8 +2,7 @@ logging:
     logMissileShots: true
 
 other:
-    storage-minecarts-load-chunks: true
-    // How long until cleanup of armour stands (ticks)
+    #How long until cleanup of armour stands (ticks)
     cleanup-wait-time: 1200
 
 options:

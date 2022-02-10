@@ -43,8 +43,6 @@ import java.util.UUID;
 
 public class AntiElytraLauncher extends SlimefunItem{
     public final int range = 490000;
-    public final int warnrange = 625;
-    public static List<Player> locked = new ArrayList<>();
 
     public AntiElytraLauncher(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(itemGroup, item, recipeType, recipe);
