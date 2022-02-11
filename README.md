@@ -1,6 +1,6 @@
 # Missile Warfare
 
-* If you want to use this plugin, please contact @pain.#2883 on discord.
+* If you want to report a bug for this plugin, please contact @pain.#2883 on discord (Only contact if reporting a bug).
 * This plugin is still in developement, there are still several bugs and issues that are yet to be resolved. Please report bugs to @pain.#2883 on discord.
 
 This plugin adds missiles and others to Slimefun!
