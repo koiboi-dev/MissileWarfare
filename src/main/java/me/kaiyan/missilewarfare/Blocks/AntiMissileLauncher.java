@@ -14,7 +14,10 @@ import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.block.*;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.Dispenser;
+import org.bukkit.block.TileState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
 import org.bukkit.event.block.BlockDispenseEvent;
@@ -121,9 +124,9 @@ public class AntiMissileLauncher extends SlimefunItem{
     public void fireMissile(Dispenser disp, MissileController target){
         ItemStack missileitem = VariantsAPI.getFirstMissile(disp.getInventory());
         if (SlimefunItem.getByItem(missileitem) == SlimefunItem.getById("ANTIAIRMISSILE")) {
+            ItemUtils.consumeItem(missileitem, false);
             MissileController missile = new MissileController(false, disp.getBlock().getLocation().add(new Vector(0.5, 1.35, 0.5)).toVector(), new Vector(0, 0, 0), 3, disp.getWorld(), 3, 0, 0, new Vector(0, 0, 0));
             missile.FireMissileAtMissile(target);
-            ItemUtils.consumeItem(missileitem, false);
         }
     }
 
