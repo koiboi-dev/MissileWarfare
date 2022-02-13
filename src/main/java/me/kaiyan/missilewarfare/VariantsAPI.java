@@ -2,6 +2,7 @@ package me.kaiyan.missilewarfare;
 
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import me.kaiyan.missilewarfare.Items.MissileClass;
+import me.kaiyan.missilewarfare.Missiles.MissileConfig;
 import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.inventory.Inventory;
@@ -113,6 +114,56 @@ public class VariantsAPI {
         return 0;
     }
 
+    public static int getIntTypeFromSlimefunitemID(String id){
+        switch (id) {
+            case "SMALLMISSILE":
+                return 1;
+            case "SMALLMISSILEHE":
+                return 2;
+            case "SMALLMISSILELR":
+                return 3;
+            case "SMALLMISSILEAC":
+                return 4;
+            case "ANTIAIRMISSILE":
+                return 5;
+            case "MISSILE":
+                return 6;
+            case "MISSILEHE":
+                return 7;
+            case "MISSILELR":
+                return 8;
+            case "MISSILEAC":
+                return 9;
+            case "MISSILEAPONE":
+                return 10;
+            case "MISSILEAPTWO":
+                return 11;
+            case "MISSILEAPTHR":
+                return 12;
+            case "MISSILEGAS":
+                return 13;
+            case "MISSILEEXCAV":
+                return 14;
+            case "MISSILESTICK":
+                return 15;
+            case "MISSILEICBM":
+                return 16;
+            case "MISSILECLUSTER":
+                return 17;
+            case "MISSILENAPALM":
+                return 18;
+            case "MISSILEADV":
+                return 19;
+            case "MISSILEHEADV":
+                return 20;
+            case "MISSILELRADV":
+                return 21;
+            case "MISSILEACADV":
+                return 22;
+        }
+        return 0;
+    }
+
     public static ItemStack getFirstMissile(Inventory inv){
         for (ItemStack item : inv){
             SlimefunItem _item = SlimefunItem.getByItem(item);
@@ -136,49 +187,49 @@ public class VariantsAPI {
     public static MissileClass missileStatsFromType(int type){
         switch (type){
             case 1:
-                return new MissileClass(2,500, 3, 100, 1);
+                return MissileConfig.missiles[1];
             case 2:
-                return new MissileClass(1,400, 3.5, 120, 2);
+                return MissileConfig.missiles[2];
             case 3:
-                return new MissileClass(2,600,3, 100, 3);
+                return MissileConfig.missiles[3];
             case 4:
-                return new MissileClass(2, 550,3, 60, 4);
+                return MissileConfig.missiles[4];
             case 5:
-                return new MissileClass(3, 400,4, 0, 5);
+                return MissileConfig.missiles[5];
             case 6:
-                return new MissileClass(2.5f, 650, 4.5, 80, 6);
+                return MissileConfig.missiles[6];
             case 7:
-                return new MissileClass(2, 600, 5, 100, 7);
+                return MissileConfig.missiles[7];
             case 8:
-                return new MissileClass(2.5f, 800, 4.5, 80, 8);
+                return MissileConfig.missiles[8];
             case 9:
-                return new MissileClass(2.5f, 600, 4.5,50, 9);
+                return MissileConfig.missiles[9];
             case 10:
-                return new MissileClass(2, 550, 3.5, 40, 10);
+                return MissileConfig.missiles[10];
             case 11:
-                return new MissileClass(2.5, 700, 4, 30, 11);
+                return MissileConfig.missiles[11];
             case 12:
-                return new MissileClass(3, 850, 4.5, 20, 12);
+                return MissileConfig.missiles[12];
             case 13:
-                return new MissileClass(3, 600, 0.5, 80, 13);
+                return MissileConfig.missiles[13];
             case 14:
-                return new MissileClass(0.5, 100, 8, 50, 14);
+                return MissileConfig.missiles[14];
             case 15:
-                return new MissileClass(4, 600, 1, 70, 15);
+                return MissileConfig.missiles[15];
             case 16:
-                return new MissileClass(5, 3500, 8, 50, 16);
+                return MissileConfig.missiles[16];
             case 17:
-                return new MissileClass(3.5, 600,4, 80, 17);
+                return MissileConfig.missiles[17];
             case 18:
-                return new MissileClass(3, 600, 2, 140, 18);
+                return MissileConfig.missiles[18];
             case 19:
-                return new MissileClass(4, 1200, 4, 40, 19);
+                return MissileConfig.missiles[19];
             case 20:
-                return new MissileClass(3.5, 1200, 5, 35, 20);
+                return MissileConfig.missiles[20];
             case 21:
-                return new MissileClass(4.5, 1750, 4, 40, 21);
+                return MissileConfig.missiles[21];
             case 22:
-                return new MissileClass(4, 1200, 4, 20, 22);
+                return MissileConfig.missiles[22];
         }
         return null;
     }
