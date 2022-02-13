@@ -35,14 +35,17 @@ public class PlayerList extends SlimefunItem {
     }
 
     private boolean itemDrop(PlayerDropItemEvent event, Player player, Item item) {
-        if (!player.isSneaking()){
+        if (SlimefunItem.getByItem(item.getItemStack()) == null){
+            return true;
+        }
+        if (!player.isSneaking() && SlimefunItem.getByItem(item.getItemStack()).getId().equals("PLAYERLIST")){
             event.setCancelled(true);
 
             NamespacedKey key = new NamespacedKey(MissileWarfare.getInstance(), "id");
             ItemMeta meta = item.getItemStack().getItemMeta();
             PersistentDataContainer cont = meta.getPersistentDataContainer();
 
-            cont.set(key, PersistentDataType.STRING, null);
+            cont.remove(key);
             player.sendMessage("Reset Key");
             return false;
         }

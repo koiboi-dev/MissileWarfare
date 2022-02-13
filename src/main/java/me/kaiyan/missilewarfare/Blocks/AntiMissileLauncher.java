@@ -82,9 +82,10 @@ public class AntiMissileLauncher extends SlimefunItem{
                         if (locked != null && cont.get(new NamespacedKey(MissileWarfare.getInstance(), "timesincelastshot"), PersistentDataType.INTEGER) <= System.currentTimeMillis()) {
                             MissileWarfare.activemissiles.remove(locked);
                             MissileWarfare.activemissiles.add(locked);
-                            state.update();
                             fireMissile((Dispenser) block.getState(), locked);
+                            state.update();
                             cont.set(new NamespacedKey(MissileWarfare.getInstance(), "timesincelastshot"), PersistentDataType.INTEGER, (int)System.currentTimeMillis()+1000);
+                            state.update();
                         }
                     } catch (NullPointerException e){
                         cont.set(new NamespacedKey(MissileWarfare.getInstance(), "timesincelastshot"), PersistentDataType.INTEGER, Integer.MIN_VALUE);
@@ -120,9 +121,9 @@ public class AntiMissileLauncher extends SlimefunItem{
     public void fireMissile(Dispenser disp, MissileController target){
         ItemStack missileitem = VariantsAPI.getFirstMissile(disp.getInventory());
         if (SlimefunItem.getByItem(missileitem) == SlimefunItem.getById("ANTIAIRMISSILE")) {
-            ItemUtils.consumeItem(missileitem, false);
             MissileController missile = new MissileController(false, disp.getBlock().getLocation().add(new Vector(0.5, 1.35, 0.5)).toVector(), new Vector(0, 0, 0), 3, disp.getWorld(), 3, 0, 0, new Vector(0, 0, 0));
             missile.FireMissileAtMissile(target);
+            ItemUtils.consumeItem(missileitem, false);
         }
     }
 

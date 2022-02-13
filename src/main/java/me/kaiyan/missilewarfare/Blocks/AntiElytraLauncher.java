@@ -154,9 +154,9 @@ public class AntiElytraLauncher extends SlimefunItem{
         ItemStack missileitem = VariantsAPI.getOtherFirstMissile(disp.getInventory(), SlimefunItem.getById("ANTIELYTRAMISSILE"));
         System.out.println(missileitem);
         if (SlimefunItem.getByItem(missileitem) == SlimefunItem.getById("ANTIELYTRAMISSILE")) {
-            ItemUtils.consumeItem(missileitem, false);
             ElytraMissileController missile = new ElytraMissileController(5, 2.5f, disp.getBlock().getLocation().add(new Vector(0.5, 1.5, 0.5)).toVector(), disp.getWorld(), target);
             missile.FireMissile(target);
+            ItemUtils.consumeItem(missileitem, false);
         } else {
             PlayerID.targets.remove(target);
         }
