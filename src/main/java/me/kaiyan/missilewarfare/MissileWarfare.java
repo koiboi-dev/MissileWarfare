@@ -32,7 +32,7 @@ public class MissileWarfare extends JavaPlugin implements SlimefunAddon {
         }
         CustomItems.setup();
         PlayerID.loadPlayers(saveFile);
-        MissileConfig.setup();
+        MissileConfig.setup(cfg);
 
         new BukkitRunnable() {
             @Override
