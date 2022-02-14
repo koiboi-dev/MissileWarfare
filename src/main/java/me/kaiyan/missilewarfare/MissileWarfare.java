@@ -3,6 +3,7 @@ package me.kaiyan.missilewarfare;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.config.Config;
 import me.kaiyan.missilewarfare.Missiles.MissileController;
+import me.kaiyan.missilewarfare.Missiles.MissileConfig;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.java.JavaPlugin;
