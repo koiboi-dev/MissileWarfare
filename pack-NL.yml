@@ -1,0 +1,87 @@
+missilegroupname: "&6Missile Warfare"
+
+materials:
+    sugarfuel:
+        name: "Zuikerbrandstof"
+        lore:
+            - "Goedkoop een hoge energie brandstof."
+    guidebook:
+        name: "Gids"
+        lore:
+            - "Sorry, maar er zijn geen fotos"
+    explosivepowder:
+        name: "Explosiefpoeder"
+        lore:
+            - "Breekbaar, wees zachtaardig!"
+    compressedexplosives:
+        name: "Geperst Explosiefpoeder"
+        lore:
+            - "Perfect geperst"
+    ultraliteingot:
+        name: "UltraLite Ingot"
+        lore:
+            - "Een lichte Ingot om te raketten maken"
+    ultraliteplate:
+        name: "UltraLite Plate"
+        lore:
+            - "Een lichte Ingot om te raketten maken"
+    simpleflightcomputer:
+        name: "Simpel Vluchtcomputer"
+        lore:
+            - "Een simpel computer dat kan raketten leiden"
+    radar:
+        name: "Radar"
+        lore:
+            - "Kan Raketten en spelers volgen"
+    rocketfuel:
+        name: "Raketbrandstof"
+        lore:
+            - "Brandt met Confidence™"
+    smallwarhead:
+        name: "Kleine Kernkop"
+        lore:
+            - "Voor het maken van raketten."
+            - "'Niet aanraken'"
+    smallbody:
+        name: "Kleine Raketromp"
+        lore:
+            - "Voor het maken van raketten"
+            - "'Voorzichtig'"
+    smallfin:
+        name: "Kleine Raketvin"
+        lore:
+            - "Voor het maken van raketten"
+            - "'WEEEEEEEEEEEEEEEEEEEEEEEEEE'"
+
+
+missiles:
+    smallmissile:
+        lore: "Kleine Ground-to-Ground Raket"
+        missiles:
+            normal:
+                name: "Kleine GtG Raket"
+                variant: "Normale Variant"
+                lore: "'Timmetje had geen kans...'"
+            he:
+                name: "Kleine GtG Missile HE"
+                variant: "Groot Exploseif Variant"
+                lore: "'Groote Timmetje had geen kans...'"
+            lr:
+                name: "Kleine GtG Missile LR"
+                variant: "langeafstand Variant"
+                lore: "'Heel ver weg Timmetje had geen kans...'"
+            ac:
+                name: "Kleine GtG Missile AC"
+                variant: "Nauwkeurige Variant"
+                lore: "'Kleine Timmetje had geen kans.'"
+
+launchers:
+    groundLauncher:
+        name: "GtG Draagraket"
+        lore:
+            - "Vuurt op een doel op de grond."
+            - "U kan een stok gebruiken om de doel coördinaten in te stellen."
+            - "Shift met de stok om to zien als het kan schieten"
+            - "Rechtermuisknop met een Blaze Rod om te kruissnelheid instellen"
+            - "Standaard kruissnelheid is Y:120"
+            - "Moet op een groen betonblok staan."
