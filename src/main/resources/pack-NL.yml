@@ -1,5 +1,57 @@
 missilegroupname: "&6Missile Warfare"
+translator: "Kaiyan2006"
 
+messages:
+    launchers:
+        createantiair:
+            success: "Created Anti Missile Launcher"
+            failure: "Missing Obsidian Below Launcher"
+        createantielytra:
+            success: "Created Anti Elytra Launcher"
+            failure: "Missing Obsidian Below Launcher"
+        ground:
+            create:
+                success: "Created Small Launcher!"
+                # Formatting: {type}
+                failure: "Below Block is type: {type} It needs Type GREEN_CONCRETE"
+            # Formatting: {xcoord} {ycoord} {dist}
+            coords: "The coords are: [{xcoord} , {ycoord}] And the DIST is: {dist}"
+            setting:
+                notanumber: "NOT A INTEGER NUMBER (No decimals)"
+                notacoord: "NOT A COORD"
+                cruisealt: "Cruise Alt: "
+
+    manpad:
+        locking: "Engaging Targeting Mode..."
+        itemchange: "Failed: Changed item"
+        notarget: "Failed to fire: No Target"
+
+    elytraattack:
+        locking: "!!!MISSILE LOCKING ON!!!"
+        locked: "!!!MISSILE LOCKED ON!!!"
+
+    radar: "Place a redstone ontop of this block to get its output, a repeater is required to get the one tick pulse"
+
+    playerlist:
+        resetkey: "Reset Key"
+        addedkey: "Added ID "
+        noid: "Couldn't add ID to the launcher, No ID assigned to this PlayerList"
+        askwriteprompt: "What player would you like to add? Say exit to exit"
+        addedplayer: "Added player"
+        invalidplayer: "INVALID PLAYER"
+        removeplayer: "What player would you like to remove?"
+        removedplayer: "Removed Player"
+        incorrectinput: "Incorrect Input"
+        asktoread: "Say 'read' to see the players associated with this ID, Say 'add' to add a player, Say 'remove' to remove a player, Say 'exit' to exit"
+        #INPUTS THE PLAYERLIST WILL TAKE IN AFTER SENDING ASKTOREAD
+        inputs:
+            read: "read"
+            add: "add"
+            remove: "remove"
+        askinputid: "Input ID to create, say exit to leave"
+        #FORMATTING: {id}
+        createdid: "Created ID : {id}, You can now write to it"
+        gottenid: "Gotten ID"
 materials:
     sugarfuel:
         name: "Zuikerbrandstof"
@@ -76,7 +128,7 @@ missiles:
                 lore: "'Kleine Timmetje had geen kans.'"
 
 launchers:
-    groundLauncher:
+    ground:
         name: "GtG Missile Launcher"
         lore:
             - "Shoots a specified area on the ground."
@@ -85,3 +137,35 @@ launchers:
             - "Right click with a blaze rod to set cruise alt"
             - "Default cruise alt is Y:120"
             - "Needs to be built on 1 green concrete block."
+    antimissile:
+        name: "Anti Missile Launcher"
+        lore:
+            - "Targets and shoots down other missiles in the area."
+            - "Use redstone to disable it"
+            - "Needs to be built on obsidian"
+            - "Needs Anti-Missile Missiles"
+    antielytra:
+        name: "Anti Elytra Launcher"
+        lore:
+            - "Fires a missile at nearby player"
+            - "that are using an elytra"
+            - "Excluding those on the"
+            - "ID assigned to this"
+            - "use a stick to set the group ID"
+            - "Needs Anti-Elytra Missiles"
+
+other:
+    manpad:
+        name: "Manpad"
+        lore:
+            - "Handheld anti-missile device"
+            - "Shift+RMB to begin tracking"
+            - "Release Shift fire"
+    playerlist:
+        name: Player List
+        lore:
+            - "Right Click to set the players"
+            - "for a ID"
+            - "THESE ID'S ARE GLOBAL"
+            - "ANYONE CAN EDIT THEM IF"
+            - "THEY HAVE THE ID"
