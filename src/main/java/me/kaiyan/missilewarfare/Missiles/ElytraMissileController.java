@@ -101,7 +101,7 @@ public class ElytraMissileController {
         world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, pos.toLocation(world), 0, 0, 0, 0, 0.1, null, true);
         world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, (pos.toLocation(world).subtract(velocity.divide(new Vector(2,2,2)))), 0, 0, 0, 0, 0.1, null, true);
         if (other.getLocation().distanceSquared(pos.toLocation(world)) < (speed*speed)*1.1){
-            world.createExplosion(pos.toLocation(world), power);
+            world.createExplosion(pos.toLocation(world), power, false, false, player);
             for (int i = 0; i < 40; i++) {
                 world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, pos.toLocation(world), 0, Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5, 0.1, null, true);
                 world.spawnParticle(Particle.FLAME, pos.toLocation(world), 0, Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5, 0.1, null,true);
@@ -121,7 +121,7 @@ public class ElytraMissileController {
             }
         }
         if (world.getBlockAt(pos.toLocation(world)).getType() != Material.AIR) {
-            world.createExplosion(pos.toLocation(world), power);
+            world.createExplosion(pos.toLocation(world), power, false, false, player);
             run.cancel();
             PlayerID.targets.remove(player);
         }

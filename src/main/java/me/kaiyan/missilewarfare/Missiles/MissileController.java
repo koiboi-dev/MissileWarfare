@@ -187,7 +187,7 @@ public class MissileController {
         world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, pos.toLocation(world), 0, 0, 0, 0, 0.1, null, true);
         world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, (pos.toLocation(world).subtract(velocity.divide(new Vector(2,2,2)))), 0, 0, 0, 0, 0.1, null, true);
         if (target.distanceSquared(pos) < (speed*speed)*1.1){
-            world.createExplosion(pos.toLocation(world), (float) power);
+            world.createExplosion(pos.toLocation(world), (float) power, false, true, armourStand);
             for (int i = 0; i < 40; i++) {
                 world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, pos.toLocation(world), 0, Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5, 0.1, null, true);
                 world.spawnParticle(Particle.FLAME, pos.toLocation(world), 0, Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5, 0.1, null,true);
@@ -200,7 +200,7 @@ public class MissileController {
             run.cancel();
         }
         if (world.getBlockAt(pos.toLocation(world)).getType() != Material.AIR) {
-            world.createExplosion(pos.toLocation(world), (float) power);
+            world.createExplosion(pos.toLocation(world), (float) power, false, true, armourStand);
         }
     }
 
@@ -209,7 +209,7 @@ public class MissileController {
             world.spawnParticle(Particle.CAMPFIRE_SIGNAL_SMOKE, pos.toLocation(world), 0, Math.random() - 0.5, Math.random() * 2, Math.random() - 0.5, 0.25, null, true);
             world.spawnParticle(Particle.FLAME, pos.toLocation(world), 0, Math.random() - 0.5, Math.random() * 2, Math.random() - 0.5, 0.25, null, true);
         }
-        world.createExplosion(pos.toLocation(world).add(new Vector(0,1,0)), (float) power);
+        world.createExplosion(pos.toLocation(world).add(new Vector(0,1,0)), (float) power, false, true, armourStand);
         Random rand = new Random();
         if (type == 15){
             for (int i = 0; i < 50; i++){
