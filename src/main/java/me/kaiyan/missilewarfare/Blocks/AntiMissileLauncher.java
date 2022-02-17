@@ -9,6 +9,7 @@ import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.ItemUtils;
 import me.kaiyan.missilewarfare.MissileWarfare;
 import me.kaiyan.missilewarfare.Missiles.MissileController;
+import me.kaiyan.missilewarfare.Translations;
 import me.kaiyan.missilewarfare.VariantsAPI;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
@@ -48,9 +49,9 @@ public class AntiMissileLauncher extends SlimefunItem{
                 Block block = event.getBlockPlaced();
                 //Block bottom = world.getBlockAt(event.getBlock().getLocation().subtract(new Vector(0, 2, 0)));
                 if (correctlyBuilt(block)){
-                    event.getPlayer().sendMessage("Created Anti Air Launcher");
+                    event.getPlayer().sendMessage(Translations.get("messages.launchers.createantiair.success"));
                 }else{
-                    event.getPlayer().sendMessage("Missing Obsidian Below Launcher");
+                    event.getPlayer().sendMessage(Translations.get("messages.launchers.createantiair.failure"));
                 }
             }
         };

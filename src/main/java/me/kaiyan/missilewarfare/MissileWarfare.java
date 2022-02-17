@@ -2,14 +2,16 @@ package me.kaiyan.missilewarfare;
 
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.config.Config;
-import me.kaiyan.missilewarfare.Missiles.MissileController;
 import me.kaiyan.missilewarfare.Missiles.MissileConfig;
+import me.kaiyan.missilewarfare.Missiles.MissileController;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,9 +32,31 @@ public class MissileWarfare extends JavaPlugin implements SlimefunAddon {
         } else {
             saveFile = new Config(new File(this.getDataFolder() + "/saveID.yml"));
         }
-        CustomItems.setup();
+        File lang = new File(getDataFolder()+"/lang");
+        if (!lang.exists()) {
+            String[] loadedpacks = new String[]{"pack-EN"};
+            for (String pack : loadedpacks) {
+                saveResource(pack + ".yml", false);
+            }
+
+            lang.mkdir();
+
+            File datafolder = getDataFolder();
+            for (File file : datafolder.listFiles()){
+                if (file.getName().startsWith("pack-")){
+                    try {
+                        Files.move(file.toPath(), new File(lang.getPath(), file.getName()).toPath());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        Translations.setup(new Config(getDataFolder()+"/lang/"+cfg.getString("translation-pack")+".yml"));
+
         PlayerID.loadPlayers(saveFile);
         MissileConfig.setup(cfg);
+        CustomItems.setup();
 
         new BukkitRunnable() {
             @Override

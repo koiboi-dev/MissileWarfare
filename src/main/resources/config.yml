@@ -19,6 +19,11 @@ missiles:
         range: 550
         power: 3
         accuracy: 60
+    ANTIELYTRAMISSILE:
+        speed: 6
+        range: 700
+        power: 4
+        accuracy: 0
     ANTIAIRMISSILE:
         speed: 5
         range: 450
@@ -109,6 +114,10 @@ missiles:
         range: 1000
         power: 4.5
         accuracy: 20
+
+translation-pack: pack-EN
+saved-packs:
+    - pack-EN
 
 logging:
     logMissileShots: true

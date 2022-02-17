@@ -12,6 +12,7 @@ import io.github.thebusybiscuit.slimefun4.libraries.dough.items.ItemUtils;
 import me.kaiyan.missilewarfare.MissileWarfare;
 import me.kaiyan.missilewarfare.Missiles.ElytraMissileController;
 import me.kaiyan.missilewarfare.PlayerID;
+import me.kaiyan.missilewarfare.Translations;
 import me.kaiyan.missilewarfare.VariantsAPI;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
@@ -60,9 +61,9 @@ public class AntiElytraLauncher extends SlimefunItem{
                 Block block = event.getBlockPlaced();
                 //Block bottom = world.getBlockAt(event.getBlock().getLocation().subtract(new Vector(0, 2, 0)));
                 if (correctlyBuilt(block)){
-                    event.getPlayer().sendMessage("Created Anti Air Launcher");
+                    event.getPlayer().sendMessage(Translations.get("messages.launchers.createantielytra.success"));
                 }else{
-                    event.getPlayer().sendMessage("Missing Obsidian Below Launcher");
+                    event.getPlayer().sendMessage(Translations.get("messages.launchers.createantielytra.failure"));
                 }
             }
         };
@@ -107,7 +108,7 @@ public class AntiElytraLauncher extends SlimefunItem{
                         PlayerID.targets.add(MissileWarfare.getInstance().getServer().getPlayer(playerUUID));
 
                         Player finalLocked = locked;
-                        finalLocked.spigot().sendMessage(ChatMessageType.ACTION_BAR, new ComponentBuilder("!!MISSILE LOCKING ON!!").color(ChatColor.RED).create());
+                        finalLocked.spigot().sendMessage(ChatMessageType.ACTION_BAR, new ComponentBuilder(Translations.get("messages.elytraattack.locking")).color(ChatColor.RED).create());
                         new BukkitRunnable(){
                             @Override
                             public void run() {
@@ -117,11 +118,11 @@ public class AntiElytraLauncher extends SlimefunItem{
                                     return;
                                 }
                                 if (player.isGliding()) {
-                                    finalLocked.spigot().sendMessage(ChatMessageType.ACTION_BAR, new ComponentBuilder("!!MISSILE LOCKED ON!!").color(ChatColor.DARK_RED).create());
+                                    finalLocked.spigot().sendMessage(ChatMessageType.ACTION_BAR, new ComponentBuilder(Translations.get("messages.elytraattack.locked")).color(ChatColor.DARK_RED).create());
                                     fireMissile((Dispenser) block.getState(), MissileWarfare.getInstance().getServer().getPlayer(playerUUID));
                                 }else if (player.isInsideVehicle()){
                                     if (!player.getVehicle().isOnGround()){
-                                        finalLocked.spigot().sendMessage(ChatMessageType.ACTION_BAR, new ComponentBuilder("!!MISSILE LOCKED ON!!").color(ChatColor.DARK_RED).create());
+                                        finalLocked.spigot().sendMessage(ChatMessageType.ACTION_BAR, new ComponentBuilder(Translations.get("messages.elytraattack.locked")).color(ChatColor.DARK_RED).create());
                                         fireMissile((Dispenser) block.getState(), MissileWarfare.getInstance().getServer().getPlayer(playerUUID));
                                     }
                                 }
@@ -152,7 +153,6 @@ public class AntiElytraLauncher extends SlimefunItem{
 
     public void fireMissile(Dispenser disp, Player target){
         ItemStack missileitem = VariantsAPI.getOtherFirstMissile(disp.getInventory(), SlimefunItem.getById("ANTIELYTRAMISSILE"));
-        System.out.println(missileitem);
         if (SlimefunItem.getByItem(missileitem) == SlimefunItem.getById("ANTIELYTRAMISSILE")) {
             ItemUtils.consumeItem(missileitem, false);
             ElytraMissileController missile = new ElytraMissileController(5, 2.5f, disp.getBlock().getLocation().add(new Vector(0.5, 1.5, 0.5)).toVector(), disp.getWorld(), target);

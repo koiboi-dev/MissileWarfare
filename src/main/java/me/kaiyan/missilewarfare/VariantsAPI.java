@@ -187,49 +187,49 @@ public class VariantsAPI {
     public static MissileClass missileStatsFromType(int type){
         switch (type){
             case 1:
-                return MissileConfig.missiles[1];
+                return MissileConfig.missiles[0];
             case 2:
-                return MissileConfig.missiles[2];
+                return MissileConfig.missiles[1];
             case 3:
-                return MissileConfig.missiles[3];
+                return MissileConfig.missiles[2];
             case 4:
-                return MissileConfig.missiles[4];
+                return MissileConfig.missiles[3];
             case 5:
-                return MissileConfig.missiles[5];
+                return MissileConfig.missiles[4];
             case 6:
-                return MissileConfig.missiles[6];
+                return MissileConfig.missiles[5];
             case 7:
-                return MissileConfig.missiles[7];
+                return MissileConfig.missiles[6];
             case 8:
-                return MissileConfig.missiles[8];
+                return MissileConfig.missiles[7];
             case 9:
-                return MissileConfig.missiles[9];
+                return MissileConfig.missiles[8];
             case 10:
-                return MissileConfig.missiles[10];
+                return MissileConfig.missiles[9];
             case 11:
-                return MissileConfig.missiles[11];
+                return MissileConfig.missiles[10];
             case 12:
-                return MissileConfig.missiles[12];
+                return MissileConfig.missiles[11];
             case 13:
-                return MissileConfig.missiles[13];
+                return MissileConfig.missiles[12];
             case 14:
-                return MissileConfig.missiles[14];
+                return MissileConfig.missiles[13];
             case 15:
-                return MissileConfig.missiles[15];
+                return MissileConfig.missiles[14];
             case 16:
-                return MissileConfig.missiles[16];
+                return MissileConfig.missiles[15];
             case 17:
-                return MissileConfig.missiles[17];
+                return MissileConfig.missiles[16];
             case 18:
-                return MissileConfig.missiles[18];
+                return MissileConfig.missiles[17];
             case 19:
-                return MissileConfig.missiles[19];
+                return MissileConfig.missiles[18];
             case 20:
-                return MissileConfig.missiles[20];
+                return MissileConfig.missiles[19];
             case 21:
-                return MissileConfig.missiles[21];
+                return MissileConfig.missiles[20];
             case 22:
-                return MissileConfig.missiles[22];
+                return MissileConfig.missiles[21];
         }
         return null;
     }

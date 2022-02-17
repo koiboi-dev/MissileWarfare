@@ -7,6 +7,7 @@ import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
 import me.kaiyan.missilewarfare.MissileWarfare;
 import me.kaiyan.missilewarfare.Missiles.MissileController;
+import me.kaiyan.missilewarfare.Translations;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
 import org.bukkit.Material;
@@ -63,7 +64,7 @@ public class MissileRadar extends SlimefunItem {
         BlockPlaceHandler placeHandler = new BlockPlaceHandler(false) {
             @Override
             public void onPlayerPlace(BlockPlaceEvent event) {
-                event.getPlayer().sendMessage("Place a redstone ontop of this block to get its output, a repeater is required to get the one tick pulse");
+                event.getPlayer().sendMessage(Translations.get("messages.radar"));
             }
         };
         addItemHandler(placeHandler);

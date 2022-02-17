@@ -12,6 +12,7 @@ import io.github.thebusybiscuit.slimefun4.libraries.dough.items.ItemUtils;
 import me.kaiyan.missilewarfare.Items.MissileClass;
 import me.kaiyan.missilewarfare.MissileWarfare;
 import me.kaiyan.missilewarfare.Missiles.MissileController;
+import me.kaiyan.missilewarfare.Translations;
 import me.kaiyan.missilewarfare.VariantsAPI;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -52,7 +53,7 @@ public class GroundMissileLauncher extends SlimefunItem{
                 event.getBlockPlaced().setBlockData(data);
                 //Block bottom = world.getBlockAt(event.getBlock().getLocation().subtract(new Vector(0, 2, 0)));
                 if (below.getType() == Material.GREEN_CONCRETE){
-                    event.getPlayer().sendMessage("Created Small Launcher!");
+                    event.getPlayer().sendMessage(Translations.get("messages.launchers.ground.create.success"));
                     /*if (bottom.getType() == Material.GREEN_CONCRETE){
                         event.getPlayer().sendMessage("Created Small Launcher!");
                     }else{
@@ -60,7 +61,7 @@ public class GroundMissileLauncher extends SlimefunItem{
                         event.setCancelled(true);
                     }*/
                 }else{
-                    event.getPlayer().sendMessage("Below Block is type: " + below.getType() + " It needs Type GREEN_CONCRETE");
+                    event.getPlayer().sendMessage(Translations.get("messages.launchers.ground.create.failure").replace("{type}", below.getType().name()));
                     event.setCancelled(true);
                 }
             }
@@ -96,7 +97,7 @@ public class GroundMissileLauncher extends SlimefunItem{
                 if (event.getPlayer().isSneaking()) {
                     int[] coords = cont.get(new NamespacedKey(MissileWarfare.getInstance(), "coords"), PersistentDataType.INTEGER_ARRAY);
                     float dist = (float) new Vector(coords[0], 0, coords[1]).distance(new Vector(event.getInteractEvent().getClickedBlock().getX(), 0, event.getInteractEvent().getClickedBlock().getY()));
-                    event.getPlayer().sendMessage("The coords are: " + coords[0] + "," + coords[1] + " And the DIST is: " + dist);
+                    event.getPlayer().sendMessage(Translations.get("messages.launchers.ground.coords").replace("{xcoord}", String.valueOf(coords[0])).replace("{ycoord}", String.valueOf(coords[1])).replace("{dist}", String.valueOf(dist)));
                     return;
                 }
             } catch (NullPointerException e){
@@ -116,7 +117,7 @@ public class GroundMissileLauncher extends SlimefunItem{
                             try {
                                 cont.set(new NamespacedKey(MissileWarfare.getInstance(), "coords"), PersistentDataType.INTEGER_ARRAY, new int[]{cont.get(new NamespacedKey(MissileWarfare.getInstance(), "coords"), PersistentDataType.INTEGER_ARRAY)[0], Integer.parseInt(s)});
                             } catch (NumberFormatException e) {
-                                conversationContext.getForWhom().sendRawMessage("NOT A INT NUMBER");
+                                conversationContext.getForWhom().sendRawMessage(Translations.get("messages.launchers.ground.setting.notanumber"));
                                 cont.set(new NamespacedKey(MissileWarfare.getInstance(), "Conversing"), PersistentDataType.INTEGER, 0);
                                 state.update();
                                 return END_OF_CONVERSATION;
@@ -138,7 +139,7 @@ public class GroundMissileLauncher extends SlimefunItem{
                             try {
                                 cont.set(new NamespacedKey(MissileWarfare.getInstance(), "coords"), PersistentDataType.INTEGER_ARRAY, new int[]{Integer.parseInt(s), 0});
                             } catch (NumberFormatException e) {
-                                conversationContext.getForWhom().sendRawMessage("NOT A COORD");
+                                conversationContext.getForWhom().sendRawMessage(Translations.get("messages.launchers.ground.setting.notacoord"));
                                 cont.set(new NamespacedKey(MissileWarfare.getInstance(), "Conversing"), PersistentDataType.INTEGER, 0);
                                 state.update();
                                 return END_OF_CONVERSATION;
@@ -156,8 +157,6 @@ public class GroundMissileLauncher extends SlimefunItem{
                             .buildConversation(event.getPlayer());
                     conversation.begin();
                     cont.set(new NamespacedKey(MissileWarfare.getInstance(), "Conversing"), PersistentDataType.INTEGER, 1);
-                } else {
-                    event.getPlayer().sendMessage("Someone is already interacting with this");
                 }
             } catch (NullPointerException e){
                 cont.set(new NamespacedKey(MissileWarfare.getInstance(), "Conversing"), PersistentDataType.INTEGER, 0);
@@ -181,12 +180,12 @@ public class GroundMissileLauncher extends SlimefunItem{
                             try {
                                 cont.set(new NamespacedKey(MissileWarfare.getInstance(), "alt"), PersistentDataType.INTEGER, Integer.valueOf(s));
                             } catch (NumberFormatException e) {
-                                conversationContext.getForWhom().sendRawMessage("NOT A INT NUMBER");
+                                conversationContext.getForWhom().sendRawMessage(Translations.get("messages.launchers.ground.setting.notanumber"));
                                 cont.set(new NamespacedKey(MissileWarfare.getInstance(), "Conversing"), PersistentDataType.INTEGER, 0);
                                 state.update();
                                 return END_OF_CONVERSATION;
                             }
-                            conversationContext.getForWhom().sendRawMessage("Cruise Alt: " + Integer.parseInt(s));
+                            conversationContext.getForWhom().sendRawMessage(Translations.get("messages.launchers.ground.setting.cruisealt") + Integer.parseInt(s));
                             cont.set(new NamespacedKey(MissileWarfare.getInstance(), "Conversing"), PersistentDataType.INTEGER, 0);
                             state.update();
                             return END_OF_CONVERSATION;
@@ -199,8 +198,6 @@ public class GroundMissileLauncher extends SlimefunItem{
                             .withTimeout(20)
                             .buildConversation(event.getPlayer());
                     conversation.begin();
-                } else {
-                    event.getPlayer().sendMessage("Someone is already interacting with this");
                 }
             } catch (NullPointerException e){
                 cont.set(new NamespacedKey(MissileWarfare.getInstance(), "Conversing"), PersistentDataType.INTEGER, 0);
