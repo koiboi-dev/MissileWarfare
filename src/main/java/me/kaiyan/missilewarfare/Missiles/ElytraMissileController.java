@@ -135,7 +135,6 @@ public class ElytraMissileController {
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, builder.create());
         } else {
             ComponentBuilder builder = new ComponentBuilder("");
-            float dist = (float) startpos.distanceSquared(pos);
 
             builder.append("!! MISSILE INCOMING !!").bold(true).color(ChatColor.DARK_RED);
 

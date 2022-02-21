@@ -177,7 +177,7 @@ public class VariantsAPI {
     public static ItemStack getOtherFirstMissile(Inventory inv, SlimefunItem slimefunItem){
         for (ItemStack item : inv){
             SlimefunItem _item = SlimefunItem.getByItem(item);
-            if (_item != null && _item == slimefunItem){
+            if (_item != null && _item.getId().equals(slimefunItem.getId())){
                 return item;
             }
         }

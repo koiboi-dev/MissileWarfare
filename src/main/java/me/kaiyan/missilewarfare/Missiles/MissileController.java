@@ -14,7 +14,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
@@ -30,7 +29,7 @@ public class MissileController {
     public boolean launched;
     public int type;
     public Vector dir;
-    public BukkitTask update;
+    public BukkitRunnable update;
     public int cruiseAlt;
     public Entity armourStand;
     public int blockcount = 0;
@@ -95,7 +94,8 @@ public class MissileController {
                 public void run() {
                     Update(this);
                 }
-            }.runTaskTimer(MissileWarfare.getInstance(), 20, 2);
+            };
+            update.runTaskTimer(MissileWarfare.getInstance(), 20, 2);
         }
     }
     public void FireMissileAtMissile(MissileController other){
@@ -105,7 +105,8 @@ public class MissileController {
             public void run() {
                 Update(this, other);
             }
-        }.runTaskTimer(MissileWarfare.getInstance(), 5, 2);
+        };
+        update.runTaskTimer(MissileWarfare.getInstance(), 5, 2);
     }
 
     public void Update(BukkitRunnable run){
@@ -187,17 +188,18 @@ public class MissileController {
         world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, pos.toLocation(world), 0, 0, 0, 0, 0.1, null, true);
         world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, (pos.toLocation(world).subtract(velocity.divide(new Vector(2,2,2)))), 0, 0, 0, 0, 0.1, null, true);
         if (target.distanceSquared(pos) < (speed*speed)*1.1){
+            if (other == null){
+                run.cancel();
+            }
             world.createExplosion(pos.toLocation(world), (float) power, false, true, armourStand);
             for (int i = 0; i < 40; i++) {
                 world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, pos.toLocation(world), 0, Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5, 0.1, null, true);
                 world.spawnParticle(Particle.FLAME, pos.toLocation(world), 0, Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5, 0.1, null,true);
             }
             if (other.update != null) {
-                other.update.cancel();
+                other.explode(other.update);
+                run.cancel();
             }
-            other.armourStand.remove();
-            MissileWarfare.activemissiles.remove(other);
-            run.cancel();
         }
         if (world.getBlockAt(pos.toLocation(world)).getType() != Material.AIR) {
             world.createExplosion(pos.toLocation(world), (float) power, false, true, armourStand);
@@ -272,8 +274,8 @@ public class MissileController {
             }
         }
         armourStand.remove();
-        run.cancel();
         MissileWarfare.activemissiles.remove(this);
+        run.cancel();
     }
 
     public Vector getVelocity(){

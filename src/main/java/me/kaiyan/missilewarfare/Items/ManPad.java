@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ManPad extends SlimefunItem {
-    public static List<Player> active;
+    public static List<Player> active = new ArrayList<>();
     public final int range = 300*300;
 
     public ManPad(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
