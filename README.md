@@ -7,7 +7,7 @@ This plugin adds missiles and others to Slimefun!
 
 Contacts:
 
-https://discord.gg/GZZq9euk
+https://discord.gg/bcYdK8xfkF
 
 Coder/Creator: pain.#3884
 
