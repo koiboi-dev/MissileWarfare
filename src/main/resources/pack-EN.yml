@@ -1,4 +1,4 @@
-missilegroupname: "&6Missile Warfare"
+ghghh ymissilegroupname: "&6Missile Warfare"
 translator: "Kaiyan2006"
 
 messages:
@@ -52,6 +52,7 @@ messages:
         #FORMATTING: {id}
         createdid: "Created ID : {id}, You can now write to it"
         gottenid: "Gotten ID"
+
 materials:
     sugarfuel:
         name: "Sugar Fuel"
@@ -144,6 +145,10 @@ materials:
             - "Engineered to perfection, Sleek, Deadly."
             - "Uranium added for a cool glow effect"
             - "The body of the ICBM missile"
+    mine:
+        name: "Mine"
+        lore:
+            - "Will it work on tanks?"
 
 
 missiles:

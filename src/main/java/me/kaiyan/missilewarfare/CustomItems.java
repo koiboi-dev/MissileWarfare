@@ -152,6 +152,16 @@ public class CustomItems {
 
         SlimefunItem smallfin = new SlimefunItem(group, smallfinstack, RecipeType.ENHANCED_CRAFTING_TABLE, smallfinrecipe);
         //</editor-fold>
+        //<editor-fold desc="MINE">
+        SlimefunItemStack minestack = new SlimefunItemStack("MINE", Material.TNT, Translations.getMaterialName("mine"), Translations.getMaterialLore("mine"));
+        ItemStack[] minerecipe = {
+                SlimefunItems.SILVER_INGOT, new ItemStack(Material.STONE_PRESSURE_PLATE), SlimefunItems.SILVER_INGOT,
+                SlimefunItems.SILVER_INGOT, rocketfuelstack, SlimefunItems.SILVER_INGOT,
+                SlimefunItems.SILVER_INGOT, explosivepowderstack, SlimefunItems.SILVER_INGOT
+        };
+
+        Mine mine = new Mine(group, minestack, RecipeType.ENHANCED_CRAFTING_TABLE, minerecipe);
+        //</editor-fold>
         Translations.setType("smallmissile");
         //<editor-fold desc="SMALLMISSILE">
         SlimefunItemStack smallmissilestack = new SlimefunItemStack("SMALLMISSILE", Material.IRON_SWORD, Translations.getMissileName("normal"), Translations.getTypeLore(), Translations.getMissileVariant("normal"));
@@ -532,6 +542,7 @@ public class CustomItems {
                 simpleflightcomputerstack, ultraliteplatestack, simpleflightcomputerstack,
         };
         new MissileRadar(group, missileradarrecipe).register(main);
+        mine.register(main);
         //Handhelds
         manpad.register(main);
         // Materials

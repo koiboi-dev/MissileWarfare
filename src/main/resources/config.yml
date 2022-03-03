@@ -114,10 +114,17 @@ missiles:
         range: 1000
         power: 4.5
         accuracy: 20
+mine:
+    explosivepower: 8
+    # Amount of random damage to apply to the receiving player
+    maxranddamage: 10
 
+#set this to the name of a pack in the /lang folder without a .yml
 translation-pack: pack-EN
+#Dont edit, imports lang packs on first start
 saved-packs:
     - pack-EN
+    - pack-NL
 
 logging:
     logMissileShots: true
