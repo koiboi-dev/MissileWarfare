@@ -202,7 +202,7 @@ public class CustomItems {
         MissileItem smallmissileAC = new MissileItem(group, smallmissileACstack, RecipeType.ENHANCED_CRAFTING_TABLE, smallmissileACrecipe, 4, Translations.getMissileLore("ac"));
         //</editor-fold>
         //<editor-fold desc="GROUNDLAUNCHER">
-        SlimefunItemStack groundlauncherstack = new SlimefunItemStack("GROUNDLAUNCHER", Material.DISPENSER, Translations.get("launchers.ground.name"), Translations.get("launchers.ground.lore"));
+        SlimefunItemStack groundlauncherstack = new SlimefunItemStack("GROUNDLAUNCHER", Material.DISPENSER, Translations.get("launchers.ground.name"), Translations.pack.getStringList("launchers.ground.lore").toArray(new String[0]));
         ItemStack[] groundlauncherrecipe = {
                 SlimefunItems.REINFORCED_PLATE, null, SlimefunItems.REINFORCED_PLATE,
                 SlimefunItems.REINFORCED_PLATE, SlimefunItems.ELECTRIC_MOTOR, SlimefunItems.REINFORCED_PLATE,

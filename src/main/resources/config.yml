@@ -72,7 +72,7 @@ missiles:
     MISSILEEXCAV:
         speed: 0.5
         range: 100
-        power: 8
+        power: 10
         accuracy: 50
     MISSILESTICK:
         speed: 4

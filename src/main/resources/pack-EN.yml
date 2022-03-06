@@ -1,4 +1,4 @@
-ghghh ymissilegroupname: "&6Missile Warfare"
+missilegroupname: "&6Missile Warfare"
 translator: "Kaiyan2006"
 
 messages:
@@ -143,7 +143,6 @@ materials:
         name: "ICBM Body"
         lore:
             - "Engineered to perfection, Sleek, Deadly."
-            - "Uranium added for a cool glow effect"
             - "The body of the ICBM missile"
     mine:
         name: "Mine"
