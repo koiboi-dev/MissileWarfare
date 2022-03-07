@@ -330,3 +330,45 @@ other:
             - "THESE ID'S ARE GLOBAL"
             - "ANYONE CAN EDIT THEM IF"
             - "THEY HAVE THE ID"
+
+guidebook:
+    homepage:
+        title: "Missile Warfare"
+        subtitle: "The guide book for Missile Warfare"
+        contenttitle: "Contents:"
+        content:
+            - "Ground Missile Launcher"
+            - "Anti-Missile Launcher"
+            - "ManPad"
+            - "Anti-Elytra Launchers"
+    groundlauncherpage:
+        title: "Ground Missile Launcher"
+        content:
+            - "The Ground Missile Launcher fires missiles at the given coordinates."
+            - "Right clicking with a stick will set its coords"
+            - "Right clicking with a blaze rod will set the cruise alt"
+            - "[BOLD]Will hit friendly missiles"
+    antimissilepage:
+        title: "Anti-Missile Launcher"
+        content:
+            - "The Anti-Missile Launcher targets and shoots down any incoming missiles."
+            - "It will shoot down any missiles, whether friendly or not, that comes into its range"
+            - "Use a redstone input to disable it from firing."
+    manpadpage:
+        title: "Manpads"
+        content:
+            - "Manpads are handheld items that can be used to identify and shoot down enemy missiles"
+            - "Unlike Anti-Missile Launchers Manpads have a guaranteed chance of shooting down opponent missiles"
+            - "Manpads are used by holding shift to begin scanning"
+    antielytrapage:
+        title: "Anti-Elytra Launchers"
+        content:
+            - "Anti Elytra lanchers fire missiles at players within their radius, breaking their elytra."
+            - "This is really useful for city defence during wars.\nSet ignored players using PlayerID"
+            - "Use a stick to set the ID of the launcher."
+    playeridpage:
+        title: "PlayerID"
+        content:
+            - "PlayerID is used to set players that some launchers use to ignore."
+            - "Use a PlayerList in order to set the ID and the players it should ignore."
+            - "[BOLD]ANYONE CAN SET ANY ID, KEEP YOUR ID'S SECRET"

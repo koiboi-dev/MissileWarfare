@@ -1,6 +1,7 @@
 package me.kaiyan.missilewarfare;
 
 import io.github.thebusybiscuit.slimefun4.libraries.dough.config.Config;
+import net.md_5.bungee.api.ChatColor;
 
 public class Translations {
     public static Config pack;
@@ -8,6 +9,26 @@ public class Translations {
 
     public static String get(String key){
         return pack.getString(key);
+    }
+
+    public static String[] getarr(String key){
+        return pack.getStringList(key).toArray(new String[0]);
+    }
+
+    public static String getPage(String key){
+        StringBuilder output = new StringBuilder();
+        String[] arr = getarr(key+".content");
+
+        for (String str : arr){
+            str += "\n";
+            if (str.contains("[BOLD]")){
+                str = str.replace("[BOLD]", "");
+                str = ChatColor.BOLD+str;
+            }
+            output.append(str);
+        }
+
+        return output.toString();
     }
 
     public static String getMaterialName(String material){
