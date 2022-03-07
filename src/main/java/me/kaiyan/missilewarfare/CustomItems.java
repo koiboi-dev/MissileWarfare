@@ -49,7 +49,7 @@ public class CustomItems {
         GuideBook guide = new GuideBook(group, guidestack, RecipeType.ENHANCED_CRAFTING_TABLE, guiderecipe);
         //</editor-fold>
         //<editor-fold desc="EXPLOSIVEPOWDER">
-        SlimefunItemStack explosivepowderstack = new SlimefunItemStack("EXPLOSIVEPOWDER", Material.GLOWSTONE_DUST, Translations.get("explosivepowder"), Translations.getMaterialLore("explosivepowder"));
+        SlimefunItemStack explosivepowderstack = new SlimefunItemStack("EXPLOSIVEPOWDER", Material.GLOWSTONE_DUST, Translations.getMaterialName("explosivepowder"), Translations.getMaterialLore("explosivepowder"));
         ItemStack[] explosivepowderrecipe = {
                 SlimefunItems.MAGNESIUM_DUST, SlimefunItems.MAGNESIUM_DUST, SlimefunItems.MAGNESIUM_DUST,
                 SlimefunItems.MAGNESIUM_DUST, new ItemStack(Material.COAL), SlimefunItems.MAGNESIUM_DUST,
@@ -67,7 +67,7 @@ public class CustomItems {
                 explosivepowderstack, explosivepowderstack, explosivepowderstack,
                 null, new ItemStack(Material.GUNPOWDER), null,
         };
-        SlimefunItem compressedpowder = new SlimefunItem(group, compressedpowderstack, RecipeType.COMPRESSOR, compressedpowderrecipe);
+        SlimefunItem compressedpowder = new SlimefunItem(group, compressedpowderstack, RecipeType.ENHANCED_CRAFTING_TABLE, compressedpowderrecipe);
         //</editor-fold>
         //<editor-fold desc="ULTRALITE_INGOT">
         SlimefunItemStack ultraliteingotstack = new SlimefunItemStack("ULTRALITE_INGOT", Material.BRICK, Translations.getMaterialName("ultraliteingot"), Translations.getMaterialLore("ultraliteingot"));
@@ -87,7 +87,7 @@ public class CustomItems {
                 ultraliteingotstack, null, ultraliteingotstack
         };
 
-        SlimefunItem ultraliteplate = new SlimefunItem(group, ultraliteplatestack, RecipeType.COMPRESSOR, ultraliteplaterecipe);
+        SlimefunItem ultraliteplate = new SlimefunItem(group, ultraliteplatestack, RecipeType.ENHANCED_CRAFTING_TABLE, ultraliteplaterecipe);
         //</editor-fold>
         //<editor-fold desc="SIMPLE_FLIGHT_COMPUTER">
         SlimefunItemStack simpleflightcomputerstacks = new SlimefunItemStack("SIMPLEFLIGHTCOMPUTER", Material.POWERED_RAIL, Translations.getMaterialName("simpleflightcomputer"), Translations.getMaterialLore("simpleflightcomputer"));
@@ -395,7 +395,7 @@ public class CustomItems {
                 SlimefunItems.SULFATE, SlimefunItems.SALT, SlimefunItems.SULFATE,
                 chlorinestack, SlimefunItems.SULFATE, chlorinestack
         };
-        SlimefunItem chlorinepellet = new SlimefunItem(group, chlorinepelletstack, RecipeType.COMPRESSOR, chlorinepelletrecipe);
+        SlimefunItem chlorinepellet = new SlimefunItem(group, chlorinepelletstack, RecipeType.ENHANCED_CRAFTING_TABLE, chlorinepelletrecipe);
         chlorine.addItemHandler((ItemUseHandler) playerRightClickEvent -> playerRightClickEvent.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 10, 2)));
         //</editor-fold>
         //<editor-fold desc="GASMISSILE">
