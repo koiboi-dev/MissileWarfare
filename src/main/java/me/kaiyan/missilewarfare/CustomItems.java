@@ -465,7 +465,7 @@ public class CustomItems {
         SlimefunItemStack icbmstack = new SlimefunItemStack("MISSILEICBM", Material.DIAMOND_SWORD,Translations.getSpecialName("icbm"), Translations.getSpecialLore("icbm"));
         ItemStack[] icbmrecipe = {
                 rocketfuelstack, heavywarheadstack, rocketfuelstack,
-                rocketfuelstack, icbmstack, rocketfuelstack,
+                rocketfuelstack, icbmmissilebodystack, rocketfuelstack,
                 rocketfuelstack, SlimefunItems.STEEL_THRUSTER, rocketfuelstack
         };
         MissileItem icbm = new MissileItem(group, icbmstack, RecipeType.ENHANCED_CRAFTING_TABLE, icbmrecipe, 16, Translations.getSpecialALore("icbm"));
