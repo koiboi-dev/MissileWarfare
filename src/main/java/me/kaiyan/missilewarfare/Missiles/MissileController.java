@@ -167,7 +167,7 @@ public class MissileController {
                                 player.damage(0.25);
                             }
                         }
-                        if (loops >= 400){
+                        if (loops >= 600){
                             this.cancel();
                         }
                         loops++;
