@@ -60,6 +60,8 @@ public class VariantsAPI {
                 return "AVLR";
             case 22:
                 return "AVAC";
+            case 23:
+                return "ELYT";
         }
         return "NONE";
     }
@@ -110,6 +112,8 @@ public class VariantsAPI {
                 return 21;
             case "MISSILEACADV":
                 return 22;
+            case "ANTIELYTRAMISSILE":
+                return 23;
         }
         return 0;
     }
@@ -160,6 +164,8 @@ public class VariantsAPI {
                 return 21;
             case "MISSILEACADV":
                 return 22;
+            case "ANTIELYTRAMISSILE":
+                return 23;
         }
         return 0;
     }
@@ -230,6 +236,8 @@ public class VariantsAPI {
                 return MissileConfig.missiles[20];
             case 22:
                 return MissileConfig.missiles[21];
+            case 23:
+                return MissileConfig.missiles[22];
         }
         return null;
     }

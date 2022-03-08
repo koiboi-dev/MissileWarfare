@@ -5,7 +5,9 @@ import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.handlers.WeaponUseHandler;
+import me.kaiyan.missilewarfare.Translations;
 import me.kaiyan.missilewarfare.VariantsAPI;
+import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -19,10 +21,10 @@ public class MissileItem extends SlimefunItem {
 
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore();
-        lore.add("Range: "+Math.sqrt(missileClass.range));
-        lore.add("Power: "+missileClass.power);
-        lore.add("Speed: "+missileClass.speed);
-        lore.add("Accuracy: Within "+missileClass.accuracy+" Blocks");
+        lore.add(ChatColor.translateAlternateColorCodes('&', "&7"+ Translations.get("missiledesc.range")) +Math.sqrt(missileClass.range));
+        lore.add(ChatColor.translateAlternateColorCodes('&', "&7"+ Translations.get("missiledesc.power")+missileClass.power));
+        lore.add(ChatColor.translateAlternateColorCodes('&', "&7"+ Translations.get("missiledesc.speed")+missileClass.speed));
+        lore.add(ChatColor.translateAlternateColorCodes('&', "&7"+ Translations.get("missiledesc.accuracy").replace("{blocks}", String.valueOf(missileClass.accuracy))));
         lore.add(extraLore);
         meta.setLore(lore);
         item.setItemMeta(meta);

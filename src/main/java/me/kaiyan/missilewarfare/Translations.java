@@ -3,6 +3,8 @@ package me.kaiyan.missilewarfare;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.config.Config;
 import net.md_5.bungee.api.ChatColor;
 
+import java.util.List;
+
 public class Translations {
     public static Config pack;
     public static String missileType = "";
@@ -21,25 +23,25 @@ public class Translations {
 
         for (String str : arr){
             str += "\n";
-            if (str.contains("[BOLD]")){
-                str = str.replace("[BOLD]", "");
-                str = ChatColor.BOLD+str;
-            }
-            output.append(str);
+            output.append(ChatColor.translateAlternateColorCodes('&', str));
         }
 
         return output.toString();
     }
 
     public static String getMaterialName(String material){
-        return get("materials."+material+".name");
+        return ChatColor.translateAlternateColorCodes('&',"&e"+get("materials."+material+".name"));
     }
     public static String[] getMaterialLore(String material){
-        return pack.getStringList("materials." + material + ".lore").toArray(new String[0]);
+        List<String> lore = pack.getStringList("materials." + material + ".lore");
+        for (String str : lore){
+            ChatColor.translateAlternateColorCodes('&', "&7"+str);
+        }
+        return lore.toArray(new String[0]);
     }
 
     public static String getTypeLore(){
-        return get("missiles."+missileType+".lore");
+        return ChatColor.translateAlternateColorCodes('&',"&c"+get("missiles."+missileType+".lore"));
     }
 
     public static void setType(String type){
@@ -47,23 +49,27 @@ public class Translations {
     }
 
     public static String getMissileName(String type){
-        return get("missiles."+missileType+".missiles."+type+".name");
+        return ChatColor.translateAlternateColorCodes('&',"&e"+get("missiles."+missileType+".missiles."+type+".name"));
     }
     public static String getMissileVariant(String type){
-        return get("missiles."+missileType+".missiles."+type+".variant");
+        return ChatColor.translateAlternateColorCodes('&',"&a"+get("missiles."+missileType+".missiles."+type+".variant"));
     }
     public static String getMissileLore(String type){
-        return get("missiles."+missileType+".missiles."+type+".lore");
+        return ChatColor.translateAlternateColorCodes('&', "&7"+get("missiles."+missileType+".missiles."+type+".lore"));
     }
 
     public static String getSpecialName(String type){
-        return get("specialmissiles."+type+".name");
+        return ChatColor.translateAlternateColorCodes('&', "&c"+get("specialmissiles."+type+".name"));
     }
     public static String[] getSpecialLore(String type){
-        return pack.getStringList("specialmissiles."+type+".lore").toArray(new String[0]);
+        List<String> lore = pack.getStringList("specialmissiles."+type+".lore");
+        for (String str : lore){
+            ChatColor.translateAlternateColorCodes('&', "&7"+str);
+        }
+        return lore.toArray(new String[0]);
     }
     public static String getSpecialALore(String type){
-        return get("specialmissiles."+type+".afterlore");
+        return ChatColor.translateAlternateColorCodes('&', "&7"+get("specialmissiles."+type+".afterlore"));
     }
 
     public static void setup(Config cfg){

@@ -17,8 +17,8 @@ public class GuideBook extends SlimefunItem {
         super(itemGroup, item, recipeType, recipe);
         BookMeta meta = (BookMeta) item.getItemMeta();
 
-        meta.setTitle("Missiles for Dummies");
-        meta.setAuthor("Kaiyan2006");
+        meta.setTitle(ChatColor.translateAlternateColorCodes('&', Translations.get("guidebook.title")));
+        meta.setAuthor(ChatColor.translateAlternateColorCodes('&', Translations.get("guidebook.author")));
 
         String[] content = Translations.getarr("guidebook.homepage.content");
 

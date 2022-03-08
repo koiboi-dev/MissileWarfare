@@ -331,7 +331,10 @@ other:
             - "ANYONE CAN EDIT THEM IF"
             - "THEY HAVE THE ID"
 
+# Color Codes: https://wiki.ess3.net/mc/
 guidebook:
+    title: "Missiles for Dummies"
+    author: "Kaiyan2006" # Feel free to put your name here | E.G: author: "kiease"
     homepage:
         title: "Missile Warfare"
         subtitle: "The guide book for Missile Warfare"
@@ -347,7 +350,7 @@ guidebook:
             - "The Ground Missile Launcher fires missiles at the given coordinates."
             - "Right clicking with a stick will set its coords"
             - "Right clicking with a blaze rod will set the cruise alt"
-            - "[BOLD]Will hit friendly missiles"
+            - "&lWill hit friendly missiles"
     antimissilepage:
         title: "Anti-Missile Launcher"
         content:
@@ -371,4 +374,14 @@ guidebook:
         content:
             - "PlayerID is used to set players that some launchers use to ignore."
             - "Use a PlayerList in order to set the ID and the players it should ignore."
-            - "[BOLD]ANYONE CAN SET ANY ID, KEEP YOUR ID'S SECRET"
+            - "&lANYONE CAN SET ANY ID, KEEP YOUR ID'S SECRET"
+
+radar:
+    name: "Missile Radar"
+    lore: "Emits a redstone signal when a missile is\nwithin 700 blocks"
+
+missiledesc:
+    range: "Range: "
+    power: "Power: "
+    speed: "Speed: "
+    accuracy: "Accuracy: Within {blocks} Blocks"

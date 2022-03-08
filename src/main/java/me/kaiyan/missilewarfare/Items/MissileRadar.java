@@ -10,6 +10,7 @@ import me.kaiyan.missilewarfare.Missiles.MissileController;
 import me.kaiyan.missilewarfare.Translations;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.Slimefun.Objects.handlers.BlockTicker;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -21,7 +22,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class MissileRadar extends SlimefunItem {
     public MissileRadar(ItemGroup itemGroup, ItemStack[] recipe) {
-        super(itemGroup, new SlimefunItemStack("MISSILERADAR", Material.GRAY_WOOL, "Missile Radar", "Emits a redstone signal when a missile is", "within 700 blocks"), RecipeType.ENHANCED_CRAFTING_TABLE, recipe);
+        super(itemGroup, new SlimefunItemStack("MISSILERADAR", Material.GRAY_WOOL, ChatColor.YELLOW +Translations.get("radar.name"), ChatColor.GRAY+Translations.get("radar.lore")), RecipeType.ENHANCED_CRAFTING_TABLE, recipe);
     }
 
     @Override

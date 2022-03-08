@@ -54,15 +54,19 @@ public class GroundMissileLauncher extends SlimefunItem{
                 //Block bottom = world.getBlockAt(event.getBlock().getLocation().subtract(new Vector(0, 2, 0)));
                 if (below.getType() == Material.GREEN_CONCRETE){
                     event.getPlayer().sendMessage(Translations.get("messages.launchers.ground.create.success"));
+                    TileState state = (TileState)event.getBlockPlaced().getState();
+                    PersistentDataContainer cont = state.getPersistentDataContainer();
+
+                    cont.set(new NamespacedKey(MissileWarfare.getInstance(), "canfire"), PersistentDataType.INTEGER, 1);
+                    state.update();
                     /*if (bottom.getType() == Material.GREEN_CONCRETE){
                         event.getPlayer().sendMessage("Created Small Launcher!");
                     }else{
                         event.getPlayer().sendMessage("Bottom Block is type: " + bottom.getType() + " It needs Type GREEN_CONCRETE");
                         event.setCancelled(true);
                     }*/
-                }else{
+                }else {
                     event.getPlayer().sendMessage(Translations.get("messages.launchers.ground.create.failure").replace("{type}", below.getType().name()));
-                    event.setCancelled(true);
                 }
             }
         };
@@ -77,6 +81,14 @@ public class GroundMissileLauncher extends SlimefunItem{
 
     private void blockDispense(BlockDispenseEvent blockDispenseEvent, Dispenser dispenser, Block block, SlimefunItem slimefunItem) {
         blockDispenseEvent.setCancelled(true);
+
+        TileState state = (TileState)dispenser.getBlock().getState();
+        PersistentDataContainer cont = state.getPersistentDataContainer();
+
+        if (cont.get(new NamespacedKey(MissileWarfare.getInstance(), "canfire"), PersistentDataType.INTEGER) != 1){
+            MissileWarfare.getInstance().getServer().broadcastMessage("Missile at : "+dispenser.getBlock().getLocation().toVector() +" Is unable to fire: Missing GREEN_CONCRETE Below");
+        }
+
         new BukkitRunnable() {
             @Override
             public void run() {
