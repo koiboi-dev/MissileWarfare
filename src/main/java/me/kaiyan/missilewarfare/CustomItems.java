@@ -451,9 +451,9 @@ public class CustomItems {
         //<editor-fold desc="ICBMMISSILEBODY">
         SlimefunItemStack icbmmissilebodystack = new SlimefunItemStack("ICBMMISSILEBODY", Material.GREEN_CONCRETE, Translations.getMaterialName("icbmbody"), Translations.getMaterialLore("icbmbody"));
         ItemStack[] icbmmissilebodyrecipe = {
-                compressedpowderstack, SlimefunItems.URANIUM, compressedpowderstack,
-                SlimefunItems.URANIUM, advancedmissilebodystack, SlimefunItems.URANIUM,
-                compressedpowderstack, SlimefunItems.URANIUM, compressedpowderstack
+                compressedpowderstack, SlimefunItems.NEPTUNIUM, compressedpowderstack,
+                SlimefunItems.NEPTUNIUM, advancedmissilebodystack, SlimefunItems.NEPTUNIUM,
+                compressedpowderstack, SlimefunItems.NEPTUNIUM, compressedpowderstack
         };
 
         SlimefunItem icbmmissilebody = new SlimefunItem(group, icbmmissilebodystack, RecipeType.ENHANCED_CRAFTING_TABLE, icbmmissilebodyrecipe);
