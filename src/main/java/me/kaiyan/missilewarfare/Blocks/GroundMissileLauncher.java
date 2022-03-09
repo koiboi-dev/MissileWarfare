@@ -279,17 +279,26 @@ public class GroundMissileLauncher extends SlimefunItem{
         if (alt == null){
             alt = 120;
         }
-        if (MissileWarfare.plugin.getConfig().getBoolean("logging.logMissileShots")){
+        if (MissileWarfare.plugin.getConfig().getBoolean("logging.logMissileShots")) {
             Player result = null;
             double lastDistance = Double.MAX_VALUE;
-            for(Player p : disp.getWorld().getPlayers()) {
+            for (Player p : disp.getWorld().getPlayers()) {
                 double distance = disp.getLocation().distanceSquared(p.getLocation());
-                if(distance < lastDistance) {
+                if (distance < lastDistance) {
                     lastDistance = distance;
                     result = p;
                 }
             }
-            MissileWarfare.getInstance().getLogger().info("Missile Shot || Location: "+disp.getBlock().getLocation()+" Target: "+new Vector(coords[0], 0, coords[1])+" Nearest Player: "+result.getName());
+            MissileWarfare.getInstance().getLogger().info("Missile Shot || Location: " + disp.getBlock().getLocation() + " Target: " + new Vector(coords[0], 0, coords[1]) + " Nearest Player: " + result.getName());
+            if (MissileWarfare.getInstance().getConfig().getBoolean("logging.broadcastMissileShots")) {
+                final String playername = result.getName();
+                new BukkitRunnable(){
+                    @Override
+                    public void run() {
+                        MissileWarfare.getInstance().getServer().broadcastMessage("Missile Shot! Launcher Coords: " +disp.getBlock().getLocation().toVector() + " Nearest Player: " + playername);
+                    }
+                }.runTaskLater(MissileWarfare.getInstance(), 20L *MissileWarfare.getInstance().getConfig().getLong("logging.waitTimeBeforeBroadcast"));
+            }
         }
         MissileController _missile = new MissileController(true, disp.getBlock().getLocation().add(new Vector(0.5, 1.35, 0.5)).toVector(), new Vector(coords[0], 0, coords[1]), (float) missile.speed, disp.getBlock().getWorld(), missile.power, missile.accuracy, missile.type, alt);
         _missile.FireMissile();

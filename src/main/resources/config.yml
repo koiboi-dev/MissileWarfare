@@ -53,12 +53,12 @@ missiles:
         speed: 2.5
         range: 1700
         power: 4
-        accuracy: 30
+        accuracy: 20
     MISSILEAPTHR:
-        speed: 3
+        speed: 4
         range: 1850
         power: 4.5
-        accuracy: 20
+        accuracy: 10
     MISSILEGAS:
         speed: 3
         range: 1600
@@ -114,6 +114,7 @@ missiles:
         range: 700
         power: 4
         accuracy: 0
+
 mine:
     explosivepower: 8
     # Amount of random damage to apply to the receiving player
@@ -128,6 +129,10 @@ saved-packs:
 
 logging:
     logMissileShots: true
+    # BROADCASTS TO ALL PLAYERS THAT A MISSILE WAS SHOT
+    broadcastMissileShots: false
+    # Seconds to wait before broadcasting the missile being shot
+    waitTimeBeforeBroadcast: 20
 
 other:
     #How long until cleanup of armour stands (ticks)

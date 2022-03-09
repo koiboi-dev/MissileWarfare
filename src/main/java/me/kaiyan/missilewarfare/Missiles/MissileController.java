@@ -48,6 +48,10 @@ public class MissileController {
         Random rand = new Random(System.nanoTime());
         target = target.add(new Vector((rand.nextDouble()-0.5)*accuracy, 0, (rand.nextDouble()-0.5)*accuracy));
 
+        if (rand.nextDouble() < 0.15){
+            target.add(new Vector((rand.nextDouble()-0.5)*accuracy*2, 0, (rand.nextDouble()-0.5)*accuracy*2));
+        }
+
         this.target = target;
         dir = new Vector(0,0,0);
 
