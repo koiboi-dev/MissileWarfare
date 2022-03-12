@@ -36,11 +36,10 @@ public class MissileWarfare extends JavaPlugin implements SlimefunAddon {
         if (!lang.exists()) {
             generateLangPacks(lang);
         }
-        Translations.setup(new Config(getDataFolder()+"/lang/"+cfg.getString("translation-pack")+".yml"));
-
-        PlayerID.loadPlayers(saveFile);
-        MissileConfig.setup(cfg);
         try {
+            Translations.setup(new Config(getDataFolder()+"/lang/"+cfg.getString("translation-pack")+".yml"));
+            PlayerID.loadPlayers(saveFile);
+            MissileConfig.setup(cfg);
             CustomItems.setup();
         } catch (Exception e){
             getLogger().warning(e.toString());
