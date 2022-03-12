@@ -42,7 +42,7 @@ public class MissileWarfare extends JavaPlugin implements SlimefunAddon {
         MissileConfig.setup(cfg);
         try {
             CustomItems.setup();
-        } catch (IndexOutOfBoundsException e){
+        } catch (Exception e){
             getLogger().warning(e.toString());
             getLogger().warning("=== !LANG PACK INVALID, REVERTING TO EN LANG PACK! ===");
             getLogger().warning("/brokenLang/ created, the invalid langpack is in there");
@@ -113,7 +113,7 @@ public class MissileWarfare extends JavaPlugin implements SlimefunAddon {
     }
 
     public void generateLangPacks(File lang){
-        String[] loadedpacks = new String[]{"pack-EN"};
+        String[] loadedpacks = MissileWarfare.getInstance().getConfig().getStringList("saved-packs").toArray(new String[0]);
         for (String pack : loadedpacks) {
             saveResource(pack + ".yml", false);
         }
