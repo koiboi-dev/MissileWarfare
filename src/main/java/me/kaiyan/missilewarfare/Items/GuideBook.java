@@ -47,7 +47,7 @@ public class GuideBook extends SlimefunItem {
                 .append(Translations.getPage("guidebook.antielytrapage"))
                 .create();
 
-        BaseComponent[] playerID = new ComponentBuilder(ChatColor.BOLD+Translations.get("guidebook.playeridpage")+"\n")
+        BaseComponent[] playerID = new ComponentBuilder(ChatColor.BOLD+Translations.get("guidebook.playeridpage.title")+"\n")
                 .append(Translations.getPage("guidebook.playeridpage"))
                 .create();
 
