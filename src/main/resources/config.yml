@@ -126,6 +126,7 @@ translation-pack: pack-EN
 saved-packs:
     - pack-EN
     - pack-NL
+    - pack-CN
 
 logging:
     logMissileShots: true
