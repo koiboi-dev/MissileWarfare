@@ -7,6 +7,7 @@ import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
 import me.kaiyan.missilewarfare.MissileWarfare;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
+import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -22,7 +23,11 @@ public class Mine extends SlimefunItem implements Listener {
         BlockPlaceHandler placeHandler = new BlockPlaceHandler(false) {
             @Override
             public void onPlayerPlace(BlockPlaceEvent blockPlaceEvent) {
-                blockPlaceEvent.getBlockPlaced().setType(blockPlaceEvent.getBlockAgainst().getType());
+                Material type = blockPlaceEvent.getBlockAgainst().getType();
+                if (type == Material.BEDROCK || type == Material.ICE){
+                    return;
+                }
+                blockPlaceEvent.getBlockPlaced().setType(type);
             }
         };
         addItemHandler(placeHandler);
