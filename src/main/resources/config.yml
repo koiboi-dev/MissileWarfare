@@ -67,7 +67,7 @@ missiles:
     MISSILEEXCAV:
         speed: 0.5
         range: 100
-        power: 10
+        power: 14
         accuracy: 50
     MISSILESTICK:
         speed: 4
@@ -97,7 +97,7 @@ missiles:
     MISSILEHEADV:
         speed: 3.5
         range: 2000
-        power: 5
+        power: 6
         accuracy: 35
     MISSILELRADV:
         speed: 4.5
@@ -129,6 +129,7 @@ saved-packs:
     - pack-CN
 
 logging:
+    # Sends a message to console on missile shot :O
     logMissileShots: true
     # BROADCASTS TO ALL PLAYERS THAT A MISSILE WAS SHOT
     broadcastMissileShots: false
@@ -136,7 +137,7 @@ logging:
     waitTimeBeforeBroadcast: 20
 
 other:
-    #How long until cleanup of armour stands (ticks)
+    #How long until cleanup of lost armour stands (ticks)
     cleanup-wait-time: 1200
 
 options:
