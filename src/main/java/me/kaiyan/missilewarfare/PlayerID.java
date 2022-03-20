@@ -17,7 +17,7 @@ public class PlayerID {
             List<OfflinePlayer> _players = new ArrayList<>();
             List<String> strs = file.getStringList("id."+key+".players");
             for (String uuidstr : strs){
-                uuidstr.trim();
+                uuidstr = uuidstr.trim();
                 _players.add(Bukkit.getOfflinePlayer(UUID.fromString(uuidstr)));
             }
             players.put(key, _players);

@@ -12,6 +12,8 @@ import org.bukkit.util.Vector;
 import java.util.Random;
 
 public class VariantsAPI {
+    public static Random rand = new Random();
+
     public static String getStrVariantFromInt(int type){
         switch (type) {
             case 0:
@@ -248,7 +250,6 @@ public class VariantsAPI {
     }
 
     public static void spawnMissileTrail(World world, int type, Vector pos, Vector velocity){
-        Random rand = new Random();
         world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, pos.toLocation(world), 0, 0, 0, 0, 0.1, null, true);
         world.spawnParticle(Particle.FLAME, pos.toLocation(world), 0, -velocity.getX()+((rand.nextDouble()-0.5)*0.5), -velocity.getY()+((rand.nextDouble()-0.5)*0.5), -velocity.getZ()+((rand.nextDouble()-0.5)*0.5), 0.25, null, true);
         world.spawnParticle(Particle.FLAME, pos.toLocation(world), 0, -velocity.getX()+((rand.nextDouble()-0.5)*0.5), -velocity.getY()+((rand.nextDouble()-0.5)*0.5), -velocity.getZ()+((rand.nextDouble()-0.5)*0.5), 0.25, null, true);

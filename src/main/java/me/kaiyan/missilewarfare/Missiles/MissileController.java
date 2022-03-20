@@ -34,6 +34,7 @@ public class MissileController {
     public Entity armourStand;
     public int blockcount = 0;
     public boolean deployedCluster = false;
+    public Random random = new Random();
 
     public MissileController(boolean isgroundmissile, Vector startpos, Vector target, float speed, World world, double power, float accuracy, int type, int cruiseAlt){
         this.isgroundmissile = isgroundmissile;
@@ -118,7 +119,7 @@ public class MissileController {
         pos.add(velocity);
         armourStand.teleport(pos.toLocation(world).clone().subtract(new Vector(0, 1.75, 0)));
         VariantsAPI.spawnMissileTrail(world, type, pos, velocity);
-        Random rand = new Random();
+        Random rand = this.random;
         if (world.getBlockAt(pos.toLocation(world)).getType() != Material.AIR) {
             if (type == 10) {
                 //<editor-fold desc="APT1">
@@ -196,9 +197,6 @@ public class MissileController {
                 run.cancel();
                 return;
             }
-            if (other == null){
-                run.cancel();
-            }
             world.createExplosion(pos.toLocation(world), (float) power, false, true, armourStand);
             for (int i = 0; i < 40; i++) {
                 world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, pos.toLocation(world), 0, Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5, 0.1, null, true);
@@ -220,7 +218,7 @@ public class MissileController {
             world.spawnParticle(Particle.FLAME, pos.toLocation(world), 0, Math.random() - 0.5, Math.random() * 2, Math.random() - 0.5, 0.25, null, true);
         }
         world.createExplosion(pos.toLocation(world).add(new Vector(0,1,0)), (float) power, false, true, armourStand);
-        Random rand = new Random();
+        Random rand = this.random;
         if (type == 15){
             for (int i = 0; i < 50; i++){
                 Vector dir = new Vector((rand.nextFloat()-0.5)*2, (rand.nextFloat()-0.5)*2, (rand.nextFloat()-0.5)*2);
