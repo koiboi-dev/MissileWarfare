@@ -1,6 +1,11 @@
 package me.kaiyan.missilewarfare.Missiles;
 
-
+import com.sk89q.worldedit.math.BlockVector3;
+import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldguard.protection.regions.RegionContainer;
 import me.kaiyan.missilewarfare.MissileWarfare;
 import me.kaiyan.missilewarfare.VariantsAPI;
 import org.bukkit.*;
@@ -17,6 +22,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
+import java.util.List;
 import java.util.Random;
 
 public class MissileController {
@@ -35,6 +41,7 @@ public class MissileController {
     public int blockcount = 0;
     public boolean deployedCluster = false;
     public Random random = new Random();
+    public Player nearestPlayer;
 
     public MissileController(boolean isgroundmissile, Vector startpos, Vector target, float speed, World world, double power, float accuracy, int type, int cruiseAlt){
         this.isgroundmissile = isgroundmissile;
@@ -45,6 +52,18 @@ public class MissileController {
         launched = false;
         this.type = type;
         this.cruiseAlt = cruiseAlt;
+
+        List<Player> players = world.getPlayers();
+        double mindist = Double.MAX_VALUE;
+        Player outplayer = null;
+        for (Player player : players){
+            double playerdist = player.getLocation().distanceSquared(pos.toLocation(world));
+            if (mindist > playerdist){
+                mindist = playerdist;
+                outplayer = player;
+            }
+        }
+        nearestPlayer = outplayer;
 
         Random rand = new Random(System.nanoTime());
         target = target.add(new Vector((rand.nextDouble()-0.5)*accuracy, 0, (rand.nextDouble()-0.5)*accuracy));
@@ -87,6 +106,7 @@ public class MissileController {
         if (type != 17){
             deployedCluster = true;
         }
+
 
         MissileWarfare.activemissiles.add(this);
     }
@@ -197,7 +217,7 @@ public class MissileController {
                 run.cancel();
                 return;
             }
-            world.createExplosion(pos.toLocation(world), (float) power, false, true, armourStand);
+            spawnExplosionWithWorldGuard();
             for (int i = 0; i < 40; i++) {
                 world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, pos.toLocation(world), 0, Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5, 0.1, null, true);
                 world.spawnParticle(Particle.FLAME, pos.toLocation(world), 0, Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5, 0.1, null,true);
@@ -208,6 +228,21 @@ public class MissileController {
             }
         }
         if (world.getBlockAt(pos.toLocation(world)).getType() != Material.AIR) {
+            spawnExplosionWithWorldGuard();
+        }
+    }
+
+    public void spawnExplosionWithWorldGuard(){
+        if (MissileWarfare.worldGuardEnabled) {
+            RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+            RegionManager regions = container.get((com.sk89q.worldedit.world.World) world);
+            if (regions == null){
+                world.createExplosion(pos.toLocation(world), (float) power, false, true, armourStand);
+            } else {
+                ApplicableRegionSet set = regions.getApplicableRegions(BlockVector3.at(pos.getBlockX(), pos.getBlockY(), pos.getBlockZ()));
+                world.createExplosion(pos.toLocation(world), (float) power, false, set.testState(WorldGuardPlugin.inst().wrapPlayer(nearestPlayer), MissileWarfare.ALLOW_MISSILE_EXPLODE), armourStand);
+            }
+        } else {
             world.createExplosion(pos.toLocation(world), (float) power, false, true, armourStand);
         }
     }
@@ -217,7 +252,7 @@ public class MissileController {
             world.spawnParticle(Particle.CAMPFIRE_SIGNAL_SMOKE, pos.toLocation(world), 0, Math.random() - 0.5, Math.random() * 2, Math.random() - 0.5, 0.25, null, true);
             world.spawnParticle(Particle.FLAME, pos.toLocation(world), 0, Math.random() - 0.5, Math.random() * 2, Math.random() - 0.5, 0.25, null, true);
         }
-        world.createExplosion(pos.toLocation(world).add(new Vector(0,1,0)), (float) power, false, true, armourStand);
+        spawnExplosionWithWorldGuard();
         Random rand = this.random;
         if (type == 15){
             for (int i = 0; i < 50; i++){

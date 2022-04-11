@@ -1,14 +1,21 @@
 package me.kaiyan.missilewarfare;
 
+import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.protection.flags.Flag;
+import com.sk89q.worldguard.protection.flags.StateFlag;
+import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
+import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.config.Config;
 import me.kaiyan.missilewarfare.Missiles.MissileConfig;
 import me.kaiyan.missilewarfare.Missiles.MissileController;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -16,11 +23,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MissileWarfare extends JavaPlugin implements SlimefunAddon {
+    public static StateFlag ALLOW_MISSILE_EXPLODE;
     public static MissileWarfare plugin;
     public static List<MissileController> activemissiles;
+    public static boolean worldGuardEnabled = false;
 
     @Override
     public void onEnable() {
+        int pluginId = 14904; // <-- Replace with the id of your plugin!
+        Metrics metrics = new Metrics(this, pluginId);
+
         activemissiles = new ArrayList<>();
         plugin = this;
         // Read something from your config.yml
@@ -47,7 +59,7 @@ public class MissileWarfare extends JavaPlugin implements SlimefunAddon {
             getLogger().warning("/brokenLang/ created, the invalid langpack is in there");
             lang.renameTo(new File(getDataFolder()+"/brokenLang/"));
             generateLangPacks(lang);
-        }
+        }   
 
         new BukkitRunnable() {
             @Override
@@ -72,6 +84,26 @@ public class MissileWarfare extends JavaPlugin implements SlimefunAddon {
                 }
             }
         }.runTaskTimer(this, 0, cfg.getInt("other.cleanup-wait-time"));
+        if (getServer().getPluginManager().getPlugin("WorldGuard") != null){
+            worldGuardEnabled = true;
+            FlagRegistry registry = WorldGuard.getInstance().getFlagRegistry();
+            try {
+                // create a flag with the name "my-custom-flag", defaulting to true
+                StateFlag flag = new StateFlag("allow-missile-explode", true);
+                registry.register(flag);
+                ALLOW_MISSILE_EXPLODE = flag; // only set our field if there was no error
+            } catch (FlagConflictException e) {
+                // some other plugin registered a flag by the same name already.
+                // you can use the existing flag, but this may cause conflicts - be sure to check type
+                Flag<?> existing = registry.get("allow-missile-explode");
+                if (existing instanceof StateFlag) {
+                    ALLOW_MISSILE_EXPLODE = (StateFlag) existing;
+                } else {
+                    getLogger().severe("!! WARNING: WORLDGUARD FLAG ALLOW_MISSILE_EXPLODE HAS BEEN TAKEN BY ANOTHER PLUGIN, WORLDGUARD SUPPORT IS DISABLED !!");
+                    worldGuardEnabled = false;
+                }
+            }
+        }
     }
 
     public static MissileWarfare getInstance(){
@@ -102,6 +134,7 @@ public class MissileWarfare extends JavaPlugin implements SlimefunAddon {
         return null;
     }
 
+    @Nonnull
     @Override
     public JavaPlugin getJavaPlugin() {
         /*

@@ -24,6 +24,9 @@ api-version: 1.14
 depend:
 - Slimefun
 
+softdepend:
+- WorldGuard
+
 ## increase entity view dist
 entity-tracking-range:
     armour_stand: 128
