@@ -10,6 +10,7 @@ import io.github.thebusybiscuit.slimefun4.libraries.dough.config.Config;
 import me.kaiyan.missilewarfare.Missiles.MissileConfig;
 import me.kaiyan.missilewarfare.Missiles.MissileController;
 import org.bstats.bukkit.Metrics;
+import org.bstats.charts.SingleLineChart;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -27,11 +28,27 @@ public class MissileWarfare extends JavaPlugin implements SlimefunAddon {
     public static MissileWarfare plugin;
     public static List<MissileController> activemissiles;
     public static boolean worldGuardEnabled = false;
+    public static Metrics metrics;
+    public static int firedMissiles = 0;
+    public static int blocksExploded = 0;
 
     @Override
     public void onEnable() {
         int pluginId = 14904; // <-- Replace with the id of your plugin!
-        Metrics metrics = new Metrics(this, pluginId);
+        metrics = new Metrics(this, pluginId);
+
+        metrics.addCustomChart(new SingleLineChart("missiles_fired", () -> {
+            int missiles = firedMissiles;
+            firedMissiles = 0;
+            return missiles;
+        }));
+        metrics.addCustomChart(new SingleLineChart("missile_destroy", () -> {
+            int blocks = blocksExploded;
+            blocksExploded = 0;
+            return blocks;
+        }));
+
+        getLogger().info("Missile Warfare Starting Up!");
 
         activemissiles = new ArrayList<>();
         plugin = this;
@@ -84,8 +101,10 @@ public class MissileWarfare extends JavaPlugin implements SlimefunAddon {
                 }
             }
         }.runTaskTimer(this, 0, cfg.getInt("other.cleanup-wait-time"));
+        getLogger().info("Checking For Worldguard");
         if (getServer().getPluginManager().getPlugin("WorldGuard") != null){
             worldGuardEnabled = true;
+            getLogger().info("WorldGuard Enabled!");
             FlagRegistry registry = WorldGuard.getInstance().getFlagRegistry();
             try {
                 // create a flag with the name "my-custom-flag", defaulting to true

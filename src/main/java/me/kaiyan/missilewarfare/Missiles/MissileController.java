@@ -88,6 +88,8 @@ public class MissileController {
         }
 
         MissileWarfare.activemissiles.add(this);
+
+        MissileWarfare.firedMissiles += 1;
     }
     public MissileController(boolean isgroundmissile, Vector startpos, Vector target, float speed, World world, double power, float accuracy, int type, Vector dir){
         this.isgroundmissile = isgroundmissile;
