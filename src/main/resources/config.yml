@@ -127,6 +127,7 @@ saved-packs:
     - pack-EN
     - pack-NL
     - pack-CN
+    - pack-TW
 
 logging:
     # Sends a message to console on missile shot :O
