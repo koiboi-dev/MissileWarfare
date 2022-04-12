@@ -102,6 +102,10 @@ public class MissileWarfare extends JavaPlugin implements SlimefunAddon {
             }
         }.runTaskTimer(this, 0, cfg.getInt("other.cleanup-wait-time"));
         getLogger().info("Checking For Worldguard");
+    }
+
+    @Override
+    public void onLoad() {
         if (getServer().getPluginManager().getPlugin("WorldGuard") != null){
             worldGuardEnabled = true;
             getLogger().info("WorldGuard Enabled!");
