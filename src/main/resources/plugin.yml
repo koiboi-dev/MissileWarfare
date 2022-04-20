@@ -21,7 +21,8 @@ version: ${project.version}
 api-version: 1.14
 
 ## This is required and marks Slimefun as a plugin dependency.
-depend: [Slimefun, WorldGuard, WorldEdit]
+depend: [Slimefun]
+softdepend: [WorldGuard, WorldEdit, Towny]
 
 ## increase entity view dist
 entity-tracking-range:

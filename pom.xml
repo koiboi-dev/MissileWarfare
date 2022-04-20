@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>me.kaiyan.missilewarefare</groupId>
     <artifactId>MissileWarfare</artifactId>
-    <version>1.6.2</version>
+    <version>1.6.5</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -35,6 +35,11 @@
             <id>sk89q-repo</id>
             <url>https://maven.enginehub.org/repo/</url>
         </repository>
+        <repository>
+            <id>glaremasters repo</id>
+            <url>https://repo.glaremasters.me/repository/towny/</url>
+        </repository>
+
     </repositories>
 
     <build>
@@ -127,6 +132,12 @@
                     <artifactId>bstats-bukkit</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.palmergames.bukkit.towny</groupId>
+            <artifactId>towny</artifactId>
+            <version>0.98.1.0</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

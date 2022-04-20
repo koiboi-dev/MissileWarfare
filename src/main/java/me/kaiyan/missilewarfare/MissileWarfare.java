@@ -1,10 +1,5 @@
 package me.kaiyan.missilewarfare;
 
-import com.sk89q.worldguard.WorldGuard;
-import com.sk89q.worldguard.protection.flags.Flag;
-import com.sk89q.worldguard.protection.flags.StateFlag;
-import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
-import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.config.Config;
 import me.kaiyan.missilewarfare.Missiles.MissileConfig;
@@ -24,10 +19,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MissileWarfare extends JavaPlugin implements SlimefunAddon {
-    public static StateFlag ALLOW_MISSILE_EXPLODE;
     public static MissileWarfare plugin;
     public static List<MissileController> activemissiles;
     public static boolean worldGuardEnabled = false;
+    public static boolean townyEnabled = false;
     public static Metrics metrics;
     public static int firedMissiles = 0;
     public static int blocksExploded = 0;
@@ -101,32 +96,19 @@ public class MissileWarfare extends JavaPlugin implements SlimefunAddon {
                 }
             }
         }.runTaskTimer(this, 0, cfg.getInt("other.cleanup-wait-time"));
-        getLogger().info("Checking For Worldguard");
     }
 
     @Override
     public void onLoad() {
-        if (getServer().getPluginManager().getPlugin("WorldGuard") != null){
-            worldGuardEnabled = true;
-            getLogger().info("WorldGuard Enabled!");
-            FlagRegistry registry = WorldGuard.getInstance().getFlagRegistry();
-            try {
-                // create a flag with the name "my-custom-flag", defaulting to true
-                StateFlag flag = new StateFlag("allow-missile-explode", true);
-                registry.register(flag);
-                ALLOW_MISSILE_EXPLODE = flag; // only set our field if there was no error
-            } catch (FlagConflictException e) {
-                // some other plugin registered a flag by the same name already.
-                // you can use the existing flag, but this may cause conflicts - be sure to check type
-                Flag<?> existing = registry.get("allow-missile-explode");
-                if (existing instanceof StateFlag) {
-                    ALLOW_MISSILE_EXPLODE = (StateFlag) existing;
-                } else {
-                    getLogger().severe("!! WARNING: WORLDGUARD FLAG ALLOW_MISSILE_EXPLODE HAS BEEN TAKEN BY ANOTHER PLUGIN, WORLDGUARD SUPPORT IS DISABLED !!");
-                    worldGuardEnabled = false;
-                }
-            }
+        getLogger().info("Checking For Worldguard");
+        if (getServer().getPluginManager().getPlugin("WorldGuard") != null && getServer().getPluginManager().getPlugin("WorldEdit") != null){
+            WorldGuardLoader.load();
         }
+        if (getServer().getPluginManager().getPlugin("Towny") != null){
+            TownyLoader.setup();
+        }
+
+        getServer().getPluginManager().registerEvents(new ExplosionEventListener(), this);
     }
 
     public static MissileWarfare getInstance(){
@@ -168,7 +150,7 @@ public class MissileWarfare extends JavaPlugin implements SlimefunAddon {
     }
 
     public void generateLangPacks(File lang){
-        String[] loadedpacks = MissileWarfare.getInstance().getConfig().getStringList("saved-packs").toArray(new String[0]);
+        String[] loadedpacks = this.getConfig().getStringList("saved-packs").toArray(new String[0]);
         for (String pack : loadedpacks) {
             saveResource(pack + ".yml", false);
         }

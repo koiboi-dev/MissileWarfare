@@ -1,13 +1,9 @@
 package me.kaiyan.missilewarfare.Missiles;
 
-import com.sk89q.worldedit.math.BlockVector3;
-import com.sk89q.worldguard.WorldGuard;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.managers.RegionManager;
-import com.sk89q.worldguard.protection.regions.RegionContainer;
 import me.kaiyan.missilewarfare.MissileWarfare;
+import me.kaiyan.missilewarfare.TownyLoader;
 import me.kaiyan.missilewarfare.VariantsAPI;
+import me.kaiyan.missilewarfare.WorldGuardLoader;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -30,7 +26,7 @@ public class MissileController {
     public Vector pos;
     public Vector target;
     public double speed;
-    public World world;
+    public org.bukkit.World world;
     public double power;
     public boolean launched;
     public int type;
@@ -43,7 +39,7 @@ public class MissileController {
     public Random random = new Random();
     public Player nearestPlayer;
 
-    public MissileController(boolean isgroundmissile, Vector startpos, Vector target, float speed, World world, double power, float accuracy, int type, int cruiseAlt){
+    public MissileController(boolean isgroundmissile, Vector startpos, Vector target, float speed, org.bukkit.World world, double power, float accuracy, int type, int cruiseAlt){
         this.isgroundmissile = isgroundmissile;
         pos = startpos;
         this.speed = speed;
@@ -219,7 +215,7 @@ public class MissileController {
                 run.cancel();
                 return;
             }
-            spawnExplosionWithWorldGuard();
+            explode(run);
             for (int i = 0; i < 40; i++) {
                 world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, pos.toLocation(world), 0, Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5, 0.1, null, true);
                 world.spawnParticle(Particle.FLAME, pos.toLocation(world), 0, Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5, 0.1, null,true);
@@ -230,22 +226,28 @@ public class MissileController {
             }
         }
         if (world.getBlockAt(pos.toLocation(world)).getType() != Material.AIR) {
-            spawnExplosionWithWorldGuard();
+            explode(run);
         }
     }
 
-    public void spawnExplosionWithWorldGuard(){
-        if (MissileWarfare.worldGuardEnabled) {
-            RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-            RegionManager regions = container.get((com.sk89q.worldedit.world.World) world);
-            if (regions == null){
-                world.createExplosion(pos.toLocation(world), (float) power, false, true, armourStand);
+    public void spawnExplosionWithCheck(){
+        if (MissileWarfare.townyEnabled){
+            boolean explode = TownyLoader.exploded(nearestPlayer, pos.toLocation(world));
+            if (explode){
+                world.createExplosion(pos.toLocation(world), (float) power, false, true);
+                return;
             } else {
-                ApplicableRegionSet set = regions.getApplicableRegions(BlockVector3.at(pos.getBlockX(), pos.getBlockY(), pos.getBlockZ()));
-                world.createExplosion(pos.toLocation(world), (float) power, false, set.testState(WorldGuardPlugin.inst().wrapPlayer(nearestPlayer), MissileWarfare.ALLOW_MISSILE_EXPLODE), armourStand);
+                if (MissileWarfare.worldGuardEnabled){
+                    WorldGuardLoader.explode(world, pos, power, armourStand, nearestPlayer);
+                    return;
+                } else {
+                    world.createExplosion(pos.toLocation(world), (float) power, false, true);
+                    return;
+                }
             }
-        } else {
-            world.createExplosion(pos.toLocation(world), (float) power, false, true, armourStand);
+        }
+        if (MissileWarfare.worldGuardEnabled){
+            WorldGuardLoader.load();
         }
     }
 
@@ -254,7 +256,7 @@ public class MissileController {
             world.spawnParticle(Particle.CAMPFIRE_SIGNAL_SMOKE, pos.toLocation(world), 0, Math.random() - 0.5, Math.random() * 2, Math.random() - 0.5, 0.25, null, true);
             world.spawnParticle(Particle.FLAME, pos.toLocation(world), 0, Math.random() - 0.5, Math.random() * 2, Math.random() - 0.5, 0.25, null, true);
         }
-        spawnExplosionWithWorldGuard();
+        spawnExplosionWithCheck();
         Random rand = this.random;
         if (type == 15){
             for (int i = 0; i < 50; i++){
