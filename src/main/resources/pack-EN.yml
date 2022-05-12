@@ -222,7 +222,7 @@ missiles:
                 name: "GtG Missile AP"
                 variant: "Tier 3 AP"
                 lore:
-                    - Goes through 2 block before exploding"
+                    - "Goes through 2 block before exploding"
                     - "75% Chance to go through obsidian"
                     - "20% chance to break the hit obsidian"
                     - "'Your bunker definitely isnt safe for long!'"
