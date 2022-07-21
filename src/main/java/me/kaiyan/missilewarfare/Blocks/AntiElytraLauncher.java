@@ -88,15 +88,17 @@ public class AntiElytraLauncher extends SlimefunItem{
                     Collection<? extends Player> missiles = MissileWarfare.getInstance().getServer().getOnlinePlayers();
                     if (!missiles.isEmpty()) {
                         for (Player player : missiles) {
-                            if (block.getLocation().distanceSquared(player.getLocation()) < range) {
-                                if (player.isGliding() && !PlayerID.targets.contains(player)) {
-                                    List<OfflinePlayer> ignore = PlayerID.players.get(cont.get(new NamespacedKey(MissileWarfare.getInstance(), "groupid"), PersistentDataType.STRING));
-                                    if (ignore == null){
-                                        locked = player;
-                                        break;
-                                    } else if (ignore.contains(player)) {
-                                        locked = player;
-                                        break;
+                            if(block.getLocation().getWorld() == player.getLocation().getWorld()) {
+                                if (block.getLocation().distanceSquared(player.getLocation()) < range) {
+                                    if (player.isGliding() && !PlayerID.targets.contains(player)) {
+                                        List<OfflinePlayer> ignore = PlayerID.players.get(cont.get(new NamespacedKey(MissileWarfare.getInstance(), "groupid"), PersistentDataType.STRING));
+                                        if (ignore == null){
+                                            locked = player;
+                                            break;
+                                        } else if (ignore.contains(player)) {
+                                            locked = player;
+                                            break;
+                                        }
                                     }
                                 }
                             }
