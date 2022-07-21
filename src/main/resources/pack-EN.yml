@@ -378,7 +378,7 @@ guidebook:
 
 radar:
     name: "Missile Radar"
-    lore: "Emits a redstone signal when a missile is\nwithin 700 blocks"
+    lore: "Emits a redstone signal when a missile is within 700 blocks"
 
 missiledesc:
     range: "Range: "

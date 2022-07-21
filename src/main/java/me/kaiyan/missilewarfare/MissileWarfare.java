@@ -1,5 +1,6 @@
 package me.kaiyan.missilewarfare;
 
+import com.palmergames.bukkit.towny.object.Town;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.config.Config;
 import me.kaiyan.missilewarfare.Missiles.MissileConfig;
@@ -98,12 +99,17 @@ public class MissileWarfare extends JavaPlugin implements SlimefunAddon {
         }.runTaskTimer(this, 0, cfg.getInt("other.cleanup-wait-time"));
         
         getLogger().info("Checking For Worldguard");
-        if (getServer().getPluginManager().getPlugin("WorldGuard") != null && getServer().getPluginManager().getPlugin("WorldEdit") != null){
-            WorldGuardLoader.load();
-        }
-        if (getServer().getPluginManager().getPlugin("Towny") != null){
-            TownyLoader.setup();
-        }
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                if (getServer().getPluginManager().getPlugin("WorldGuard") != null && getServer().getPluginManager().getPlugin("WorldEdit") != null) {
+                    WorldGuardLoader.load();
+                }
+                if (getServer().getPluginManager().getPlugin("Towny") != null) {
+                    TownyLoader.setup();
+                }
+            }
+        }.runTaskLater(this, 0);
 
         getServer().getPluginManager().registerEvents(new ExplosionEventListener(), this);
     }

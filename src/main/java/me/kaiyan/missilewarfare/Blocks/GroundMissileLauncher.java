@@ -14,6 +14,7 @@ import me.kaiyan.missilewarfare.MissileWarfare;
 import me.kaiyan.missilewarfare.Missiles.MissileController;
 import me.kaiyan.missilewarfare.Translations;
 import me.kaiyan.missilewarfare.VariantsAPI;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
@@ -115,9 +116,9 @@ public class GroundMissileLauncher extends SlimefunItem{
             } catch (NullPointerException e){
                 cont.set(new NamespacedKey(MissileWarfare.getInstance(), "coords"), PersistentDataType.INTEGER_ARRAY, new int[]{0, 0});
                 state.update();
+                event.getPlayer().sendMessage(ChatColor.GREEN+"Setup launcher, right click again to set coordinates!");
             }
             try {
-                if (cont.get(new NamespacedKey(MissileWarfare.getInstance(), "Conversing"), PersistentDataType.INTEGER) == 0) {
                     Prompt askCoordY = new StringPrompt() {
                         @Override
                         public String getPromptText(ConversationContext conversationContext) {
@@ -130,12 +131,10 @@ public class GroundMissileLauncher extends SlimefunItem{
                                 cont.set(new NamespacedKey(MissileWarfare.getInstance(), "coords"), PersistentDataType.INTEGER_ARRAY, new int[]{cont.get(new NamespacedKey(MissileWarfare.getInstance(), "coords"), PersistentDataType.INTEGER_ARRAY)[0], Integer.parseInt(s)});
                             } catch (NumberFormatException e) {
                                 conversationContext.getForWhom().sendRawMessage(Translations.get("messages.launchers.ground.setting.notanumber"));
-                                cont.set(new NamespacedKey(MissileWarfare.getInstance(), "Conversing"), PersistentDataType.INTEGER, 0);
                                 state.update();
                                 return END_OF_CONVERSATION;
                             }
                             conversationContext.getForWhom().sendRawMessage("Z: " + Integer.parseInt(s));
-                            cont.set(new NamespacedKey(MissileWarfare.getInstance(), "Conversing"), PersistentDataType.INTEGER, 0);
                             state.update();
                             return END_OF_CONVERSATION;
                         }
@@ -152,7 +151,6 @@ public class GroundMissileLauncher extends SlimefunItem{
                                 cont.set(new NamespacedKey(MissileWarfare.getInstance(), "coords"), PersistentDataType.INTEGER_ARRAY, new int[]{Integer.parseInt(s), 0});
                             } catch (NumberFormatException e) {
                                 conversationContext.getForWhom().sendRawMessage(Translations.get("messages.launchers.ground.setting.notacoord"));
-                                cont.set(new NamespacedKey(MissileWarfare.getInstance(), "Conversing"), PersistentDataType.INTEGER, 0);
                                 state.update();
                                 return END_OF_CONVERSATION;
                             }
@@ -168,10 +166,7 @@ public class GroundMissileLauncher extends SlimefunItem{
                             .withTimeout(20)
                             .buildConversation(event.getPlayer());
                     conversation.begin();
-                    cont.set(new NamespacedKey(MissileWarfare.getInstance(), "Conversing"), PersistentDataType.INTEGER, 1);
-                }
             } catch (NullPointerException e){
-                cont.set(new NamespacedKey(MissileWarfare.getInstance(), "Conversing"), PersistentDataType.INTEGER, 0);
                 state.update();
             }
         } else if (event.getItem().getType() == Material.BLAZE_ROD){
@@ -180,46 +175,39 @@ public class GroundMissileLauncher extends SlimefunItem{
             PersistentDataContainer cont = state.getPersistentDataContainer();
 
             try{
-                if (cont.get(new NamespacedKey(MissileWarfare.getInstance(), "Conversing"), PersistentDataType.INTEGER) == 0) {
-                    Prompt askCruiseAlt = new StringPrompt() {
-                        @Override
-                        public String getPromptText(ConversationContext conversationContext) {
-                            return "Input Cruise Altitude, Input exit to cancel";
-                        }
+                Prompt askCruiseAlt = new StringPrompt() {
+                    @Override
+                    public String getPromptText(ConversationContext conversationContext) {
+                        return "Input Cruise Altitude, Input exit to cancel";
+                    }
 
-                        @Override
-                        public Prompt acceptInput(ConversationContext conversationContext, String s) {
-                            try {
-                                cont.set(new NamespacedKey(MissileWarfare.getInstance(), "alt"), PersistentDataType.INTEGER, Integer.valueOf(s));
-                            } catch (NumberFormatException e) {
-                                conversationContext.getForWhom().sendRawMessage(Translations.get("messages.launchers.ground.setting.notanumber"));
-                                cont.set(new NamespacedKey(MissileWarfare.getInstance(), "Conversing"), PersistentDataType.INTEGER, 0);
-                                state.update();
-                                return END_OF_CONVERSATION;
-                            }
-                            conversationContext.getForWhom().sendRawMessage(Translations.get("messages.launchers.ground.setting.cruisealt") + Integer.parseInt(s));
-                            cont.set(new NamespacedKey(MissileWarfare.getInstance(), "Conversing"), PersistentDataType.INTEGER, 0);
+                    @Override
+                    public Prompt acceptInput(ConversationContext conversationContext, String s) {
+                        try {
+                            cont.set(new NamespacedKey(MissileWarfare.getInstance(), "alt"), PersistentDataType.INTEGER, Integer.valueOf(s));
+                        } catch (NumberFormatException e) {
+                            conversationContext.getForWhom().sendRawMessage(Translations.get("messages.launchers.ground.setting.notanumber"));
                             state.update();
                             return END_OF_CONVERSATION;
                         }
-                    };
-                    ConversationFactory cf = new ConversationFactory(MissileWarfare.getInstance());
-                    Conversation conversation = cf.withFirstPrompt(askCruiseAlt)
-                            .withLocalEcho(false)
-                            .withEscapeSequence("exit")
-                            .withTimeout(20)
-                            .buildConversation(event.getPlayer());
-                    conversation.begin();
-                }
+                        conversationContext.getForWhom().sendRawMessage(Translations.get("messages.launchers.ground.setting.cruisealt") + Integer.parseInt(s));
+                        state.update();
+                        return END_OF_CONVERSATION;
+                    }
+                };
+                ConversationFactory cf = new ConversationFactory(MissileWarfare.getInstance());
+                Conversation conversation = cf.withFirstPrompt(askCruiseAlt)
+                        .withLocalEcho(false)
+                        .withEscapeSequence("exit")
+                        .withTimeout(20)
+                        .buildConversation(event.getPlayer());
+                conversation.begin();
             } catch (NullPointerException e){
-                cont.set(new NamespacedKey(MissileWarfare.getInstance(), "Conversing"), PersistentDataType.INTEGER, 0);
                 state.update();
             }
         } else if (SlimefunItem.getByItem(event.getItem()) == SlimefunItem.getById("PLAYERLIST")){
             event.cancel();
             TileState state = (TileState) event.getClickedBlock().get().getBlockData();
-            PersistentDataContainer cont = state.getPersistentDataContainer();
-            cont.set(new NamespacedKey(MissileWarfare.getInstance(), "groupid"), PersistentDataType.STRING, event.getItem().getItemMeta().getPersistentDataContainer().get(new NamespacedKey(MissileWarfare.getInstance(), "id"), PersistentDataType.STRING));
             state.update();
         }
     }

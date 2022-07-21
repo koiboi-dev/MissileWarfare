@@ -19,6 +19,7 @@ import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class MissileController {
@@ -247,8 +248,10 @@ public class MissileController {
             }
         }
         if (MissileWarfare.worldGuardEnabled){
-            WorldGuardLoader.load();
+            WorldGuardLoader.explode(world, pos, power, armourStand, nearestPlayer);
+            return;
         }
+        world.createExplosion(pos.toLocation(world), (float) power, false, true);
     }
 
     public void explode(BukkitRunnable run){
@@ -304,12 +307,13 @@ public class MissileController {
                 RayTraceResult result = world.rayTraceBlocks(pos.toLocation(world).add(0,3,0), dir, 10, FluidCollisionMode.ALWAYS, true);
                 if (result != null) {
                     Block hitblock = result.getHitBlock();
-                    hitblock.getRelative(result.getHitBlockFace()).setType(Material.FIRE);
+                    assert hitblock != null;
+                    hitblock.getRelative(Objects.requireNonNull(result.getHitBlockFace())).setType(Material.FIRE);
                 } else {
                     Vector hit = dir.clone();
                     for (int _i = 0; _i < 10; _i++){
                         hit.subtract(new Vector(0,1,0));
-                        if (world.getBlockAt(hit.toLocation(world)) != null){
+                        if (world.getBlockAt(hit.toLocation(world)).getType() != Material.AIR){
                             Block hitblock = world.getBlockAt(hit.toLocation(world));
                             hitblock.getRelative(BlockFace.UP).setType(Material.FIRE);
                             break;
