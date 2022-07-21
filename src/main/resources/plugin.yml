@@ -5,7 +5,7 @@ name: MissileWarfare
 author: kaiyan2006
 
 ## CHANGE this to a meaninful but short description of your plugin.
-description: A addon for slimefun that aims to incoreperate missiles into the game, slowing down combat
+description: A addon for slimefun that aims to incorporate missiles into the game, slowing down combat
 
 ## CHANGE this to the path of the class that extends JavaPlugin.
 main: me.kaiyan.missilewarfare.MissileWarfare

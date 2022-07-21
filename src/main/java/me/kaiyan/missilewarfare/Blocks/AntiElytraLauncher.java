@@ -88,6 +88,7 @@ public class AntiElytraLauncher extends SlimefunItem{
                     Collection<? extends Player> missiles = MissileWarfare.getInstance().getServer().getOnlinePlayers();
                     if (!missiles.isEmpty()) {
                         for (Player player : missiles) {
+                            //Thanks Colonel Kai : https://github.com/koiboi-dev/MissileWarfare/pull/18
                             if(block.getLocation().getWorld() == player.getLocation().getWorld()) {
                                 if (block.getLocation().distanceSquared(player.getLocation()) < range) {
                                     if (player.isGliding() && !PlayerID.targets.contains(player)) {
