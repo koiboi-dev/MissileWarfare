@@ -26,7 +26,7 @@ import java.util.List;
 
 public class ManPad extends SlimefunItem {
     public static List<Player> active = new ArrayList<>();
-    public final int range = 300*300;
+    public final int range = 300 * 300;
 
     public ManPad(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(itemGroup, item, recipeType, recipe);
@@ -56,8 +56,11 @@ public class ManPad extends SlimefunItem {
                     List<MissileController> missiles = new ArrayList<>();
                     for (MissileController missile : MissileWarfare.activemissiles) {
                         if (missile.isgroundmissile) {
-                            if (missile.pos.distanceSquared(event.getPlayer().getLocation().toVector()) < range) {
-                                missiles.add(missile);
+                            // again, when checking distances, check world first!!! -Colonel_Kai
+                            if(missile.world == event.getPlayer().getWorld()) {
+                                if (missile.pos.distanceSquared(event.getPlayer().getLocation().toVector()) < range) {
+                                    missiles.add(missile);
+                                }
                             }
                         }
                     }
@@ -119,7 +122,9 @@ public class ManPad extends SlimefunItem {
 
                     // Check if sneaking
                     if (!event.getPlayer().isSneaking()) {
-                        if (lockedmissile == null){
+                        if (lockedmissile == null) {
+                            // you had forgotten to remove the player from active after it failed.
+                            active.remove(event.getPlayer());
                             event.getPlayer().sendMessage(Translations.get("messages.manpad.notarget"));
                             this.cancel();
                         } else {
