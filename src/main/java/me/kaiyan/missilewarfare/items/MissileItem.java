@@ -1,12 +1,12 @@
-package me.kaiyan.missilewarfare.Items;
+package me.kaiyan.missilewarfare.items;
 
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.handlers.WeaponUseHandler;
-import me.kaiyan.missilewarfare.Translations;
-import me.kaiyan.missilewarfare.VariantsAPI;
+import me.kaiyan.missilewarfare.util.Translations;
+import me.kaiyan.missilewarfare.util.VariantsAPI;
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;

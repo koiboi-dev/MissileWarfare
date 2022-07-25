@@ -1,4 +1,4 @@
-package me.kaiyan.missilewarfare.Blocks;
+package me.kaiyan.missilewarfare.blocks;
 
 import io.github.thebusybiscuit.slimefun4.api.events.PlayerRightClickEvent;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
@@ -9,11 +9,11 @@ import io.github.thebusybiscuit.slimefun4.core.handlers.BlockDispenseHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockUseHandler;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.ItemUtils;
-import me.kaiyan.missilewarfare.Items.MissileClass;
+import me.kaiyan.missilewarfare.items.MissileClass;
 import me.kaiyan.missilewarfare.MissileWarfare;
-import me.kaiyan.missilewarfare.Missiles.MissileController;
-import me.kaiyan.missilewarfare.Translations;
-import me.kaiyan.missilewarfare.VariantsAPI;
+import me.kaiyan.missilewarfare.missiles.MissileController;
+import me.kaiyan.missilewarfare.util.Translations;
+import me.kaiyan.missilewarfare.util.VariantsAPI;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;

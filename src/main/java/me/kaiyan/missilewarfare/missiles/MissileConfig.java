@@ -1,8 +1,8 @@
-package me.kaiyan.missilewarfare.Missiles;
+package me.kaiyan.missilewarfare.missiles;
 
 import io.github.thebusybiscuit.slimefun4.libraries.dough.config.Config;
-import me.kaiyan.missilewarfare.Items.MissileClass;
-import me.kaiyan.missilewarfare.VariantsAPI;
+import me.kaiyan.missilewarfare.items.MissileClass;
+import me.kaiyan.missilewarfare.util.VariantsAPI;
 
 import java.util.ArrayList;
 import java.util.List;

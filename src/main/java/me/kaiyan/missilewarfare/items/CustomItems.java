@@ -1,4 +1,4 @@
-package me.kaiyan.missilewarfare;
+package me.kaiyan.missilewarfare.items;
 
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
@@ -8,10 +8,12 @@ import io.github.thebusybiscuit.slimefun4.api.researches.Research;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
-import me.kaiyan.missilewarfare.Blocks.AntiElytraLauncher;
-import me.kaiyan.missilewarfare.Blocks.AntiMissileLauncher;
-import me.kaiyan.missilewarfare.Blocks.GroundMissileLauncher;
-import me.kaiyan.missilewarfare.Items.*;
+import me.kaiyan.missilewarfare.MissileWarfare;
+import me.kaiyan.missilewarfare.blocks.AntiElytraLauncher;
+import me.kaiyan.missilewarfare.blocks.AntiMissileLauncher;
+import me.kaiyan.missilewarfare.blocks.GroundMissileLauncher;
+import me.kaiyan.missilewarfare.items.*;
+import me.kaiyan.missilewarfare.util.Translations;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;

@@ -1,8 +1,8 @@
-package me.kaiyan.missilewarfare;
+package me.kaiyan.missilewarfare.util;
 
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
-import me.kaiyan.missilewarfare.Items.MissileClass;
-import me.kaiyan.missilewarfare.Missiles.MissileConfig;
+import me.kaiyan.missilewarfare.items.MissileClass;
+import me.kaiyan.missilewarfare.missiles.MissileConfig;
 import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.inventory.Inventory;
@@ -12,6 +12,8 @@ import org.bukkit.util.Vector;
 import java.util.Random;
 
 public class VariantsAPI {
+    // the amount of magic values in this file is astounding. -ck
+
     public static Random rand = new Random();
 
     public static String getStrVariantFromInt(int type){
@@ -69,55 +71,7 @@ public class VariantsAPI {
     }
 
     public static int getIntTypeFromSlimefunitem(SlimefunItem item){
-        switch (item.getId()) {
-            case "SMALLMISSILE":
-                return 1;
-            case "SMALLMISSILEHE":
-                return 2;
-            case "SMALLMISSILELR":
-                return 3;
-            case "SMALLMISSILEAC":
-                return 4;
-            case "ANTIAIRMISSILE":
-                return 5;
-            case "MISSILE":
-                return 6;
-            case "MISSILEHE":
-                return 7;
-            case "MISSILELR":
-                return 8;
-            case "MISSILEAC":
-                return 9;
-            case "MISSILEAPONE":
-                return 10;
-            case "MISSILEAPTWO":
-                return 11;
-            case "MISSILEAPTHR":
-                return 12;
-            case "MISSILEGAS":
-                return 13;
-            case "MISSILEEXCAV":
-                return 14;
-            case "MISSILESTICK":
-                return 15;
-            case "MISSILEICBM":
-                return 16;
-            case "MISSILECLUSTER":
-                return 17;
-            case "MISSILENAPALM":
-                return 18;
-            case "MISSILEADV":
-                return 19;
-            case "MISSILEHEADV":
-                return 20;
-            case "MISSILELRADV":
-                return 21;
-            case "MISSILEACADV":
-                return 22;
-            case "ANTIELYTRAMISSILE":
-                return 23;
-        }
-        return 0;
+        return getIntTypeFromSlimefunitemID(item.getId());
     }
 
     public static int getIntTypeFromSlimefunitemID(String id){
@@ -173,9 +127,10 @@ public class VariantsAPI {
     }
 
     public static ItemStack getFirstMissile(Inventory inv){
+        // Returns the first missile item in an inventory
         for (ItemStack item : inv){
-            SlimefunItem _item = SlimefunItem.getByItem(item);
-            if (_item != null && getIntTypeFromSlimefunitem(_item) != 0){
+            SlimefunItem slimefun_item = SlimefunItem.getByItem(item);
+            if (slimefun_item != null && getIntTypeFromSlimefunitem(slimefun_item) != 0){
                 return item;
             }
         }
@@ -183,6 +138,7 @@ public class VariantsAPI {
     }
 
     public static ItemStack getOtherFirstMissile(Inventory inv, SlimefunItem slimefunItem){
+        // Returns the first missile matching the type ID of second argument.
         for (ItemStack item : inv){
             SlimefunItem _item = SlimefunItem.getByItem(item);
             if (_item != null && _item.getId().equals(slimefunItem.getId())){

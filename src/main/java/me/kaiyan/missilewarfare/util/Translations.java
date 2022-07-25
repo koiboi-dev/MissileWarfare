@@ -1,4 +1,4 @@
-package me.kaiyan.missilewarfare;
+package me.kaiyan.missilewarfare.util;
 
 import io.github.thebusybiscuit.slimefun4.libraries.dough.config.Config;
 import net.md_5.bungee.api.ChatColor;
