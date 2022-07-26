@@ -7,6 +7,7 @@ import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockPlaceHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockUseHandler;
+import me.kaiyan.missilewarfare.blocks.util.BlockPlaceHandlerWrapper;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import org.bukkit.Material;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -20,7 +21,7 @@ public abstract class AbstractBlock extends SlimefunItem implements Block {
     @Override
     public void preRegister() {
         addItemHandler((BlockUseHandler) this::onBlockRightClick);
-        addItemHandler(new BlockPlaceHandler(false)); // is there a way I could just feed onPlayerPlace here ?????
+        addItemHandler(new BlockPlaceHandlerWrapper(false, this::onPlayerPlace)); // is there a way I could just feed onPlayerPlace here ?????
     }
 
     @Override
