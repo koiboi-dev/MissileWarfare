@@ -1,7 +1,7 @@
-package me.kaiyan.missilewarfare.Missiles;
+package me.kaiyan.missilewarfare.missiles;
 
 import me.kaiyan.missilewarfare.MissileWarfare;
-import me.kaiyan.missilewarfare.PlayerID;
+import me.kaiyan.missilewarfare.util.PlayerID;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.ComponentBuilder;

@@ -1,8 +1,9 @@
-package me.kaiyan.missilewarfare;
+package me.kaiyan.missilewarfare.integrations;
 
 import com.palmergames.bukkit.towny.TownyAPI;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.object.Town;
+import me.kaiyan.missilewarfare.MissileWarfare;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 

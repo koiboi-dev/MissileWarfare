@@ -1,9 +1,9 @@
-package me.kaiyan.missilewarfare.Missiles;
+package me.kaiyan.missilewarfare.missiles;
 
 import me.kaiyan.missilewarfare.MissileWarfare;
-import me.kaiyan.missilewarfare.TownyLoader;
-import me.kaiyan.missilewarfare.VariantsAPI;
-import me.kaiyan.missilewarfare.WorldGuardLoader;
+import me.kaiyan.missilewarfare.integrations.TownyLoader;
+import me.kaiyan.missilewarfare.util.VariantsAPI;
+import me.kaiyan.missilewarfare.integrations.WorldGuardLoader;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -40,6 +40,7 @@ public class MissileController {
     public Random random = new Random();
     public Player nearestPlayer;
 
+    @Deprecated
     public MissileController(boolean isgroundmissile, Vector startpos, Vector target, float speed, org.bukkit.World world, double power, float accuracy, int type, int cruiseAlt){
         this.isgroundmissile = isgroundmissile;
         pos = startpos;

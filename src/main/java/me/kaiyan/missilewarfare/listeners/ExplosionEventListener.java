@@ -1,5 +1,6 @@
-package me.kaiyan.missilewarfare;
+package me.kaiyan.missilewarfare.listeners;
 
+import me.kaiyan.missilewarfare.MissileWarfare;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityExplodeEvent;

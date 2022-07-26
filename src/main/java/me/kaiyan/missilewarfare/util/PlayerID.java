@@ -1,4 +1,4 @@
-package me.kaiyan.missilewarfare;
+package me.kaiyan.missilewarfare.util;
 
 import io.github.thebusybiscuit.slimefun4.libraries.dough.config.Config;
 import org.bukkit.Bukkit;

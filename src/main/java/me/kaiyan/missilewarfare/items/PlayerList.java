@@ -1,4 +1,4 @@
-package me.kaiyan.missilewarfare.Items;
+package me.kaiyan.missilewarfare.items;
 
 import io.github.thebusybiscuit.slimefun4.api.events.PlayerRightClickEvent;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
@@ -8,8 +8,8 @@ import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemDropHandler;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
 import me.kaiyan.missilewarfare.MissileWarfare;
-import me.kaiyan.missilewarfare.PlayerID;
-import me.kaiyan.missilewarfare.Translations;
+import me.kaiyan.missilewarfare.util.PlayerID;
+import me.kaiyan.missilewarfare.util.Translations;
 import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.conversations.*;

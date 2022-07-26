@@ -1,4 +1,4 @@
-package me.kaiyan.missilewarfare.Items;
+package me.kaiyan.missilewarfare.items;
 
 public class MissileClass {
     public double speed;

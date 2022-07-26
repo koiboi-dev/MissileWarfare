@@ -1,10 +1,10 @@
-package me.kaiyan.missilewarfare.Items;
+package me.kaiyan.missilewarfare.items;
 
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
-import me.kaiyan.missilewarfare.Translations;
+import me.kaiyan.missilewarfare.util.Translations;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
