@@ -10,8 +10,10 @@ import io.github.thebusybiscuit.slimefun4.core.handlers.BlockUseHandler;
 import me.kaiyan.missilewarfare.blocks.util.BlockPlaceHandlerWrapper;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
 
 public abstract class AbstractBlock extends SlimefunItem implements Block {
     public AbstractBlock(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
@@ -38,4 +40,11 @@ public abstract class AbstractBlock extends SlimefunItem implements Block {
 
     @Override
     public abstract Material getSupportBlock();
+
+    @Override
+    public boolean checkSupportBlock(BlockPlaceEvent event) {
+        World world = event.getBlock().getWorld();
+        org.bukkit.block.Block below = world.getBlockAt(event.getBlock().getLocation().subtract(new Vector(0, 1, 0)));
+        return (below.getType() == this.getSupportBlock());
+    }
 }

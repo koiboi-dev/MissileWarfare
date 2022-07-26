@@ -13,7 +13,7 @@ messages:
             create:
                 success: "Created Small Launcher!"
                 # Formatting: {type}
-                failure: "Below Block is type: {type} It needs Type GREEN_CONCRETE"
+                failure: "Missing Green Concrete Below Launcher"
             # Formatting: {xcoord} {ycoord} {dist}
             coords: "The coords are: [{xcoord} , {ycoord}] And the DIST is: {dist}"
             setting:

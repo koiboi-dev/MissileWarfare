@@ -5,6 +5,7 @@ import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import org.bukkit.Material;
 import org.bukkit.block.Dispenser;
+import org.bukkit.event.Event;
 import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 
@@ -24,4 +25,6 @@ public interface Block {
     // support blocks are the blocks below the dispensers in the
     // GtG Launchers, Anti-Elytra Launchers, and Anti-Missile Launchers.
     public Material getSupportBlock();
+
+    boolean checkSupportBlock(BlockPlaceEvent event);
 }
