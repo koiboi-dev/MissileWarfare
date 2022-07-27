@@ -7,6 +7,7 @@ import me.kaiyan.missilewarfare.util.VariantsAPI;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
 public class MissileConfig {
 
     public static MissileClass[] missiles;

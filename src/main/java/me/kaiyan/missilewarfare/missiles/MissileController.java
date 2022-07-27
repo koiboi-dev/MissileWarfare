@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
+@Deprecated
 public class MissileController {
     public boolean isgroundmissile;
     public Vector pos;
