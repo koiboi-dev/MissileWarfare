@@ -2,7 +2,6 @@ name: On Pull Request
 on:
   pull_request:
   workflow_dispatch:
-  push:
 
 jobs:
   build_java_17:
