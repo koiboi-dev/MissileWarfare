@@ -17,4 +17,10 @@ public interface Missile {
     public Entity getArmourStand();
 
     public TargetObject getTargetObject();
+
+    public int getPower();
+
+    public int getMaxSpeed();
+
+    public int getManeuverability();
 }
