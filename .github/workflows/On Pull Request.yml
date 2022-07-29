@@ -1,0 +1,148 @@
+name: On Pull Request
+on:
+  pull_request:
+  workflow_dispatch:
+  push:
+
+jobs:
+  build_java_17:
+    name: Compile (Java 17)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Java 17
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+          server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
+          settings-path: ${{ github.workspace }} # location for the settings.xml file
+      - name: maven
+        run: mvn package
+  build_java_16:
+    name: Compile (Java 16)
+    runs-on: ubuntu-latest
+    needs: [ build_java_17 ]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Java 16
+        uses: actions/setup-java@v2
+        with:
+          java-version: '16'
+          distribution: 'adopt'
+          server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
+          settings-path: ${{ github.workspace }} # location for the settings.xml file
+      - name: maven
+        run: mvn package
+  build_java_8:
+    name: Compile (Java 8)
+    runs-on: ubuntu-latest
+    needs: [ build_java_16 ]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: '8'
+          distribution: 'adopt'
+          server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
+          settings-path: ${{ github.workspace }} # location for the settings.xml file
+      - name: maven
+        run: mvn package --file pom/pom-j8.xml
+  build_MC_1_18_2:
+    name: Compile (MC 1.18.2)
+    runs-on: ubuntu-latest
+    needs: [ build_java_17 ]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+          server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
+          settings-path: ${{ github.workspace }} # location for the settings.xml file
+      - name: maven
+        run: mvn package --file pom/pom-1.18.2.xml
+  build_MC_1_17_1:
+    name: Compile (MC 1.17.1)
+    runs-on: ubuntu-latest
+    needs: [ build_MC_1_18_2, build_java_16 ]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: '16'
+          distribution: 'adopt'
+          server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
+          settings-path: ${{ github.workspace }} # location for the settings.xml file
+      - name: maven
+        run: mvn package --file pom/pom-1.17.1.xml
+  build_MC_1_16_5:
+    name: Compile (MC 1.16.5)
+    runs-on: ubuntu-latest
+    needs: [ build_MC_1_17_1, build_java_8 ]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: '8'
+          distribution: 'adopt'
+          server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
+          settings-path: ${{ github.workspace }} # location for the settings.xml file
+      - name: maven
+        run: mvn package --file pom/pom-1.16.5.xml
+  build_MC_old:
+    name: Compile (MC 1.13.2-1.15.2)
+    runs-on: ubuntu-latest
+    needs: [ build_MC_1_16_5 ]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: '8'
+          distribution: 'adopt'
+          server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
+          settings-path: ${{ github.workspace }} # location for the settings.xml file
+      - name: 1.15.2
+        run: mvn package --file pom/pom-1.15.2.xml
+      - name: 1.14.4
+        run: mvn package --file pom/pom-1.14.4.xml
+      - name: 1.13.2
+        run: mvn package --file pom/pom-1.13.2.xml
+
+  sonarCloud:
+    name: SonarCloud
+    runs-on: ubuntu-latest
+    needs: [ build_java_17 ]
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+          server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
+          settings-path: ${{ github.workspace }}
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v1
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+      - name: Cache Maven packages
+        uses: actions/cache@v1
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+      - name: Build and analyze
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=koiboi-dev_MissileWarfare
