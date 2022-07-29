@@ -256,5 +256,10 @@ public class SSMLauncher extends AbstractLauncher {
         _missile.FireMissile();
         return true;
     }
+
+    @Override
+    public boolean fireMissileSAM(Dispenser dispenser, MissileController missile) {
+        return false;
+    }
 }
 
