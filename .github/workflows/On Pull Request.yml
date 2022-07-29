@@ -22,7 +22,9 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: "MissileWarfare (Java 17)"
-          path: "target/*jar-with-dependencies.jar"
+          path: |
+            target/*.jar
+            !target/original-*
           if-no-files-found: error
   build_java_16:
     name: Compile (Java 16)
