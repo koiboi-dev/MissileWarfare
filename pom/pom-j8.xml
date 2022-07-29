@@ -40,11 +40,11 @@
     <build>
         <finalName>${project.name} v${project.version}</finalName>
         <defaultGoal>clean package</defaultGoal>
-        <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
+        <sourceDirectory>${basedir}/../src/main/java</sourceDirectory>
 
         <resources>
             <resource>
-                <directory>${basedir}/src/main/resources</directory>
+                <directory>${basedir}/../src/main/resources</directory>
                 <filtering>true</filtering>
                 <includes>
                     <include>*</include>
