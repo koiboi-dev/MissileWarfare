@@ -45,7 +45,9 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: "MissileWarfare (Java 16)"
-          path: "target/*jar-with-dependencies.jar"
+          path: |
+            target/*.jar
+            !target/original-*
           if-no-files-found: error
   build_java_8:
     name: Compile (Java 8)
@@ -66,7 +68,9 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: "MissileWarfare (Java 8)"
-          path: "target/*jar-with-dependencies.jar"
+          path: |
+            target/*.jar
+            !target/original-*
           if-no-files-found: error
   build_MC_1_18_2:
     name: Compile (MC 1.18.2)
