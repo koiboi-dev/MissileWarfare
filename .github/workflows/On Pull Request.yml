@@ -69,8 +69,8 @@ jobs:
         with:
           name: "MissileWarfare (Java 8)"
           path: |
-            target/*.jar
-            !target/original-*
+            pom/target/*.jar
+            !pom/target/original-*
           if-no-files-found: error
   build_MC_1_18_2:
     name: Compile (MC 1.18.2)
