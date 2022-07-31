@@ -1,6 +1,7 @@
 /bin/
 /.settings/
 /target/
+/pom/target/
 /.idea/
 *.iml
 .project

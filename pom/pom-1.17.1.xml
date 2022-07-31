@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>me.kaiyan.missilewarfare</groupId>
     <artifactId>MissileWarfare</artifactId>
-    <version>1.6.17</version>
+    <version>1.6.13</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -119,7 +119,7 @@
         <dependency>
             <groupId>com.sk89q.worldedit</groupId>
             <artifactId>worldedit-core</artifactId>
-            <version>7.2.9</version>
+            <version>7.2.0-SNAPSHOT</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
