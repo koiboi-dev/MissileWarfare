@@ -1,5 +1,6 @@
 package me.kaiyan.missilewarfare.missiles.target;
 
+import org.bukkit.Location;
 import org.bukkit.util.Vector;
 
 public interface TargetObject<T> {
@@ -8,7 +9,7 @@ public interface TargetObject<T> {
 
     public Vector getTargetObjectVelocity();
 
-    public Vector getTargetObjectLocation();
+    public Location getTargetObjectLocation();
 
     public T getTargetObject();
 }

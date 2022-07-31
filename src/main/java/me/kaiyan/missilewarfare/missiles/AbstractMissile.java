@@ -1,34 +1,36 @@
 package me.kaiyan.missilewarfare.missiles;
 
+import me.kaiyan.missilewarfare.missiles.flightpattern.AbstractPattern;
 import me.kaiyan.missilewarfare.missiles.target.TargetObject;
-import org.bukkit.World;
+import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
 
-public abstract class AbstractMissile implements Missile {
+public abstract class AbstractMissile<T extends TargetObject<?>> implements Missile<T> {
 
-    Vector position;
-    Vector direction;
+    Location location;
     int speed;
-
-    World world;
+    int max_range;
+    int remaining_range;
 
     Entity armour_stand;
-    TargetObject target_object;
+    T target_object;
+
+    AbstractPattern<T> launch_pattern;
+    AbstractPattern<T> flight_pattern;
 
     int power;
     int max_speed;
     int maneuverability;
 
-
     @Override
-    public Vector getPosition() {
-        return this.position;
+    public Location getLocation() {
+        return location;
     }
 
     @Override
-    public void setPosition(Vector pos) {
-        this.position = pos;
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     @Override
@@ -42,28 +44,23 @@ public abstract class AbstractMissile implements Missile {
     }
 
     @Override
-    public Vector getDirection() {
-        return this.direction;
-    }
-
-    @Override
-    public World getWorld() {
-        return this.world;
-    }
-
-    @Override
-    public void setWorld(World world) {
-        this.world  = world;
-    }
-
-    @Override
-    public void setDirection(Vector vector) {
-        this.direction = vector;
-    }
-
-    @Override
     public Vector getVelocity() {
-        return this.getDirection().multiply(this.getSpeed());
+        return this.location.getDirection().multiply(this.speed);
+    }
+
+    @Override
+    public int getMaxRange() {
+        return this.max_range;
+    }
+
+    @Override
+    public int getRemainingRange() {
+        return this.remaining_range;
+    }
+
+    @Override
+    public void setRemainingRange(int remaining_range) {
+        this.remaining_range = remaining_range;
     }
 
     @Override
@@ -72,7 +69,7 @@ public abstract class AbstractMissile implements Missile {
     }
 
     @Override
-    public TargetObject getTargetObject() {
+    public T getTargetObject() {
         return this.target_object;
     }
 
@@ -84,7 +81,23 @@ public abstract class AbstractMissile implements Missile {
         return this.max_speed;
     }
 
+    public AbstractPattern<T> getLaunchPattern() {
+        return this.launch_pattern;
+    }
+
+    public AbstractPattern<T> getFlightPattern() {
+        return this.flight_pattern;
+    }
+
     public int getManeuverability() {
         return this.maneuverability;
+    }
+
+    public void fire(T target, Location location) {
+        this.getLaunchPattern().activate();
+    }
+
+    public void detonate() {
+
     }
 }

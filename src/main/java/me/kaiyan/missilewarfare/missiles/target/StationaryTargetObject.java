@@ -21,8 +21,8 @@ public class StationaryTargetObject implements TargetObject<Location> {
     }
 
     @Override
-    public Vector getTargetObjectLocation() {
-        return this.target_location.toVector();
+    public Location getTargetObjectLocation() {
+        return this.target_location;
     }
 
     @Override

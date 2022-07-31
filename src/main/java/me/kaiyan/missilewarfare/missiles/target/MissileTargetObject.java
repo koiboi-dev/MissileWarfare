@@ -1,10 +1,11 @@
 package me.kaiyan.missilewarfare.missiles.target;
 
 import me.kaiyan.missilewarfare.missiles.Missile;
+import org.bukkit.Location;
 import org.bukkit.util.Vector;
 
-public class MissileTargetObject implements TargetObject<Missile> {
-    Missile target_missile;
+public class MissileTargetObject implements TargetObject<Missile<?>> {
+    Missile<?> target_missile;
 
     public MissileTargetObject(Missile target_missile) {
         this.target_missile = target_missile;
@@ -21,8 +22,8 @@ public class MissileTargetObject implements TargetObject<Missile> {
     }
 
     @Override
-    public Vector getTargetObjectLocation() {
-        return target_missile.getPosition();
+    public Location getTargetObjectLocation() {
+        return target_missile.getLocation();
     }
 
     @Override
