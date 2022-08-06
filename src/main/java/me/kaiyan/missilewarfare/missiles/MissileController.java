@@ -98,6 +98,14 @@ public class MissileController {
         launched = false;
         this.type = type;
 
+
+        armourStand = world.spawnEntity(pos.toLocation(world), EntityType.ARMOR_STAND);
+        armourStand.setPersistent(true);
+        ((LivingEntity) armourStand).getEquipment().setHelmet(new ItemStack(Material.RED_CONCRETE));
+        armourStand.setGravity(false);
+        ((LivingEntity) armourStand).setInvisible(true);
+        armourStand.setCustomName("MissileHolder");
+
         target = target.add(new Vector((Math.random()-0.5)*accuracy, 0, (Math.random()-0.5)*accuracy));
 
         this.target = target;
@@ -210,10 +218,13 @@ public class MissileController {
         this.target = other.pos;
         Vector velocity = getVelocityIgnoreY();
         pos.add(velocity);
+        armourStand.teleport(pos.toLocation(world).clone().subtract(new Vector(0, 1.75, 0)));
         world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, pos.toLocation(world), 0, 0, 0, 0, 0.1, null, true);
-        world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, (pos.toLocation(world).subtract(velocity.divide(new Vector(2,2,2)))), 0, 0, 0, 0, 0.1, null, true);
+        world.spawnParticle(Particle.CAMPFIRE_SIGNAL_SMOKE, (pos.toLocation(world)), 0, 0, 0, 0, 0.1, null, true);
+        world.spawnParticle(Particle.FLAME, pos.toLocation(world), 0, -dir.getX()+(Math.random() - 0.5), -dir.getY()+(Math.random() - 0.5), -dir.getZ()+(Math.random() - 0.5), 0.1);
+
         if (target.distanceSquared(pos) < (speed*speed)*1.1){
-            if (Math.random()>0.1){
+            if (Math.random()>0.1){ // chance of failure to detonate?
                 run.cancel();
                 return;
             }
@@ -222,7 +233,7 @@ public class MissileController {
                 world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, pos.toLocation(world), 0, Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5, 0.1, null, true);
                 world.spawnParticle(Particle.FLAME, pos.toLocation(world), 0, Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5, 0.1, null,true);
             }
-            if (other.update != null) {
+            if (other.update != null && !other.update.isCancelled()) {
                 other.explode(other.update);
                 run.cancel();
             }
@@ -376,6 +387,8 @@ public class MissileController {
         velocity.setZ(velocity.getZ());
         return velocity;
     }
+
+
     public Vector getVelocityIgnoreY(){
         Vector velocity = new Vector(0, 0, 0);
 
