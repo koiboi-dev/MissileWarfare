@@ -213,7 +213,7 @@ public class MissileController {
         world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, pos.toLocation(world), 0, 0, 0, 0, 0.1, null, true);
         world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, (pos.toLocation(world).subtract(velocity.divide(new Vector(2,2,2)))), 0, 0, 0, 0, 0.1, null, true);
         if (target.distanceSquared(pos) < (speed*speed)*1.1){
-            if (Math.random()>0.1){
+            if (Math.random()>0.1){ // chance of failure to detonate?
                 run.cancel();
                 return;
             }
@@ -222,7 +222,7 @@ public class MissileController {
                 world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, pos.toLocation(world), 0, Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5, 0.1, null, true);
                 world.spawnParticle(Particle.FLAME, pos.toLocation(world), 0, Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5, 0.1, null,true);
             }
-            if (other.update != null) {
+            if (other.update != null && !other.update.isCancelled()) {
                 other.explode(other.update);
                 run.cancel();
             }
