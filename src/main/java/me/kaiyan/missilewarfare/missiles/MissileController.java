@@ -98,6 +98,14 @@ public class MissileController {
         launched = false;
         this.type = type;
 
+
+        armourStand = world.spawnEntity(pos.toLocation(world), EntityType.ARMOR_STAND);
+        armourStand.setPersistent(true);
+        ((LivingEntity) armourStand).getEquipment().setHelmet(new ItemStack(Material.RED_CONCRETE));
+        armourStand.setGravity(false);
+        ((LivingEntity) armourStand).setInvisible(true);
+        armourStand.setCustomName("MissileHolder");
+
         target = target.add(new Vector((Math.random()-0.5)*accuracy, 0, (Math.random()-0.5)*accuracy));
 
         this.target = target;
