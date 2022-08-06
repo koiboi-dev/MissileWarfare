@@ -216,7 +216,7 @@ public class MissileController {
     }
     public void Update(BukkitRunnable run, MissileController other){
         this.target = other.pos;
-        Vector velocity = getVelocityOfAMM(other);
+        Vector velocity = getVelocityIgnoreY();
         pos.add(velocity);
         armourStand.teleport(pos.toLocation(world).clone().subtract(new Vector(0, 1.75, 0)));
         world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, pos.toLocation(world), 0, 0, 0, 0, 0.1, null, true);
@@ -388,36 +388,7 @@ public class MissileController {
         return velocity;
     }
 
-    public Vector getVelocityOfAMM(MissileController target_missile){
-        // temporary basic SAM algorithm. Watered down version of the refactored algorithm.
-        Vector final_vector = new Vector(0, 0, 0);
 
-        Vector target_location =  this.target;
-        Vector target_velocity = target_missile.getVelocity();
-
-        Vector predicted_position = target_location.add(target_velocity);
-
-        // draw a vector from the AMM position to the target position
-        Vector vector_to_target = predicted_position.subtract(this.pos);
-
-        double t_vector_member_total = vector_to_target.getX() + vector_to_target.getY() + vector_to_target.getZ();
-
-        // calculate how much we should move in the x y and z axis
-        // by linearly comparing the speed, the total amount that needs
-        // to be moved (by axis) and the amount of axis difference.
-        double move_x = (this.speed * vector_to_target.getX()) / t_vector_member_total;
-        double move_y = (this.speed * vector_to_target.getY()) / t_vector_member_total;
-        double move_z= (this.speed * vector_to_target.getZ()) / t_vector_member_total;
-
-        final_vector.setX(move_x);
-        final_vector.setY(move_y);
-        final_vector.setZ(move_z);
-
-
-        return final_vector;
-    }
-
-    @Deprecated
     public Vector getVelocityIgnoreY(){
         Vector velocity = new Vector(0, 0, 0);
 
