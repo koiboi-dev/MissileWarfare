@@ -218,7 +218,33 @@ public class MissileController {
         this.target = other.pos;
         Vector velocity = getVelocityIgnoreY();
         pos.add(velocity);
-        armourStand.teleport(pos.toLocation(world).clone().subtract(new Vector(0, 1.75, 0)));
+        Location posLocation = this.pos.toLocation(this.world);
+        Chunk chunk = posLocation.getChunk();
+        if(!chunk.isEntitiesLoaded()){
+            /*
+            Minecraft is a bit odd with its chunks, if you load the chunk that you want and no other around it,
+            the chunk won't load entities, physics, etc. It will just be sitting there in memory. So this for loop fixes
+            the issue by loading up all chunks connected to it in a 3x3 grid. It's likely that at least 3 chunks are already
+            loaded, meaning at maximum it should be loading 6 chunks.... Still that's a lot of chunks to load at once .... I hope
+            papers version of the method is asynced
+             */
+
+
+            for(int x = -1; x < 1; x++){
+                for(int z = -1; z < 1; z++){
+                    if(x == 0 && z == 0){
+                        //saves it from grabbing the chunk again
+                        chunk.load(true);
+                        continue;
+                    }
+                    Chunk relativeChunk = this.world.getChunkAt(chunk.getX() + x, chunk.getZ() + z);
+                    if(!relativeChunk.isLoaded()){
+                        relativeChunk.load(true);
+                    }
+                }
+            }
+        }
+        armourStand.teleport(posLocation.clone().subtract(new Vector(0, 1.75, 0)));
         world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, pos.toLocation(world), 0, 0, 0, 0, 0.1, null, true);
         world.spawnParticle(Particle.CAMPFIRE_SIGNAL_SMOKE, (pos.toLocation(world)), 0, 0, 0, 0, 0.1, null, true);
         world.spawnParticle(Particle.FLAME, pos.toLocation(world), 0, -dir.getX()+(Math.random() - 0.5), -dir.getY()+(Math.random() - 0.5), -dir.getZ()+(Math.random() - 0.5), 0.1);
