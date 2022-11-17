@@ -3,12 +3,13 @@ package me.kaiyan.missilewarfare.missiles.target;
 import me.kaiyan.missilewarfare.missiles.Missile;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 
 public class MissileTargetObject implements TargetObject<Missile<?>> {
-    Missile<?> target_missile;
+    private final @NotNull Missile<?> targetMissile;
 
-    public MissileTargetObject(Missile target_missile) {
-        this.target_missile = target_missile;
+    public MissileTargetObject(@NotNull Missile<?> targetMissile) {
+        this.targetMissile = targetMissile;
     }
 
     @Override
@@ -18,16 +19,16 @@ public class MissileTargetObject implements TargetObject<Missile<?>> {
 
     @Override
     public Vector getTargetObjectVelocity() {
-        return target_missile.getVelocity();
+        return targetMissile.getVelocity();
     }
 
     @Override
     public Location getTargetObjectLocation() {
-        return target_missile.getLocation();
+        return targetMissile.getLocation();
     }
 
     @Override
-    public Missile getTargetObject() {
-        return target_missile;
+    public Missile<?> getTargetObject() {
+        return targetMissile;
     }
 }

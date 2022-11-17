@@ -6,36 +6,33 @@ import me.kaiyan.missilewarfare.missiles.target.TargetObject;
 import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class AbstractPattern<T extends TargetObject<?>> extends BukkitRunnable {
-    MissileWarfare plugin;
-    Missile<T> missile;
+    private final @NotNull MissileWarfare plugin;
+    private final @NotNull Missile<T> missile;
+
+    protected AbstractPattern(@NotNull Missile<T> missile) {
+        this.plugin = MissileWarfare.getInstance();
+        this.missile = missile;
+    }
 
     // does the physics calculations for every fourth.
     public void calculatePhysics() {
-        Vector velocity = missile.getVelocity();
-        Location location = missile.getLocation().clone();
+        Vector velocity = this.missile.getVelocity();
+        Location location = this.missile.getLocation().clone();
+        location.add(velocity);
 
+        this.missile.setLocation(location);
+        this.missile.getArmourStand().teleport(location);
 
-        location.setX(location.getBlockX() + velocity.getX());
-        location.setY(location.getBlockY() + velocity.getY());
-        location.setZ(location.getBlockZ() + velocity.getZ());
-
-        missile.setLocation(location);
-        missile.getArmourStand().teleport(location);
-
-        int distance_travelled = (int) velocity.length();
-        int remaining = missile.getRemainingRange();
-        missile.setRemainingRange(remaining - distance_travelled);
+        int distanceTravelled = (int) velocity.length();
+        int remaining = this.missile.getRemainingRange();
+        this.missile.setRemainingRange(remaining - distanceTravelled);
     }
 
-    public Missile<T> getMissile() {
+    public @NotNull Missile<T> getMissile() {
         return this.missile;
-    }
-
-    public AbstractPattern(Missile<T> missile) {
-        this.plugin = MissileWarfare.getInstance();
-        this.missile = missile;
     }
 
     public void activate() {

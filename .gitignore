@@ -2,7 +2,7 @@
 /.settings/
 /target/
 /pom/target/
-/.idea/
+.idea/*.xml
 *.iml
 .project
 .classpath

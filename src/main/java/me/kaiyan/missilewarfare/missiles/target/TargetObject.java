@@ -5,11 +5,11 @@ import org.bukkit.util.Vector;
 
 public interface TargetObject<T> {
 
-    public TargetObjectType getTargetObjectType();
+    TargetObjectType getTargetObjectType();
 
-    public Vector getTargetObjectVelocity();
+    Vector getTargetObjectVelocity();
 
-    public Location getTargetObjectLocation();
+    Location getTargetObjectLocation();
 
-    public T getTargetObject();
+    T getTargetObject();
 }

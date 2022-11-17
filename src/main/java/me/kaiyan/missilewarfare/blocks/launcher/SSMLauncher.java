@@ -14,7 +14,6 @@ import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Dispenser;
@@ -61,15 +60,27 @@ public class SSMLauncher extends AbstractLauncher {
             PersistentDataContainer cont = state.getPersistentDataContainer();
             try {
                 if (event.getPlayer().isSneaking()) {
-                    int[] coords = cont.get(new NamespacedKey(MissileWarfare.getInstance(), "coords"), PersistentDataType.INTEGER_ARRAY);
-                    float dist = (float) new Vector(coords[0], 0, coords[1]).distance(new Vector(event.getInteractEvent().getClickedBlock().getX(), 0, event.getInteractEvent().getClickedBlock().getY()));
-                    event.getPlayer().sendMessage(Translations.get("messages.launchers.ground.coords").replace("{xcoord}", String.valueOf(coords[0])).replace("{ycoord}", String.valueOf(coords[1])).replace("{dist}", String.valueOf(dist)));
+                    int[] coords = cont.get(new NamespacedKey(MissileWarfare.getInstance(), "coords"),
+                                            PersistentDataType.INTEGER_ARRAY);
+                    float dist = (float) new Vector(coords[0], 0, coords[1]).distance(
+                            new Vector(event.getInteractEvent().getClickedBlock().getX(), 0,
+                                       event.getInteractEvent().getClickedBlock().getY()));
+                    event
+                            .getPlayer()
+                            .sendMessage(Translations
+                                                 .get("messages.launchers.ground.coords")
+                                                 .replace("{xcoord}", String.valueOf(coords[0]))
+                                                 .replace("{ycoord}", String.valueOf(coords[1]))
+                                                 .replace("{dist}", String.valueOf(dist)));
                     return;
                 }
             } catch (NullPointerException e) {
-                cont.set(new NamespacedKey(MissileWarfare.getInstance(), "coords"), PersistentDataType.INTEGER_ARRAY, new int[]{0, 0});
+                cont.set(new NamespacedKey(MissileWarfare.getInstance(), "coords"), PersistentDataType.INTEGER_ARRAY,
+                         new int[]{0, 0});
                 state.update();
-                event.getPlayer().sendMessage(ChatColor.GREEN + "Setup launcher, right click again to set coordinates!");
+                event
+                        .getPlayer()
+                        .sendMessage(ChatColor.GREEN + "Setup launcher, right click again to set coordinates!");
             }
             try {
                 Prompt askCoordY = new StringPrompt() {
@@ -81,9 +92,14 @@ public class SSMLauncher extends AbstractLauncher {
                     @Override
                     public Prompt acceptInput(ConversationContext conversationContext, String s) {
                         try {
-                            cont.set(new NamespacedKey(MissileWarfare.getInstance(), "coords"), PersistentDataType.INTEGER_ARRAY, new int[]{cont.get(new NamespacedKey(MissileWarfare.getInstance(), "coords"), PersistentDataType.INTEGER_ARRAY)[0], Integer.parseInt(s)});
+                            cont.set(new NamespacedKey(MissileWarfare.getInstance(), "coords"),
+                                     PersistentDataType.INTEGER_ARRAY,
+                                     new int[]{cont.get(new NamespacedKey(MissileWarfare.getInstance(), "coords"),
+                                                        PersistentDataType.INTEGER_ARRAY)[0], Integer.parseInt(s)});
                         } catch (NumberFormatException e) {
-                            conversationContext.getForWhom().sendRawMessage(Translations.get("messages.launchers.ground.setting.notanumber"));
+                            conversationContext
+                                    .getForWhom()
+                                    .sendRawMessage(Translations.get("messages.launchers.ground.setting.notanumber"));
                             state.update();
                             return END_OF_CONVERSATION;
                         }
@@ -101,9 +117,12 @@ public class SSMLauncher extends AbstractLauncher {
                     @Override
                     public Prompt acceptInput(ConversationContext conversationContext, String s) {
                         try {
-                            cont.set(new NamespacedKey(MissileWarfare.getInstance(), "coords"), PersistentDataType.INTEGER_ARRAY, new int[]{Integer.parseInt(s), 0});
+                            cont.set(new NamespacedKey(MissileWarfare.getInstance(), "coords"),
+                                     PersistentDataType.INTEGER_ARRAY, new int[]{Integer.parseInt(s), 0});
                         } catch (NumberFormatException e) {
-                            conversationContext.getForWhom().sendRawMessage(Translations.get("messages.launchers.ground.setting.notacoord"));
+                            conversationContext
+                                    .getForWhom()
+                                    .sendRawMessage(Translations.get("messages.launchers.ground.setting.notacoord"));
                             state.update();
                             return END_OF_CONVERSATION;
                         }
@@ -113,7 +132,8 @@ public class SSMLauncher extends AbstractLauncher {
                 };
 
                 ConversationFactory cf = new ConversationFactory(MissileWarfare.getInstance());
-                Conversation conversation = cf.withFirstPrompt(askCoordX)
+                Conversation conversation = cf
+                        .withFirstPrompt(askCoordX)
                         .withLocalEcho(false)
                         .withEscapeSequence("exit")
                         .withTimeout(20)
@@ -137,19 +157,26 @@ public class SSMLauncher extends AbstractLauncher {
                     @Override
                     public Prompt acceptInput(ConversationContext conversationContext, String s) {
                         try {
-                            cont.set(new NamespacedKey(MissileWarfare.getInstance(), "alt"), PersistentDataType.INTEGER, Integer.valueOf(s));
+                            cont.set(new NamespacedKey(MissileWarfare.getInstance(), "alt"), PersistentDataType.INTEGER,
+                                     Integer.valueOf(s));
                         } catch (NumberFormatException e) {
-                            conversationContext.getForWhom().sendRawMessage(Translations.get("messages.launchers.ground.setting.notanumber"));
+                            conversationContext
+                                    .getForWhom()
+                                    .sendRawMessage(Translations.get("messages.launchers.ground.setting.notanumber"));
                             state.update();
                             return END_OF_CONVERSATION;
                         }
-                        conversationContext.getForWhom().sendRawMessage(Translations.get("messages.launchers.ground.setting.cruisealt") + Integer.parseInt(s));
+                        conversationContext
+                                .getForWhom()
+                                .sendRawMessage(Translations.get("messages.launchers.ground.setting.cruisealt")
+                                                        + Integer.parseInt(s));
                         state.update();
                         return END_OF_CONVERSATION;
                     }
                 };
                 ConversationFactory cf = new ConversationFactory(MissileWarfare.getInstance());
-                Conversation conversation = cf.withFirstPrompt(askCruiseAlt)
+                Conversation conversation = cf
+                        .withFirstPrompt(askCruiseAlt)
                         .withLocalEcho(false)
                         .withEscapeSequence("exit")
                         .withTimeout(20)
@@ -191,14 +218,21 @@ public class SSMLauncher extends AbstractLauncher {
     }
 
     @Override
-    public void onBlockDispense(BlockDispenseEvent blockDispenseEvent, Dispenser dispenser, Block block, SlimefunItem slimefunItem) {
+    public void onBlockDispense(BlockDispenseEvent blockDispenseEvent,
+                                Dispenser dispenser,
+                                Block block,
+                                SlimefunItem slimefunItem) {
         blockDispenseEvent.setCancelled(true);
 
         TileState state = (TileState) dispenser.getBlock().getState();
         PersistentDataContainer cont = state.getPersistentDataContainer();
 
         if (cont.get(new NamespacedKey(MissileWarfare.getInstance(), "canfire"), PersistentDataType.INTEGER) != 1) {
-            MissileWarfare.getInstance().getServer().broadcastMessage("Missile at : " + dispenser.getBlock().getLocation().toVector() + " Is unable to fire: Missing GREEN_CONCRETE Below");
+            MissileWarfare
+                    .getInstance()
+                    .getServer()
+                    .broadcastMessage("Missile at : " + dispenser.getBlock().getLocation().toVector()
+                                              + " Is unable to fire: Missing GREEN_CONCRETE Below");
         }
 
         new BukkitRunnable() {
@@ -215,13 +249,26 @@ public class SSMLauncher extends AbstractLauncher {
     public boolean fireMissile(Dispenser disp, MissileClass missile) {
         TileState state = (TileState) disp.getBlock().getState();
         PersistentDataContainer cont = state.getPersistentDataContainer();
-        int[] coords = cont.get(new NamespacedKey(MissileWarfare.getInstance(), "coords"), PersistentDataType.INTEGER_ARRAY);
+        int[] coords = cont.get(new NamespacedKey(MissileWarfare.getInstance(), "coords"),
+                                PersistentDataType.INTEGER_ARRAY);
         Integer alt = cont.get(new NamespacedKey(MissileWarfare.getInstance(), "alt"), PersistentDataType.INTEGER);
         if (coords == null) {
-            MissileWarfare.getInstance().getServer().broadcastMessage("Missile cannot fire at : " + new Vector(disp.getBlock().getLocation().getX(), disp.getBlock().getLocation().getY(), disp.getBlock().getLocation().getZ()) + " Invalid Coordinates!");
+            MissileWarfare
+                    .getInstance()
+                    .getServer()
+                    .broadcastMessage("Missile cannot fire at : " + new Vector(disp.getBlock().getLocation().getX(),
+                                                                               disp.getBlock().getLocation().getY(),
+                                                                               disp.getBlock().getLocation().getZ())
+                                              + " Invalid Coordinates!");
             return false;
-        } else if (VariantsAPI.isInRange((int) disp.getLocation().distanceSquared(new Vector(coords[0], 0, coords[1]).toLocation(disp.getWorld())), missile.type)) {
-            MissileWarfare.getInstance().getServer().broadcastMessage("Missile cannot fire at : " + disp.getBlock().getLocation() + " Target out of distance!");
+        } else if (VariantsAPI.isInRange((int) disp
+                .getLocation()
+                .distanceSquared(new Vector(coords[0], 0, coords[1]).toLocation(disp.getWorld())), missile.type)) {
+            MissileWarfare
+                    .getInstance()
+                    .getServer()
+                    .broadcastMessage(
+                            "Missile cannot fire at : " + disp.getBlock().getLocation() + " Target out of distance!");
             return false;
         }
         if (alt == null) {
@@ -238,21 +285,38 @@ public class SSMLauncher extends AbstractLauncher {
                         result = p;
                     }
                 }
-                MissileWarfare.getInstance().getLogger().info("Missile Shot || Location: " + disp.getBlock().getLocation() + " Target: " + new Vector(coords[0], 0, coords[1]) + " Nearest Player: " + result.getName());
+                MissileWarfare
+                        .getInstance()
+                        .getLogger()
+                        .info("Missile Shot || Location: " + disp.getBlock().getLocation() + " Target: " + new Vector(
+                                coords[0], 0, coords[1]) + " Nearest Player: " + result.getName());
                 if (MissileWarfare.getInstance().getConfig().getBoolean("logging.broadcastMissileShots")) {
                     final String playername = result.getName();
                     new BukkitRunnable() {
                         @Override
                         public void run() {
-                            MissileWarfare.getInstance().getServer().broadcastMessage("Missile Shot! Launcher Coords: " + disp.getBlock().getLocation().toVector() + " Nearest Player: " + playername);
+                            MissileWarfare
+                                    .getInstance()
+                                    .getServer()
+                                    .broadcastMessage(
+                                            "Missile Shot! Launcher Coords: " + disp.getBlock().getLocation().toVector()
+                                                    + " Nearest Player: " + playername);
                         }
-                    }.runTaskLater(MissileWarfare.getInstance(), 20L * MissileWarfare.getInstance().getConfig().getLong("logging.waitTimeBeforeBroadcast"));
+                    }.runTaskLater(MissileWarfare.getInstance(), 20L * MissileWarfare
+                            .getInstance()
+                            .getConfig()
+                            .getLong("logging.waitTimeBeforeBroadcast"));
                 }
             } catch (NullPointerException e) {
                 MissileWarfare.getInstance().getLogger().warning("No Players online to log missile shot");
             }
         }
-        MissileController _missile = new MissileController(true, disp.getBlock().getLocation().add(new Vector(0.5, 1.35, 0.5)).toVector(), new Vector(coords[0], 0, coords[1]), (float) missile.speed, disp.getBlock().getWorld(), missile.power, missile.accuracy, missile.type, alt);
+        MissileController _missile = new MissileController(true, disp
+                .getBlock()
+                .getLocation()
+                .add(new Vector(0.5, 1.35, 0.5))
+                .toVector(), new Vector(coords[0], 0, coords[1]), (float) missile.speed, disp.getBlock().getWorld(),
+                                                           missile.power, missile.accuracy, missile.type, alt);
         _missile.FireMissile();
         return true;
     }

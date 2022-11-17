@@ -2,12 +2,13 @@ package me.kaiyan.missilewarfare.missiles.target;
 
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 
 public class StationaryTargetObject implements TargetObject<Location> {
-    Location target_location;
+    private final @NotNull Location targetLocation;
 
-    public StationaryTargetObject(Location target_location) {
-        this.target_location = target_location;
+    public StationaryTargetObject(@NotNull Location targetLocation) {
+        this.targetLocation = targetLocation;
     }
 
     @Override
@@ -22,11 +23,11 @@ public class StationaryTargetObject implements TargetObject<Location> {
 
     @Override
     public Location getTargetObjectLocation() {
-        return this.target_location;
+        return this.targetLocation;
     }
 
     @Override
     public Location getTargetObject() {
-        return this.target_location;
+        return this.targetLocation;
     }
 }

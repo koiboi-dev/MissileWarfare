@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+
 @Deprecated
 public class AntiElytraLauncher extends SlimefunItem {
     public final int range = 490000;
@@ -92,7 +93,9 @@ public class AntiElytraLauncher extends SlimefunItem {
                             if (block.getLocation().getWorld() == player.getLocation().getWorld()) {
                                 if (block.getLocation().distanceSquared(player.getLocation()) < range) {
                                     if (player.isGliding() && !PlayerID.targets.contains(player)) {
-                                        List<OfflinePlayer> ignore = PlayerID.players.get(cont.get(new NamespacedKey(MissileWarfare.getInstance(), "groupid"), PersistentDataType.STRING));
+                                        List<OfflinePlayer> ignore = PlayerID.players.get(
+                                                cont.get(new NamespacedKey(MissileWarfare.getInstance(), "groupid"),
+                                                         PersistentDataType.STRING));
                                         if (ignore == null) {
                                             locked = player;
                                             break;
@@ -111,7 +114,12 @@ public class AntiElytraLauncher extends SlimefunItem {
                         PlayerID.targets.add(MissileWarfare.getInstance().getServer().getPlayer(playerUUID));
 
                         Player finalLocked = locked;
-                        finalLocked.spigot().sendMessage(ChatMessageType.ACTION_BAR, new ComponentBuilder(Translations.get("messages.elytraattack.locking")).color(ChatColor.RED).create());
+                        finalLocked
+                                .spigot()
+                                .sendMessage(ChatMessageType.ACTION_BAR,
+                                             new ComponentBuilder(Translations.get("messages.elytraattack.locking"))
+                                                     .color(ChatColor.RED)
+                                                     .create());
                         new BukkitRunnable() {
                             @Override
                             public void run() {
@@ -121,12 +129,24 @@ public class AntiElytraLauncher extends SlimefunItem {
                                     return;
                                 }
                                 if (player.isGliding()) {
-                                    finalLocked.spigot().sendMessage(ChatMessageType.ACTION_BAR, new ComponentBuilder(Translations.get("messages.elytraattack.locked")).color(ChatColor.DARK_RED).create());
-                                    fireMissile((Dispenser) block.getState(), MissileWarfare.getInstance().getServer().getPlayer(playerUUID));
+                                    finalLocked
+                                            .spigot()
+                                            .sendMessage(ChatMessageType.ACTION_BAR, new ComponentBuilder(
+                                                    Translations.get("messages.elytraattack.locked"))
+                                                    .color(ChatColor.DARK_RED)
+                                                    .create());
+                                    fireMissile((Dispenser) block.getState(),
+                                                MissileWarfare.getInstance().getServer().getPlayer(playerUUID));
                                 } else if (player.isInsideVehicle()) {
                                     if (!player.getVehicle().isOnGround()) {
-                                        finalLocked.spigot().sendMessage(ChatMessageType.ACTION_BAR, new ComponentBuilder(Translations.get("messages.elytraattack.locked")).color(ChatColor.DARK_RED).create());
-                                        fireMissile((Dispenser) block.getState(), MissileWarfare.getInstance().getServer().getPlayer(playerUUID));
+                                        finalLocked
+                                                .spigot()
+                                                .sendMessage(ChatMessageType.ACTION_BAR, new ComponentBuilder(
+                                                        Translations.get("messages.elytraattack.locked"))
+                                                        .color(ChatColor.DARK_RED)
+                                                        .create());
+                                        fireMissile((Dispenser) block.getState(),
+                                                    MissileWarfare.getInstance().getServer().getPlayer(playerUUID));
                                     }
                                 }
                             }
@@ -145,7 +165,11 @@ public class AntiElytraLauncher extends SlimefunItem {
             event.cancel();
             TileState state = (TileState) event.getClickedBlock().get().getBlockData();
             PersistentDataContainer cont = state.getPersistentDataContainer();
-            cont.set(new NamespacedKey(MissileWarfare.getInstance(), "groupid"), PersistentDataType.STRING, event.getItem().getItemMeta().getPersistentDataContainer().get(new NamespacedKey(MissileWarfare.getInstance(), "id"), PersistentDataType.STRING));
+            cont.set(new NamespacedKey(MissileWarfare.getInstance(), "groupid"), PersistentDataType.STRING, event
+                    .getItem()
+                    .getItemMeta()
+                    .getPersistentDataContainer()
+                    .get(new NamespacedKey(MissileWarfare.getInstance(), "id"), PersistentDataType.STRING));
             state.update();
         }
     }
@@ -155,10 +179,15 @@ public class AntiElytraLauncher extends SlimefunItem {
     }
 
     public void fireMissile(Dispenser disp, Player target) {
-        ItemStack missileitem = VariantsAPI.getOtherFirstMissile(disp.getInventory(), SlimefunItem.getById("ANTIELYTRAMISSILE"));
+        ItemStack missileitem = VariantsAPI.getOtherFirstMissile(disp.getInventory(),
+                                                                 SlimefunItem.getById("ANTIELYTRAMISSILE"));
         if (SlimefunItem.getByItem(missileitem) == SlimefunItem.getById("ANTIELYTRAMISSILE")) {
             ItemUtils.consumeItem(missileitem, false);
-            ElytraMissileController missile = new ElytraMissileController(5, 2.5f, disp.getBlock().getLocation().add(new Vector(0.5, 1.5, 0.5)).toVector(), disp.getWorld(), target);
+            ElytraMissileController missile = new ElytraMissileController(5, 2.5f, disp
+                    .getBlock()
+                    .getLocation()
+                    .add(new Vector(0.5, 1.5, 0.5))
+                    .toVector(), disp.getWorld(), target);
             missile.FireMissile(target);
         } else {
             PlayerID.targets.remove(target);

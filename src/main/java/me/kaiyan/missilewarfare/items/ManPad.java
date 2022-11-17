@@ -57,7 +57,7 @@ public class ManPad extends SlimefunItem {
                     for (MissileController missile : MissileWarfare.activemissiles) {
                         if (missile.isgroundmissile) {
                             // again, when checking distances, check world first!!! -Colonel_Kai
-                            if(missile.world == event.getPlayer().getWorld()) {
+                            if (missile.world == event.getPlayer().getWorld()) {
                                 if (missile.pos.distanceSquared(event.getPlayer().getLocation().toVector()) < range) {
                                     missiles.add(missile);
                                 }
@@ -71,10 +71,13 @@ public class ManPad extends SlimefunItem {
                     for (MissileController missile : missiles) {
                         Vector dir = event.getPlayer().getLocation().getDirection();
                         Location loc = event.getPlayer().getLocation();
-                        Vector target = loc.add(dir.multiply(loc.distance(missile.pos.toLocation(event.getPlayer().getWorld())))).toVector();
+                        Vector target = loc
+                                .add(dir.multiply(loc.distance(missile.pos.toLocation(event.getPlayer().getWorld()))))
+                                .toVector();
                         float dist = (float) Math.floor(target.distanceSquared(missile.pos));
-                        float acdist = (float) loc.distanceSquared(missile.pos.toLocation(event.getPlayer().getWorld()));
-                        if (target.isInSphere(missile.pos, missile.speed+((acdist/range)*8)) && dist < mindist) {
+                        float acdist = (float) loc.distanceSquared(
+                                missile.pos.toLocation(event.getPlayer().getWorld()));
+                        if (target.isInSphere(missile.pos, missile.speed + ((acdist / range) * 8)) && dist < mindist) {
                             lockedmissile = missile;
                             mindist = dist;
                         }
@@ -86,14 +89,20 @@ public class ManPad extends SlimefunItem {
                             scanLinepos++;
                             scanline.append("X").color(ChatColor.BLUE);
                             scanline.append("XX").color(ChatColor.WHITE);
-                            event.getPlayer().playNote(event.getPlayer().getLocation(), Instrument.PIANO, Note.flat(1, Note.Tone.B));
+                            event
+                                    .getPlayer()
+                                    .playNote(event.getPlayer().getLocation(), Instrument.PIANO,
+                                              Note.flat(1, Note.Tone.B));
                             scanLineReturn = false;
                         } else if (scanLinepos == 2) {
                             scanLinepos--;
                             scanLineReturn = true;
                             scanline.append("XX").color(ChatColor.WHITE);
                             scanline.append("X").color(ChatColor.BLUE);
-                            event.getPlayer().playNote(event.getPlayer().getLocation(), Instrument.PIANO, Note.flat(1, Note.Tone.B));
+                            event
+                                    .getPlayer()
+                                    .playNote(event.getPlayer().getLocation(), Instrument.PIANO,
+                                              Note.flat(1, Note.Tone.B));
                         } else if (!scanLineReturn) {
                             scanLinepos++;
                             scanline.append("X").color(ChatColor.WHITE);
@@ -107,14 +116,30 @@ public class ManPad extends SlimefunItem {
                         }
                         scanline.append("]").color(ChatColor.WHITE);
                     } else {
-                        scanline.append("MissileType: " + VariantsAPI.getStrVariantFromInt(lockedmissile.type)).color(ChatColor.GOLD);
+                        scanline
+                                .append("MissileType: " + VariantsAPI.getStrVariantFromInt(lockedmissile.type))
+                                .color(ChatColor.GOLD);
                         scanline.append("[");
                         scanline.append("XXX").color(ChatColor.RED);
                         scanline.append("]").color(ChatColor.WHITE);
-                        scanline.append("Dist: " + Math.round(event.getPlayer().getLocation().distance(lockedmissile.pos.toLocation(event.getPlayer().getWorld())))).color(ChatColor.GOLD);
-                        event.getPlayer().playNote(event.getPlayer().getLocation(), Instrument.STICKS, Note.flat(1, Note.Tone.E));
-                        event.getPlayer().playNote(event.getPlayer().getLocation(), Instrument.GUITAR, Note.flat(1, Note.Tone.F));
-                        event.getPlayer().playNote(event.getPlayer().getLocation(), Instrument.FLUTE, Note.flat(1, Note.Tone.E));
+                        scanline
+                                .append("Dist: " + Math.round(event
+                                                                      .getPlayer()
+                                                                      .getLocation()
+                                                                      .distance(lockedmissile.pos.toLocation(
+                                                                              event.getPlayer().getWorld()))))
+                                .color(ChatColor.GOLD);
+                        event
+                                .getPlayer()
+                                .playNote(event.getPlayer().getLocation(), Instrument.STICKS,
+                                          Note.flat(1, Note.Tone.E));
+                        event
+                                .getPlayer()
+                                .playNote(event.getPlayer().getLocation(), Instrument.GUITAR,
+                                          Note.flat(1, Note.Tone.F));
+                        event
+                                .getPlayer()
+                                .playNote(event.getPlayer().getLocation(), Instrument.FLUTE, Note.flat(1, Note.Tone.E));
                     }
 
                     // SendScanLine
@@ -129,7 +154,13 @@ public class ManPad extends SlimefunItem {
                             this.cancel();
                         } else {
                             active.remove(event.getPlayer());
-                            MissileController missile = new MissileController(false, event.getPlayer().getLocation().toVector(), lockedmissile.pos, 5, event.getPlayer().getWorld(), 3, 0, 1, event.getPlayer().getLocation().getDirection());
+                            MissileController missile = new MissileController(false, event
+                                    .getPlayer()
+                                    .getLocation()
+                                    .toVector(), lockedmissile.pos, 5, event.getPlayer().getWorld(), 3, 0, 1, event
+                                                                                      .getPlayer()
+                                                                                      .getLocation()
+                                                                                      .getDirection());
                             missile.FireMissileAtMissile(lockedmissile);
                             event.getPlayer().getInventory().remove(manpad.getItem());
                             event.getPlayer().updateInventory();

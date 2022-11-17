@@ -29,6 +29,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
 
 import java.util.List;
+
 @Deprecated
 public class AntiMissileLauncher extends SlimefunItem {
     public final int range = 40000;
@@ -76,7 +77,8 @@ public class AntiMissileLauncher extends SlimefunItem {
                     MissileController locked = null;
                     if (!missiles.isEmpty()) {
                         for (MissileController missile : missiles) {
-                            if (block.getLocation().distanceSquared(missile.pos.toLocation(missile.world)) < range && missile.isgroundmissile) {
+                            if (block.getLocation().distanceSquared(missile.pos.toLocation(missile.world)) < range
+                                    && missile.isgroundmissile) {
                                 locked = missile;
                                 break;
                             }
@@ -84,12 +86,16 @@ public class AntiMissileLauncher extends SlimefunItem {
                     }
                     state.update();
                     try {
-                        if (locked != null && cont.get(new NamespacedKey(MissileWarfare.getInstance(), "timesincelastshot"), PersistentDataType.INTEGER) <= System.currentTimeMillis()) {
-                            cont.set(new NamespacedKey(MissileWarfare.getInstance(), "timesincelastshot"), PersistentDataType.INTEGER, (int) System.currentTimeMillis() + 1000);
+                        if (locked != null &&
+                                cont.get(new NamespacedKey(MissileWarfare.getInstance(), "timesincelastshot"),
+                                         PersistentDataType.INTEGER) <= System.currentTimeMillis()) {
+                            cont.set(new NamespacedKey(MissileWarfare.getInstance(), "timesincelastshot"),
+                                     PersistentDataType.INTEGER, (int) System.currentTimeMillis() + 1000);
                             fireMissile((Dispenser) block.getState(), locked);
                         }
                     } catch (NullPointerException e) {
-                        cont.set(new NamespacedKey(MissileWarfare.getInstance(), "timesincelastshot"), PersistentDataType.INTEGER, Integer.MIN_VALUE);
+                        cont.set(new NamespacedKey(MissileWarfare.getInstance(), "timesincelastshot"),
+                                 PersistentDataType.INTEGER, Integer.MIN_VALUE);
                         state.update();
                     }
                 }
@@ -120,10 +126,15 @@ public class AntiMissileLauncher extends SlimefunItem {
         }
          */
     public void fireMissile(Dispenser disp, MissileController target) {
-        ItemStack missileitem = VariantsAPI.getOtherFirstMissile(disp.getInventory(), SlimefunItem.getById("ANTIAIRMISSILE"));
+        ItemStack missileitem = VariantsAPI.getOtherFirstMissile(disp.getInventory(),
+                                                                 SlimefunItem.getById("ANTIAIRMISSILE"));
         if (SlimefunItem.getByItem(missileitem) == SlimefunItem.getById("ANTIAIRMISSILE")) {
             ItemUtils.consumeItem(missileitem, false);
-            MissileController missile = new MissileController(false, disp.getBlock().getLocation().add(new Vector(0.5, 1.35, 0.5)).toVector(), new Vector(0, 0, 0), 8, disp.getWorld(), 3, 0, 0, new Vector(0, 0, 0));
+            MissileController missile = new MissileController(false, disp
+                    .getBlock()
+                    .getLocation()
+                    .add(new Vector(0.5, 1.35, 0.5))
+                    .toVector(), new Vector(0, 0, 0), 8, disp.getWorld(), 3, 0, 0, new Vector(0, 0, 0));
             missile.FireMissileAtMissile(target);
         }
     }

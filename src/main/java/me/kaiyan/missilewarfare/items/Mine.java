@@ -24,7 +24,7 @@ public class Mine extends SlimefunItem implements Listener {
             @Override
             public void onPlayerPlace(BlockPlaceEvent blockPlaceEvent) {
                 Material type = blockPlaceEvent.getBlockAgainst().getType();
-                if (type == Material.BEDROCK || type == Material.ICE){
+                if (type == Material.BEDROCK || type == Material.ICE) {
                     return;
                 }
                 blockPlaceEvent.getBlockPlaced().setType(type);
@@ -36,10 +36,16 @@ public class Mine extends SlimefunItem implements Listener {
     }
 
     @EventHandler
-    public void onPlayerMove(PlayerMoveEvent event){
-        if (BlockStorage.check(event.getFrom().getBlock().getRelative(BlockFace.DOWN), getId())){
-            event.getPlayer().getWorld().createExplosion(event.getTo(), MissileWarfare.getInstance().getConfig().getInt("mine.explosivepower"));
-            event.getPlayer().damage(Math.random()*MissileWarfare.getInstance().getConfig().getLong("mine.maxranddamage"));
+    public void onPlayerMove(PlayerMoveEvent event) {
+        if (BlockStorage.check(event.getFrom().getBlock().getRelative(BlockFace.DOWN), getId())) {
+            event
+                    .getPlayer()
+                    .getWorld()
+                    .createExplosion(event.getTo(),
+                                     MissileWarfare.getInstance().getConfig().getInt("mine.explosivepower"));
+            event
+                    .getPlayer()
+                    .damage(Math.random() * MissileWarfare.getInstance().getConfig().getLong("mine.maxranddamage"));
         }
     }
 }

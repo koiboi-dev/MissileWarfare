@@ -3,43 +3,43 @@ package me.kaiyan.missilewarfare.missiles;
 import me.kaiyan.missilewarfare.missiles.flightpattern.AbstractPattern;
 import me.kaiyan.missilewarfare.missiles.target.TargetObject;
 import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.entity.Entity;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 
 public interface Missile<T extends TargetObject<?>> {
 
-    public Location getLocation();
+    @NotNull Location getLocation();
 
-    public void setLocation(Location location);
+    void setLocation(@NotNull Location location);
 
-    public int getSpeed();
+    int getSpeed();
 
-    public void setSpeed(int integer);
+    void setSpeed(int speed);
 
-    public Vector getVelocity();
+    @NotNull Vector getVelocity();
 
-    public int getMaxRange();
+    int getMaxRange();
 
-    public int getRemainingRange();
+    int getRemainingRange();
 
-    public void setRemainingRange(int remaining_range);
+    void setRemainingRange(int remainingRange);
 
-    public Entity getArmourStand();
+    ArmorStand getArmourStand();
 
-    public T getTargetObject();
+    @NotNull T getTargetObject();
 
-    public int getPower();
+    int getPower();
 
-    public int getMaxSpeed();
+    int getMaxSpeed();
 
-    public int getManeuverability();
+    int getManeuverability();
 
-    public AbstractPattern getLaunchPattern();
+    @NotNull AbstractPattern<T> getLaunchPattern();
 
-    public AbstractPattern getFlightPattern();
+    @NotNull AbstractPattern<T> getFlightPattern();
 
-    public void fire(T target, Location location);
+    void fire(@NotNull T target, @NotNull Location location);
 
-    public void detonate();
+    void detonate();
 }

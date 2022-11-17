@@ -25,7 +25,7 @@ public class ElytraMissileController {
     public int loosetime;
     public int startdist;
 
-    public ElytraMissileController(float speed, float power, Vector startpos, World world, Player player){
+    public ElytraMissileController(float speed, float power, Vector startpos, World world, Player player) {
         this.speed = speed;
         pos = startpos;
         this.world = world;
@@ -33,16 +33,20 @@ public class ElytraMissileController {
         this.power = power;
         startdist = (int) startpos.distanceSquared(player.getLocation().toVector());
         this.startpos = startpos;
-        this.loosetime = (int) (System.currentTimeMillis()+5000);
+        this.loosetime = (int) (System.currentTimeMillis() + 5000);
     }
 
-    public void LaunchSeq(){
-        new BukkitRunnable(){
+    public void LaunchSeq() {
+        new BukkitRunnable() {
             int loops = 0;
+
             @Override
             public void run() {
-                world.spawnParticle(Particle.FLAME, pos.toLocation(world), 0, Math.random() - 0.5, Math.random(), Math.random() - 0.5, 0.1);
-                world.spawnParticle(Particle.CAMPFIRE_SIGNAL_SMOKE, pos.toLocation(world), 0, (Math.random() - 0.5)/0.9, Math.random()+0.25, (Math.random() - 0.5)/0.9, 0.2);
+                world.spawnParticle(Particle.FLAME, pos.toLocation(world), 0, Math.random() - 0.5, Math.random(),
+                                    Math.random() - 0.5, 0.1);
+                world.spawnParticle(Particle.CAMPFIRE_SIGNAL_SMOKE, pos.toLocation(world), 0,
+                                    (Math.random() - 0.5) / 0.9, Math.random() + 0.25, (Math.random() - 0.5) / 0.9,
+                                    0.2);
                 if (loops > 15) {
                     this.cancel();
                 }
@@ -50,11 +54,13 @@ public class ElytraMissileController {
             }
         }.runTaskTimer(MissileWarfare.getInstance(), 5, 1);
 
-        new BukkitRunnable(){
+        new BukkitRunnable() {
             int loops = 0;
+
             @Override
             public void run() {
-                world.spawnParticle(Particle.CLOUD, pos.toLocation(world), 0, Math.random() - 0.5, Math.random()-1, Math.random() - 0.5, 0.1);
+                world.spawnParticle(Particle.CLOUD, pos.toLocation(world), 0, Math.random() - 0.5, Math.random() - 1,
+                                    Math.random() - 0.5, 0.1);
                 if (loops < 20) {
                     this.cancel();
                 }
@@ -63,7 +69,7 @@ public class ElytraMissileController {
         }.runTaskTimer(MissileWarfare.getInstance(), 0, 1);
     }
 
-    public Vector getVelocityIgnoreY(){
+    public Vector getVelocityIgnoreY() {
         Vector velocity = new Vector(0, 0, 0);
 
         float xdist = (float) (player.getLocation().getX() - pos.getX());
@@ -77,7 +83,7 @@ public class ElytraMissileController {
                 velocity.setX(speed);
             }
         }
-        if (ydist != 0){
+        if (ydist != 0) {
             if (ydist < 0) {
                 velocity.setY(-speed);
             } else {
@@ -96,27 +102,30 @@ public class ElytraMissileController {
         return velocity;
     }
 
-    public void Update(BukkitRunnable run, Player other){
+    public void Update(BukkitRunnable run, Player other) {
         Vector velocity = getVelocityIgnoreY();
         pos.add(velocity);
         world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, pos.toLocation(world), 0, 0, 0, 0, 0.1, null, true);
-        world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, (pos.toLocation(world).subtract(velocity.divide(new Vector(2,2,2)))), 0, 0, 0, 0, 0.1, null, true);
-        if (other.getLocation().distanceSquared(pos.toLocation(world)) < (speed*speed)*1.1){
+        world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE,
+                            (pos.toLocation(world).subtract(velocity.divide(new Vector(2, 2, 2)))), 0, 0, 0, 0, 0.1,
+                            null, true);
+        if (other.getLocation().distanceSquared(pos.toLocation(world)) < (speed * speed) * 1.1) {
             world.createExplosion(pos.toLocation(world), power, false, false, player);
             for (int i = 0; i < 40; i++) {
-                world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, pos.toLocation(world), 0, Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5, 0.1, null, true);
-                world.spawnParticle(Particle.FLAME, pos.toLocation(world), 0, Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5, 0.1, null,true);
+                world.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, pos.toLocation(world), 0, Math.random() - 0.5,
+                                    Math.random() - 0.5, Math.random() - 0.5, 0.1, null, true);
+                world.spawnParticle(Particle.FLAME, pos.toLocation(world), 0, Math.random() - 0.5, Math.random() - 0.5,
+                                    Math.random() - 0.5, 0.1, null, true);
             }
-            if (player.isGliding()){
+            if (player.isGliding()) {
                 ItemStack elytra = player.getEquipment().getChestplate();
-                Damageable meta = (Damageable)elytra.getItemMeta();
-                meta.setDamage(elytra.getType().getMaxDurability()-5);
+                Damageable meta = (Damageable) elytra.getItemMeta();
+                meta.setDamage(elytra.getType().getMaxDurability() - 5);
                 elytra.setItemMeta(meta);
                 player.getEquipment().setChestplate(elytra);
                 run.cancel();
                 PlayerID.targets.remove(player);
-            }
-            else {
+            } else {
                 run.cancel();
                 PlayerID.targets.remove(player);
             }
@@ -126,9 +135,9 @@ public class ElytraMissileController {
             run.cancel();
             PlayerID.targets.remove(player);
         }
-        if (!player.isGliding()){
+        if (!player.isGliding()) {
             ComponentBuilder builder = new ComponentBuilder("");
-            if (loosetime <= System.currentTimeMillis()){
+            if (loosetime <= System.currentTimeMillis()) {
                 builder.append("!!! LOST MISSILE !!!").color(ChatColor.DARK_GREEN);
             } else {
                 builder.append("Losing Missile...").color(ChatColor.GREEN);
@@ -143,7 +152,7 @@ public class ElytraMissileController {
         }
     }
 
-    public void FireMissile(Player other){
+    public void FireMissile(Player other) {
         LaunchSeq();
         new BukkitRunnable() {
             @Override

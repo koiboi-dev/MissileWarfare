@@ -2,12 +2,12 @@ package me.kaiyan.missilewarfare;
 
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.config.Config;
+import me.kaiyan.missilewarfare.integrations.TownyLoader;
+import me.kaiyan.missilewarfare.integrations.WorldGuardLoader;
 import me.kaiyan.missilewarfare.items.CustomItems;
 import me.kaiyan.missilewarfare.listeners.ExplosionEventListener;
 import me.kaiyan.missilewarfare.missiles.MissileConfig;
 import me.kaiyan.missilewarfare.missiles.MissileController;
-import me.kaiyan.missilewarfare.integrations.TownyLoader;
-import me.kaiyan.missilewarfare.integrations.WorldGuardLoader;
 import me.kaiyan.missilewarfare.util.PlayerID;
 import me.kaiyan.missilewarfare.util.Translations;
 import org.bstats.bukkit.Metrics;
@@ -34,6 +34,24 @@ public class MissileWarfare extends JavaPlugin implements SlimefunAddon {
     public static int blocksExploded = 0;
 
     @Override
+    public void onDisable() {
+        for (MissileController missile : activemissiles) {
+            try {
+                missile.armourStand.remove();
+                missile.update.cancel();
+            } catch (NullPointerException e) {
+                try {
+                    missile.update.cancel();
+                } catch (NullPointerException ignored) {
+
+                }
+            }
+        }
+        PlayerID.savePlayers(new Config(new File(this.getDataFolder() + "/saveID.yml")));
+        // Logic for disabling the plugin...
+    }
+
+    @Override
     public void onEnable() {
         int pluginId = 14904; // <-- Replace with the id of your plugin!
         metrics = new Metrics(this, pluginId);
@@ -56,28 +74,28 @@ public class MissileWarfare extends JavaPlugin implements SlimefunAddon {
         // Read something from your config.yml
         Config cfg = new Config(this);
         Config saveFile;
-        if (!new File(this.getDataFolder()+"/saveID.yml").exists()) {
+        if (!new File(this.getDataFolder() + "/saveID.yml").exists()) {
             saveFile = new Config(new File(this.getDataFolder() + "/saveID.yml"));
             saveFile.createFile();
         } else {
             saveFile = new Config(new File(this.getDataFolder() + "/saveID.yml"));
         }
-        File lang = new File(getDataFolder()+"/lang");
+        File lang = new File(getDataFolder() + "/lang");
         if (!lang.exists()) {
             generateLangPacks(lang);
         }
         try {
-            Translations.setup(new Config(getDataFolder()+"/lang/"+cfg.getString("translation-pack")+".yml"));
+            Translations.setup(new Config(getDataFolder() + "/lang/" + cfg.getString("translation-pack") + ".yml"));
             PlayerID.loadPlayers(saveFile);
             MissileConfig.setup(cfg);
             CustomItems.setup();
-        } catch (Exception e){
+        } catch (Exception e) {
             getLogger().warning(e.toString());
             getLogger().warning("=== !LANG PACK INVALID, REVERTING TO EN LANG PACK! ===");
             getLogger().warning("/brokenLang/ created, the invalid langpack is in there");
-            lang.renameTo(new File(getDataFolder()+"/brokenLang/"));
+            lang.renameTo(new File(getDataFolder() + "/brokenLang/"));
             generateLangPacks(lang);
-        }   
+        }
 
         new BukkitRunnable() {
             @Override
@@ -102,12 +120,13 @@ public class MissileWarfare extends JavaPlugin implements SlimefunAddon {
                 }
             }
         }.runTaskTimer(this, 0, cfg.getInt("other.cleanup-wait-time"));
-        
+
         getLogger().info("Checking For Worldguard");
         new BukkitRunnable() {
             @Override
             public void run() {
-                if (getServer().getPluginManager().getPlugin("WorldGuard") != null && getServer().getPluginManager().getPlugin("WorldEdit") != null) {
+                if (getServer().getPluginManager().getPlugin("WorldGuard") != null
+                        && getServer().getPluginManager().getPlugin("WorldEdit") != null) {
                     WorldGuardLoader.load();
                 }
                 if (getServer().getPluginManager().getPlugin("Towny") != null) {
@@ -117,34 +136,6 @@ public class MissileWarfare extends JavaPlugin implements SlimefunAddon {
         }.runTaskLater(this, 0);
 
         getServer().getPluginManager().registerEvents(new ExplosionEventListener(), this);
-    }
-
-    public static MissileWarfare getInstance(){
-        return plugin;
-    }
-
-    @Override
-    public void onDisable() {
-        for (MissileController missile : activemissiles){
-            try {
-                missile.armourStand.remove();
-                missile.update.cancel();
-            } catch (NullPointerException e){
-                try {
-                    missile.update.cancel();
-                } catch (NullPointerException ignored){
-
-                }
-            }
-        }
-        PlayerID.savePlayers(new Config(new File(this.getDataFolder()+"/saveID.yml")));
-        // Logic for disabling the plugin...
-    }
-
-    @Override
-    public String getBugTrackerURL() {
-        // You can return a link to your Bug Tracker instead of null here
-        return null;
     }
 
     @Nonnull
@@ -157,7 +148,13 @@ public class MissileWarfare extends JavaPlugin implements SlimefunAddon {
         return this;
     }
 
-    public void generateLangPacks(File lang){
+    @Override
+    public String getBugTrackerURL() {
+        // You can return a link to your Bug Tracker instead of null here
+        return null;
+    }
+
+    public void generateLangPacks(File lang) {
         String[] loadedpacks = this.getConfig().getStringList("saved-packs").toArray(new String[0]);
         for (String pack : loadedpacks) {
             saveResource(pack + ".yml", false);
@@ -166,8 +163,8 @@ public class MissileWarfare extends JavaPlugin implements SlimefunAddon {
         lang.mkdir();
 
         File datafolder = getDataFolder();
-        for (File file : datafolder.listFiles()){
-            if (file.getName().startsWith("pack-")){
+        for (File file : datafolder.listFiles()) {
+            if (file.getName().startsWith("pack-")) {
                 try {
                     Files.move(file.toPath(), new File(lang.getPath(), file.getName()).toPath());
                 } catch (IOException e) {
@@ -175,5 +172,9 @@ public class MissileWarfare extends JavaPlugin implements SlimefunAddon {
                 }
             }
         }
+    }
+
+    public static MissileWarfare getInstance() {
+        return plugin;
     }
 }

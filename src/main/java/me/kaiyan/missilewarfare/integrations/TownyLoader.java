@@ -8,15 +8,15 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 public class TownyLoader {
-    public static void setup(){
+    public static void setup() {
         MissileWarfare.townyEnabled = true;
     }
 
-    public static boolean exploded(Player nearestPlayer, Location loc){
+    public static boolean exploded(Player nearestPlayer, Location loc) {
         try {
             Town homeTown = TownyAPI.getInstance().getResident(nearestPlayer).getTown();
             Town targetTown = TownyAPI.getInstance().getTown(loc);
-            if (targetTown == null){
+            if (targetTown == null) {
                 return false;
             } else {
                 if (homeTown.hasEnemy(targetTown)) {

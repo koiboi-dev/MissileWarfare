@@ -20,7 +20,7 @@ import org.bukkit.util.Vector;
 public class WorldGuardLoader {
     public static StateFlag ALLOW_MISSILE_EXPLODE;
 
-    public static void load(){
+    public static void load() {
         MissileWarfare.worldGuardEnabled = true;
         MissileWarfare.getInstance().getLogger().info("WorldGuard Enabled!");
         FlagRegistry registry = WorldGuard.getInstance().getFlagRegistry();
@@ -36,24 +36,30 @@ public class WorldGuardLoader {
             if (existing instanceof StateFlag) {
                 ALLOW_MISSILE_EXPLODE = (StateFlag) existing;
             } else {
-                MissileWarfare.getInstance().getLogger().severe("!! WARNING: WORLDGUARD FLAG ALLOW_MISSILE_EXPLODE HAS BEEN TAKEN BY ANOTHER PLUGIN, WORLDGUARD SUPPORT IS DISABLED !!");
+                MissileWarfare
+                        .getInstance()
+                        .getLogger()
+                        .severe("!! WARNING: WORLDGUARD FLAG ALLOW_MISSILE_EXPLODE HAS BEEN TAKEN BY ANOTHER PLUGIN, WORLDGUARD SUPPORT IS DISABLED !!");
                 MissileWarfare.worldGuardEnabled = false;
             }
         }
     }
 
-    public static void explode(World world, Vector pos, double power, Entity armourStand, Player nearestPlayer){
+    public static void explode(World world, Vector pos, double power, Entity armourStand, Player nearestPlayer) {
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
         RegionManager regions = container.get(new BukkitWorld(world));
-        if (regions == null){
+        if (regions == null) {
             world.createExplosion(pos.toLocation(world), (float) power, false, true, armourStand);
         } else {
-            ApplicableRegionSet set = regions.getApplicableRegions(BlockVector3.at(pos.getBlockX(), pos.getBlockY(), pos.getBlockZ()));
-            if (WorldGuardPlugin.inst().wrapPlayer(nearestPlayer) != null){
+            ApplicableRegionSet set = regions.getApplicableRegions(
+                    BlockVector3.at(pos.getBlockX(), pos.getBlockY(), pos.getBlockZ()));
+            if (WorldGuardPlugin.inst().wrapPlayer(nearestPlayer) != null) {
                 world.createExplosion(pos.toLocation(world), (float) power, false, true, armourStand);
                 return;
             }
-            world.createExplosion(pos.toLocation(world), (float) power, false, set.testState(WorldGuardPlugin.inst().wrapPlayer(nearestPlayer), WorldGuardLoader.ALLOW_MISSILE_EXPLODE), armourStand);
+            world.createExplosion(pos.toLocation(world), (float) power, false,
+                                  set.testState(WorldGuardPlugin.inst().wrapPlayer(nearestPlayer),
+                                                WorldGuardLoader.ALLOW_MISSILE_EXPLODE), armourStand);
         }
     }
 }

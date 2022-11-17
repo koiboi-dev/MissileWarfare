@@ -4,34 +4,49 @@ import io.github.thebusybiscuit.slimefun4.libraries.dough.config.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
-public class PlayerID {
-    public static HashMap<String, List<OfflinePlayer>> players = new HashMap<>();
+public final class PlayerID {
+    private static final HashMap<String, Collection<OfflinePlayer>> players = new HashMap<>();
     public static List<Player> targets = new ArrayList<>();
 
-    public static void loadPlayers(Config file){
-        Set<String> keys = file.getKeys("id.");
-        for (String key : keys){
-            List<OfflinePlayer> _players = new ArrayList<>();
-            List<String> strs = file.getStringList("id."+key+".players");
-            for (String uuidstr : strs){
-                uuidstr = uuidstr.trim();
-                _players.add(Bukkit.getOfflinePlayer(UUID.fromString(uuidstr)));
-            }
-            players.put(key, _players);
-        }
+    private PlayerID() {
+        throw new RuntimeException("Do not run this constructor");
     }
 
-    public static void savePlayers(Config file){
-        for (Map.Entry<String, List<OfflinePlayer>> entry : players.entrySet()){
-            List<String> uuids = new ArrayList<>();
-            for (OfflinePlayer player : entry.getValue()){
-                uuids.add(player.getUniqueId().toString());
-            }
-            file.setValue("id."+entry.getKey()+".players", uuids);
-        }
+    public static Map<String, Collection<OfflinePlayer>> getPlayers() {
+        return players;
+    }
+
+    public static void loadPlayers(@NotNull Config file) {
+        Set<String> keys = file.getKeys("id.");
+        Map<String, List<OfflinePlayer>> playerMaps = keys
+                .stream()
+                .collect(Collectors.toMap(key -> key, key -> file
+                        .getStringList("id." + key + ".players")
+                        .stream()
+                        .map(uuidString -> {
+                            try {
+                                UUID uuid = UUID.fromString(uuidString.trim());
+                                return Bukkit.getOfflinePlayer(uuid);
+                            } catch (NumberFormatException e) {
+                                //cannot read UUID
+                                return null;
+                            }
+                        })
+                        .filter(Objects::nonNull)
+                        .collect(Collectors.toList())));
+        players.putAll(playerMaps);
+    }
+
+    public static void savePlayers(@NotNull Config file) {
+        players.forEach((key, value) -> {
+            List<String> ids = value.stream().map(p -> p.getUniqueId().toString()).collect(Collectors.toList());
+            file.setValue("id." + key + ".players", ids);
+        });
         file.save();
     }
 }

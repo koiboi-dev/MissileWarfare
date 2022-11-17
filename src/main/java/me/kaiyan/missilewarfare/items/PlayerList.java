@@ -20,8 +20,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class PlayerList extends SlimefunItem {
@@ -36,10 +38,10 @@ public class PlayerList extends SlimefunItem {
     }
 
     private boolean itemDrop(PlayerDropItemEvent event, Player player, Item item) {
-        if (SlimefunItem.getByItem(item.getItemStack()) == null){
+        if (SlimefunItem.getByItem(item.getItemStack()) == null) {
             return true;
         }
-        if (!player.isSneaking() && SlimefunItem.getByItem(item.getItemStack()).getId().equals("PLAYERLIST")){
+        if (!player.isSneaking() && SlimefunItem.getByItem(item.getItemStack()).getId().equals("PLAYERLIST")) {
             event.setCancelled(true);
 
             NamespacedKey key = new NamespacedKey(MissileWarfare.getInstance(), "id");
@@ -58,14 +60,18 @@ public class PlayerList extends SlimefunItem {
         ItemMeta meta = event.getItem().getItemMeta();
         PersistentDataContainer cont = meta.getPersistentDataContainer();
 
-        try{
-            if (event.getSlimefunBlock().isPresent()){
-                if (event.getSlimefunBlock().get().getId().equals("ANTIELYTRALAUNCHER")){
-                    event.getPlayer().sendMessage(Translations.get("messages.playerlist.addedkey")+cont.get(key, PersistentDataType.STRING)+"");
+        try {
+            if (event.getSlimefunBlock().isPresent()) {
+                if (event.getSlimefunBlock().get().getId().equals("ANTIELYTRALAUNCHER")) {
+                    event
+                            .getPlayer()
+                            .sendMessage(Translations.get("messages.playerlist.addedkey") + cont.get(key,
+                                                                                                     PersistentDataType.STRING)
+                                                 + "");
                     return;
                 }
             }
-        } catch (NullPointerException e){
+        } catch (NullPointerException e) {
             event.getPlayer().sendMessage(Translations.get("messages.playerlist.noid"));
             return;
         }
@@ -79,14 +85,23 @@ public class PlayerList extends SlimefunItem {
                 @Override
                 public Prompt acceptInput(ConversationContext conversationContext, String s) {
                     try {
-                        List<OfflinePlayer> players = PlayerID.players.get(cont.get(key, PersistentDataType.STRING));
+                        Collection<OfflinePlayer> players = PlayerID
+                                .getPlayers()
+                                .get(cont.get(key, PersistentDataType.STRING));
                         players.add(MissileWarfare.getInstance().getServer().getPlayerExact(s));
-                        PlayerID.players.put(cont.get(key, PersistentDataType.STRING), players);
-                        conversationContext.getForWhom().sendRawMessage(Translations.get("messages.playerlist.addedplayer") + MissileWarfare.getInstance().getServer().getPlayerExact(s));
+                        PlayerID.getPlayers().put(cont.get(key, PersistentDataType.STRING), players);
+                        conversationContext
+                                .getForWhom()
+                                .sendRawMessage(Translations.get("messages.playerlist.addedplayer") + MissileWarfare
+                                        .getInstance()
+                                        .getServer()
+                                        .getPlayerExact(s));
                         return END_OF_CONVERSATION;
                     } catch (NullPointerException e) {
                         e.printStackTrace();
-                        conversationContext.getForWhom().sendRawMessage(Translations.get("messages.playerlist.invalidplayer"));
+                        conversationContext
+                                .getForWhom()
+                                .sendRawMessage(Translations.get("messages.playerlist.invalidplayer"));
                         return END_OF_CONVERSATION;
                     }
                 }
@@ -100,14 +115,23 @@ public class PlayerList extends SlimefunItem {
                 @Override
                 public Prompt acceptInput(ConversationContext conversationContext, String s) {
                     try {
-                        List<OfflinePlayer> players = PlayerID.players.get(cont.get(key, PersistentDataType.STRING));
+                        Collection<OfflinePlayer> players = PlayerID
+                                .getPlayers()
+                                .get(cont.get(key, PersistentDataType.STRING));
                         players.remove(MissileWarfare.getInstance().getServer().getPlayerExact(s));
-                        PlayerID.players.put(cont.get(key, PersistentDataType.STRING), players);
-                        conversationContext.getForWhom().sendRawMessage(Translations.get("messages.playerlist.removedplayer") + MissileWarfare.getInstance().getServer().getPlayerExact(s));
+                        PlayerID.getPlayers().put(cont.get(key, PersistentDataType.STRING), players);
+                        conversationContext
+                                .getForWhom()
+                                .sendRawMessage(Translations.get("messages.playerlist.removedplayer") + MissileWarfare
+                                        .getInstance()
+                                        .getServer()
+                                        .getPlayerExact(s));
                         return END_OF_CONVERSATION;
                     } catch (NullPointerException e) {
                         e.printStackTrace();
-                        conversationContext.getForWhom().sendRawMessage(Translations.get("messages.playerlist.removeplayer"));
+                        conversationContext
+                                .getForWhom()
+                                .sendRawMessage(Translations.get("messages.playerlist.removeplayer"));
                         return END_OF_CONVERSATION;
                     }
                 }
@@ -115,53 +139,61 @@ public class PlayerList extends SlimefunItem {
 
             Prompt askToRead = new StringPrompt() {
                 @Override
-                public String getPromptText(ConversationContext conversationContext) {
+                public String getPromptText(@NotNull ConversationContext conversationContext) {
                     return Translations.get("messages.playerlist.asktoread");
                 }
 
                 @Override
-                public Prompt acceptInput(ConversationContext conversationContext, String s) {
+                public Prompt acceptInput(@NotNull ConversationContext conversationContext, String s) {
                     String read = Translations.get("messages.playerlist.inputs.read");
                     String add = Translations.get("messages.playerlist.inputs.add");
                     String remove = Translations.get("messages.playerlist.inputs.remove");
                     if (s.equals(read)) {
                         String out = "Players: ";
                         List<String> players = new ArrayList<>();
-                        for (OfflinePlayer player : PlayerID.players.get(cont.get(key, PersistentDataType.STRING))) {
+                        for (OfflinePlayer player : PlayerID
+                                .getPlayers()
+                                .get(cont.get(key, PersistentDataType.STRING))) {
                             players.add(player.getName());
                         }
                         out += players;
                         conversationContext.getForWhom().sendRawMessage(out);
                         return END_OF_CONVERSATION;
-                    }else if (s.equals(add)) {
+                    } else if (s.equals(add)) {
                         return askToWrite;
-                    }else if (s.equals(remove)){
+                    } else if (s.equals(remove)) {
                         return askToRemove;
                     }
-                    conversationContext.getForWhom().sendRawMessage(Translations.get("messages.playerlist.incorrectinput"));
+                    conversationContext
+                            .getForWhom()
+                            .sendRawMessage(Translations.get("messages.playerlist.incorrectinput"));
                     return END_OF_CONVERSATION;
                 }
             };
 
             Prompt askForID = new StringPrompt() {
                 @Override
-                public String getPromptText(ConversationContext conversationContext) {
+                public @NotNull String getPromptText(@NotNull ConversationContext conversationContext) {
                     return Translations.get("messages.playerlist.askinputid");
                 }
 
                 @Override
-                public Prompt acceptInput(ConversationContext conversationContext, String s) {
+                public Prompt acceptInput(@NotNull ConversationContext conversationContext, String s) {
                     if (cont.get(key, PersistentDataType.STRING) != null) {
                         return askToRead;
                     }
-                    if (PlayerID.players.get(s) == null) {
-                        PlayerID.players.put(s, new ArrayList<>());
-                        conversationContext.getForWhom().sendRawMessage(Translations.get("messages.playerlist.createdid").replace("{id}", s));
+                    if (PlayerID.getPlayers().get(s) == null) {
+                        PlayerID.getPlayers().put(s, new ArrayList<>());
+                        conversationContext
+                                .getForWhom()
+                                .sendRawMessage(Translations.get("messages.playerlist.createdid").replace("{id}", s));
                         cont.set(key, PersistentDataType.STRING, s);
                         event.getItem().setItemMeta(meta);
                         return END_OF_CONVERSATION;
                     } else {
-                        conversationContext.getForWhom().sendRawMessage(Translations.get("messages.playerlist.gottenid"));
+                        conversationContext
+                                .getForWhom()
+                                .sendRawMessage(Translations.get("messages.playerlist.gottenid"));
                         cont.set(key, PersistentDataType.STRING, s);
                         List<String> lore = meta.getLore();
                         lore.add("ID: " + s);
@@ -173,7 +205,8 @@ public class PlayerList extends SlimefunItem {
 
             if (cont.get(key, PersistentDataType.STRING) == null) {
                 ConversationFactory cf = new ConversationFactory(MissileWarfare.getInstance());
-                Conversation conversation = cf.withFirstPrompt(askForID)
+                Conversation conversation = cf
+                        .withFirstPrompt(askForID)
                         .withLocalEcho(false)
                         .withEscapeSequence("exit")
                         .withTimeout(20)
@@ -182,7 +215,8 @@ public class PlayerList extends SlimefunItem {
                 event.cancel();
             } else {
                 ConversationFactory cf = new ConversationFactory(MissileWarfare.getInstance());
-                Conversation conversation = cf.withFirstPrompt(askToRead)
+                Conversation conversation = cf
+                        .withFirstPrompt(askToRead)
                         .withLocalEcho(false)
                         .withEscapeSequence("exit")
                         .withTimeout(20)

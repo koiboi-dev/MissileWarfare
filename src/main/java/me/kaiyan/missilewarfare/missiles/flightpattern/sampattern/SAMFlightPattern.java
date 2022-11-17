@@ -5,9 +5,10 @@ import me.kaiyan.missilewarfare.missiles.flightpattern.AbstractPattern;
 import me.kaiyan.missilewarfare.missiles.target.MissileTargetObject;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 
 public class SAMFlightPattern extends AbstractPattern<MissileTargetObject> {
-    public SAMFlightPattern(Missile<MissileTargetObject> missile) {
+    public SAMFlightPattern(@NotNull Missile<MissileTargetObject> missile) {
         super(missile);
     }
 
@@ -34,32 +35,32 @@ public class SAMFlightPattern extends AbstractPattern<MissileTargetObject> {
         double time = distance / (missile.getSpeed()); // time is in fourths
 
         // the amount the target will have travelled by the time
-        double distance_by_target = target.getTargetObject().getSpeed() * time;
+        double distanceByTarget = target.getTargetObject().getSpeed() * time;
         // the vector of the travel of the target
-        Vector target_travel = target.getTargetObjectLocation().getDirection().multiply(distance_by_target);
+        Vector targetTravel = target.getTargetObjectLocation().getDirection().multiply(distanceByTarget);
         // the vector representing the point where the target will be
-        Vector target_point = target.getTargetObjectLocation().toVector().add(target_travel);
+        Vector targetPoint = target.getTargetObjectLocation().toVector().add(targetTravel);
 
         // draw a vector between the target and our position and normalise it
         // so we can use the vector to find the Euler Angle we need to face the
         // target.
-        Vector vector_to_target = target_point.subtract(missile.getLocation().toVector());
-        vector_to_target.normalize();
+        Vector vectorToTarget = targetPoint.subtract(missile.getLocation().toVector());
+        vectorToTarget.normalize();
 
         // The Vector to Euler Angle conversion provided by
         // Char on the Slimefun discord. Thank you char!
-        double yaw = Math.atan(vector_to_target.getZ() / vector_to_target.getX());
-        double pitch = Math.asin(vector_to_target.getY());
+        double yaw = StrictMath.atan(vectorToTarget.getZ() / vectorToTarget.getX());
+        double pitch = StrictMath.asin(vectorToTarget.getY());
 
         // Well, all that's left is to direct the missile towards our target point
-        Location mutable_location = missile.getLocation().clone();
-        mutable_location.setYaw((float) yaw);
-        mutable_location.setPitch((float) pitch);
-        missile.setLocation(mutable_location);
+        Location mutableLocation = missile.getLocation().clone();
+        mutableLocation.setYaw((float) yaw);
+        mutableLocation.setPitch((float) pitch);
+        missile.setLocation(mutableLocation);
 
         // and finally detonate if out of fuel or will be out of fuel. Don't want
         // the SAM falling onto the base its protecting!
-        if(missile.getRemainingRange() < missile.getVelocity().length()) {
+        if (missile.getRemainingRange() < missile.getVelocity().length()) {
             missile.detonate();
         }
     }

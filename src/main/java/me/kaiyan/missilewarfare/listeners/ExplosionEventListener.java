@@ -9,8 +9,8 @@ import java.util.Objects;
 
 public class ExplosionEventListener implements Listener {
     @EventHandler
-    public void onEntityExplode(EntityExplodeEvent event){
-        if (Objects.equals(event.getEntity().getCustomName(), "MissileHolder")){
+    public void onEntityExplode(EntityExplodeEvent event) {
+        if (Objects.equals(event.getEntity().getCustomName(), "MissileHolder")) {
             MissileWarfare.blocksExploded += event.blockList().size();
         }
     }

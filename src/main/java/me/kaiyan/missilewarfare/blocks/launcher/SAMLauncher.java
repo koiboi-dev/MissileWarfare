@@ -14,7 +14,6 @@ import me.kaiyan.missilewarfare.util.VariantsAPI;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Dispenser;
@@ -51,7 +50,8 @@ public class SAMLauncher extends AbstractLauncher {
             MissileController locked = null;
             if (!missiles.isEmpty()) {
                 for (MissileController missile : missiles) {
-                    if (block.getLocation().distanceSquared(missile.pos.toLocation(missile.world)) < range && missile.isgroundmissile) {
+                    if (block.getLocation().distanceSquared(missile.pos.toLocation(missile.world)) < range
+                            && missile.isgroundmissile) {
                         locked = missile;
                         break;
                     }
@@ -59,12 +59,15 @@ public class SAMLauncher extends AbstractLauncher {
             }
             state.update();
             try {
-                if (locked != null && cont.get(new NamespacedKey(MissileWarfare.getInstance(), "timesincelastshot"), PersistentDataType.INTEGER) <= System.currentTimeMillis()) {
-                    cont.set(new NamespacedKey(MissileWarfare.getInstance(), "timesincelastshot"), PersistentDataType.INTEGER, (int) System.currentTimeMillis() + 1000);
+                if (locked != null && cont.get(new NamespacedKey(MissileWarfare.getInstance(), "timesincelastshot"),
+                                               PersistentDataType.INTEGER) <= System.currentTimeMillis()) {
+                    cont.set(new NamespacedKey(MissileWarfare.getInstance(), "timesincelastshot"),
+                             PersistentDataType.INTEGER, (int) System.currentTimeMillis() + 1000);
                     fireMissileSAM((Dispenser) block.getState(), locked);
                 }
             } catch (NullPointerException e) {
-                cont.set(new NamespacedKey(MissileWarfare.getInstance(), "timesincelastshot"), PersistentDataType.INTEGER, Integer.MIN_VALUE);
+                cont.set(new NamespacedKey(MissileWarfare.getInstance(), "timesincelastshot"),
+                         PersistentDataType.INTEGER, Integer.MIN_VALUE);
                 state.update();
             }
         }
@@ -93,7 +96,10 @@ public class SAMLauncher extends AbstractLauncher {
     }
 
     @Override
-    public void onBlockDispense(BlockDispenseEvent blockDispenseEvent, Dispenser dispenser, Block block, SlimefunItem slimefunItem) {
+    public void onBlockDispense(BlockDispenseEvent blockDispenseEvent,
+                                Dispenser dispenser,
+                                Block block,
+                                SlimefunItem slimefunItem) {
 
     }
 
@@ -104,10 +110,15 @@ public class SAMLauncher extends AbstractLauncher {
 
     @Override
     public boolean fireMissileSAM(Dispenser disp, MissileController target) {
-        ItemStack missileitem = VariantsAPI.getOtherFirstMissile(disp.getInventory(), SlimefunItem.getById("ANTIAIRMISSILE"));
+        ItemStack missileitem = VariantsAPI.getOtherFirstMissile(disp.getInventory(),
+                                                                 SlimefunItem.getById("ANTIAIRMISSILE"));
         if (SlimefunItem.getByItem(missileitem) == SlimefunItem.getById("ANTIAIRMISSILE")) {
             ItemUtils.consumeItem(missileitem, false);
-            MissileController missile = new MissileController(false, disp.getBlock().getLocation().add(new Vector(0.5, 1.35, 0.5)).toVector(), new Vector(0, 0, 0), 8, disp.getWorld(), 3, 0, 0, new Vector(0, 0, 0));
+            MissileController missile = new MissileController(false, disp
+                    .getBlock()
+                    .getLocation()
+                    .add(new Vector(0.5, 1.35, 0.5))
+                    .toVector(), new Vector(0, 0, 0), 8, disp.getWorld(), 3, 0, 0, new Vector(0, 0, 0));
             missile.FireMissileAtMissile(target);
         }
         return true;

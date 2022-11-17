@@ -22,7 +22,10 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class MissileRadar extends SlimefunItem {
     public MissileRadar(ItemGroup itemGroup, ItemStack[] recipe) {
-        super(itemGroup, new SlimefunItemStack("MISSILERADAR", Material.GRAY_WOOL, ChatColor.YELLOW +Translations.get("radar.name"), ChatColor.GRAY+Translations.get("radar.lore")), RecipeType.ENHANCED_CRAFTING_TABLE, recipe);
+        super(itemGroup, new SlimefunItemStack("MISSILERADAR", Material.GRAY_WOOL,
+                                               ChatColor.YELLOW + Translations.get("radar.name"),
+                                               ChatColor.GRAY + Translations.get("radar.lore")),
+              RecipeType.ENHANCED_CRAFTING_TABLE, recipe);
     }
 
     @Override
@@ -37,8 +40,8 @@ public class MissileRadar extends SlimefunItem {
             public void tick(Block block, SlimefunItem slimefunItem, Config config) {
                 if (!MissileWarfare.activemissiles.isEmpty()) {
                     boolean missilenear = false;
-                    for (MissileController missile : MissileWarfare.activemissiles){
-                        if (block.getLocation().distanceSquared(missile.pos.toLocation(missile.world)) < (700*700)){
+                    for (MissileController missile : MissileWarfare.activemissiles) {
+                        if (block.getLocation().distanceSquared(missile.pos.toLocation(missile.world)) < (700 * 700)) {
                             missilenear = true;
                             break;
                         }
@@ -47,14 +50,25 @@ public class MissileRadar extends SlimefunItem {
                         RedstoneWire wire = (RedstoneWire) block.getRelative(BlockFace.UP).getBlockData();
                         wire.setPower(wire.getMaximumPower());
                         block.getRelative(BlockFace.UP).setBlockData(wire);
-                        MissileWarfare.getInstance().getServer().getPluginManager().callEvent(new BlockRedstoneEvent(block.getRelative(BlockFace.UP), wire.getPower(), wire.getMaximumPower()));
+                        MissileWarfare
+                                .getInstance()
+                                .getServer()
+                                .getPluginManager()
+                                .callEvent(new BlockRedstoneEvent(block.getRelative(BlockFace.UP), wire.getPower(),
+                                                                  wire.getMaximumPower()));
                         new BukkitRunnable() {
                             @Override
                             public void run() {
                                 RedstoneWire wire = (RedstoneWire) block.getRelative(BlockFace.UP).getBlockData();
                                 wire.setPower(0);
                                 block.getRelative(BlockFace.UP).setBlockData(wire);
-                                MissileWarfare.getInstance().getServer().getPluginManager().callEvent(new BlockRedstoneEvent(block.getRelative(BlockFace.UP), wire.getPower(), 0));
+                                MissileWarfare
+                                        .getInstance()
+                                        .getServer()
+                                        .getPluginManager()
+                                        .callEvent(
+                                                new BlockRedstoneEvent(block.getRelative(BlockFace.UP), wire.getPower(),
+                                                                       0));
                             }
                         }.runTaskLater(MissileWarfare.getInstance(), 1);
                     }
