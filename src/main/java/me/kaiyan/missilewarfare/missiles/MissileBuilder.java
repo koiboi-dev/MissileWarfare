@@ -18,7 +18,7 @@ public class MissileBuilder<T extends TargetObject<?>> {
     private AbstractPattern<T> launchPattern;
     private AbstractPattern<T> flightPattern;
 
-    private int power;
+    private double power;
     private int maxSpeed;
     private int maneuverability;
 
@@ -98,11 +98,11 @@ public class MissileBuilder<T extends TargetObject<?>> {
         return this;
     }
 
-    public int getPower() {
+    public double getPower() {
         return power;
     }
 
-    public MissileBuilder<T> setPower(int power) {
+    public MissileBuilder<T> setPower(double power) {
         this.power = power;
         return this;
     }
