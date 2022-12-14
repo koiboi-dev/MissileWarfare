@@ -12,6 +12,7 @@ import me.kaiyan.missilewarfare.util.PlayerID;
 import me.kaiyan.missilewarfare.util.Translations;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SingleLineChart;
+import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -34,21 +35,20 @@ public class MissileWarfare extends JavaPlugin implements SlimefunAddon {
     public static int firedMissiles = 0;
     public static int blocksExploded = 0;
 
+    @Override
     public void onLoad() {
+        plugin = this;
 
-            new BukkitRunnable() {
-            @Override
-            public void run() {
-                getLogger().info("Checking For Worldguard");
-                if (getServer().getPluginManager().getPlugin("WorldGuard") != null && getServer().getPluginManager().getPlugin("WorldEdit") != null) {
-                    WorldGuardLoader.load();
-                }
-                getLogger().info("Checking For Towny");
-                if (getServer().getPluginManager().getPlugin("Towny") != null) {
-                    TownyLoader.setup();
-                }
-            }
-        }.runTaskLater(this, 0);
+        plugin.getLogger().info("Checking For Integrations...");
+
+        if (Bukkit.getPluginManager().getPlugin("WorldGuard") != null && Bukkit.getPluginManager().getPlugin("WorldEdit") != null) {
+            plugin.getLogger().info("WorldGuard Found! Enabling support");
+            WorldGuardLoader.load();
+        }
+        if (Bukkit.getPluginManager().getPlugin("Towny") != null) {
+            plugin.getLogger().info("Towny Found! Enabling support");
+            TownyLoader.setup();
+        }
     }
     @Override
     public void onEnable() {
@@ -69,7 +69,6 @@ public class MissileWarfare extends JavaPlugin implements SlimefunAddon {
         getLogger().info("Missile Warfare Starting Up!");
 
         activemissiles = new ArrayList<>();
-        plugin = this;
         // Read something from your config.yml
         Config cfg = new Config(this);
         Config saveFile;
