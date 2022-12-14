@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class MissileWarfare extends JavaPlugin implements SlimefunAddon {
     public static MissileWarfare plugin;
@@ -33,6 +34,22 @@ public class MissileWarfare extends JavaPlugin implements SlimefunAddon {
     public static int firedMissiles = 0;
     public static int blocksExploded = 0;
 
+    public void onLoad() {
+
+            new BukkitRunnable() {
+            @Override
+            public void run() {
+                getLogger().info("Checking For Worldguard");
+                if (getServer().getPluginManager().getPlugin("WorldGuard") != null && getServer().getPluginManager().getPlugin("WorldEdit") != null) {
+                    WorldGuardLoader.load();
+                }
+                getLogger().info("Checking For Towny");
+                if (getServer().getPluginManager().getPlugin("Towny") != null) {
+                    TownyLoader.setup();
+                }
+            }
+        }.runTaskLater(this, 0);
+    }
     @Override
     public void onEnable() {
         int pluginId = 14904; // <-- Replace with the id of your plugin!
@@ -102,19 +119,6 @@ public class MissileWarfare extends JavaPlugin implements SlimefunAddon {
                 }
             }
         }.runTaskTimer(this, 0, cfg.getInt("other.cleanup-wait-time"));
-        
-        getLogger().info("Checking For Worldguard");
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                if (getServer().getPluginManager().getPlugin("WorldGuard") != null && getServer().getPluginManager().getPlugin("WorldEdit") != null) {
-                    WorldGuardLoader.load();
-                }
-                if (getServer().getPluginManager().getPlugin("Towny") != null) {
-                    TownyLoader.setup();
-                }
-            }
-        }.runTaskLater(this, 0);
 
         getServer().getPluginManager().registerEvents(new ExplosionEventListener(), this);
     }
@@ -166,7 +170,7 @@ public class MissileWarfare extends JavaPlugin implements SlimefunAddon {
         lang.mkdir();
 
         File datafolder = getDataFolder();
-        for (File file : datafolder.listFiles()){
+        for (File file : Objects.requireNonNull(datafolder.listFiles())){
             if (file.getName().startsWith("pack-")){
                 try {
                     Files.move(file.toPath(), new File(lang.getPath(), file.getName()).toPath());
