@@ -42,11 +42,9 @@ public class MissileWarfare extends JavaPlugin implements SlimefunAddon {
         plugin.getLogger().info("Checking For Integrations...");
 
         if (Bukkit.getPluginManager().getPlugin("WorldGuard") != null && Bukkit.getPluginManager().getPlugin("WorldEdit") != null) {
-            plugin.getLogger().info("WorldGuard Found! Enabling support");
             WorldGuardLoader.load();
         }
         if (Bukkit.getPluginManager().getPlugin("Towny") != null) {
-            plugin.getLogger().info("Towny Found! Enabling support");
             TownyLoader.setup();
         }
     }
