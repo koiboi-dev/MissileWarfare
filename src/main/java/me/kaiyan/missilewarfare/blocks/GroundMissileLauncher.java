@@ -86,7 +86,7 @@ public class GroundMissileLauncher extends SlimefunItem{
         TileState state = (TileState)dispenser.getBlock().getState();
         PersistentDataContainer cont = state.getPersistentDataContainer();
 
-        if (cont.get(new NamespacedKey(MissileWarfare.getInstance(), "canfire"), PersistentDataType.INTEGER) != 1){
+        if (cont.has(new NamespacedKey(MissileWarfare.getInstance(), "canfire")) && cont.get(new NamespacedKey(MissileWarfare.getInstance(), "canfire"), PersistentDataType.INTEGER) != 1){
             MissileWarfare.getInstance().getServer().broadcastMessage("Missile at : "+dispenser.getBlock().getLocation().toVector() +" Is unable to fire: Missing GREEN_CONCRETE Below");
         }
 
