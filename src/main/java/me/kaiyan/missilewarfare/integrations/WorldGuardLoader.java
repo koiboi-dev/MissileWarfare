@@ -22,7 +22,7 @@ public class WorldGuardLoader {
 
     public static void load(){
         MissileWarfare.worldGuardEnabled = true;
-        MissileWarfare.getInstance().getLogger().info("WorldGuard Enabled!");
+        MissileWarfare.getInstance().getLogger().info("WorldGuard Support Enabled!");
         FlagRegistry registry = WorldGuard.getInstance().getFlagRegistry();
         try {
             // create a flag with the name "my-custom-flag", defaulting to true

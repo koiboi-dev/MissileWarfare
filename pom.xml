@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>me.kaiyan.missilewarfare</groupId>
     <artifactId>MissileWarfare</artifactId>
-    <version>1.6.18-preRelease1</version>
+    <version>1.6.18-preRelease2</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -131,7 +131,7 @@
         <dependency>
             <groupId>com.palmergames.bukkit.towny</groupId>
             <artifactId>towny</artifactId>
-            <version>0.98.1.0</version>
+            <version>0.98.4.5</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
