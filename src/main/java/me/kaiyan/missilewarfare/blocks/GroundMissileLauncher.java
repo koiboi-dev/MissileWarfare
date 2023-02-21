@@ -36,7 +36,7 @@ import org.bukkit.util.Vector;
 
 import java.util.Objects;
 
-public class GroundMissileLauncher extends SlimefunItem{
+public class GroundMissileLauncher extends SlimefunItem {
     public GroundMissileLauncher(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(itemGroup, item, recipeType, recipe);
     }
@@ -50,12 +50,12 @@ public class GroundMissileLauncher extends SlimefunItem{
                 World world = event.getBlock().getWorld();
                 Block below = world.getBlockAt(event.getBlock().getLocation().subtract(new Vector(0, 1, 0)));
                 BlockData data = event.getBlockPlaced().getBlockData();
-                ((Directional)data).setFacing(BlockFace.UP);
+                ((Directional) data).setFacing(BlockFace.UP);
                 event.getBlockPlaced().setBlockData(data);
                 //Block bottom = world.getBlockAt(event.getBlock().getLocation().subtract(new Vector(0, 2, 0)));
-                if (below.getType() == Material.GREEN_CONCRETE){
+                if (below.getType() == Material.GREEN_CONCRETE) {
                     event.getPlayer().sendMessage(Translations.get("messages.launchers.ground.create.success"));
-                    TileState state = (TileState)event.getBlockPlaced().getState();
+                    TileState state = (TileState) event.getBlockPlaced().getState();
                     PersistentDataContainer cont = state.getPersistentDataContainer();
 
                     cont.set(new NamespacedKey(MissileWarfare.getInstance(), "canfire"), PersistentDataType.INTEGER, 1);
@@ -66,7 +66,7 @@ public class GroundMissileLauncher extends SlimefunItem{
                         event.getPlayer().sendMessage("Bottom Block is type: " + bottom.getType() + " It needs Type GREEN_CONCRETE");
                         event.setCancelled(true);
                     }*/
-                }else {
+                } else {
                     event.getPlayer().sendMessage(Translations.get("messages.launchers.ground.create.failure").replace("{type}", below.getType().name()));
                 }
             }
@@ -83,11 +83,18 @@ public class GroundMissileLauncher extends SlimefunItem{
     private void blockDispense(BlockDispenseEvent blockDispenseEvent, Dispenser dispenser, Block block, SlimefunItem slimefunItem) {
         blockDispenseEvent.setCancelled(true);
 
-        TileState state = (TileState)dispenser.getBlock().getState();
+        TileState state = (TileState) dispenser.getBlock().getState();
         PersistentDataContainer cont = state.getPersistentDataContainer();
 
-        if (cont.has(new NamespacedKey(MissileWarfare.getInstance(), "canfire")) && cont.get(new NamespacedKey(MissileWarfare.getInstance(), "canfire"), PersistentDataType.INTEGER) != 1){
-            MissileWarfare.getInstance().getServer().broadcastMessage("Missile at : "+dispenser.getBlock().getLocation().toVector() +" Is unable to fire: Missing GREEN_CONCRETE Below");
+        NamespacedKey namespaceKey = new NamespacedKey(MissileWarfare.getInstance(), "canfire");
+        Integer data = cont.get(namespaceKey, PersistentDataType.INTEGER);
+
+        if (cont.has(namespaceKey, PersistentDataType.INTEGER) && data != null && data != 1) {
+            MissileWarfare
+                    .getInstance()
+                    .getServer()
+                    .broadcastMessage(
+                            "Missile at : " + dispenser.getBlock().getLocation().toVector() + " Is unable to fire: Missing GREEN_CONCRETE Below");
         }
 
         new BukkitRunnable() {
@@ -102,7 +109,7 @@ public class GroundMissileLauncher extends SlimefunItem{
 
     private void onBlockRightClick(PlayerRightClickEvent event) {
         // Stick/Blaze Rod Method
-        if (event.getItem().getType() == Material.STICK){
+        if (event.getItem().getType() == Material.STICK) {
             event.cancel();
             TileState state = (TileState) Objects.requireNonNull(event.getInteractEvent().getClickedBlock()).getState();
             PersistentDataContainer cont = state.getPersistentDataContainer();
@@ -113,68 +120,68 @@ public class GroundMissileLauncher extends SlimefunItem{
                     event.getPlayer().sendMessage(Translations.get("messages.launchers.ground.coords").replace("{xcoord}", String.valueOf(coords[0])).replace("{ycoord}", String.valueOf(coords[1])).replace("{dist}", String.valueOf(dist)));
                     return;
                 }
-            } catch (NullPointerException e){
+            } catch (NullPointerException e) {
                 cont.set(new NamespacedKey(MissileWarfare.getInstance(), "coords"), PersistentDataType.INTEGER_ARRAY, new int[]{0, 0});
                 state.update();
-                event.getPlayer().sendMessage(ChatColor.GREEN+"Setup launcher, right click again to set coordinates!");
+                event.getPlayer().sendMessage(ChatColor.GREEN + "Setup launcher, right click again to set coordinates!");
             }
             try {
-                    Prompt askCoordY = new StringPrompt() {
-                        @Override
-                        public String getPromptText(ConversationContext conversationContext) {
-                            return "Input Coordinates Z, Input exit to cancel";
-                        }
+                Prompt askCoordY = new StringPrompt() {
+                    @Override
+                    public String getPromptText(ConversationContext conversationContext) {
+                        return "Input Coordinates Z, Input exit to cancel";
+                    }
 
-                        @Override
-                        public Prompt acceptInput(ConversationContext conversationContext, String s) {
-                            try {
-                                cont.set(new NamespacedKey(MissileWarfare.getInstance(), "coords"), PersistentDataType.INTEGER_ARRAY, new int[]{cont.get(new NamespacedKey(MissileWarfare.getInstance(), "coords"), PersistentDataType.INTEGER_ARRAY)[0], Integer.parseInt(s)});
-                            } catch (NumberFormatException e) {
-                                conversationContext.getForWhom().sendRawMessage(Translations.get("messages.launchers.ground.setting.notanumber"));
-                                state.update();
-                                return END_OF_CONVERSATION;
-                            }
-                            conversationContext.getForWhom().sendRawMessage("Z: " + Integer.parseInt(s));
+                    @Override
+                    public Prompt acceptInput(ConversationContext conversationContext, String s) {
+                        try {
+                            cont.set(new NamespacedKey(MissileWarfare.getInstance(), "coords"), PersistentDataType.INTEGER_ARRAY, new int[]{cont.get(new NamespacedKey(MissileWarfare.getInstance(), "coords"), PersistentDataType.INTEGER_ARRAY)[0], Integer.parseInt(s)});
+                        } catch (NumberFormatException e) {
+                            conversationContext.getForWhom().sendRawMessage(Translations.get("messages.launchers.ground.setting.notanumber"));
                             state.update();
                             return END_OF_CONVERSATION;
                         }
-                    };
-                    Prompt askCoordX = new StringPrompt() {
-                        @Override
-                        public String getPromptText(ConversationContext conversationContext) {
-                            return "Input Coordinates X, Input exit to cancel";
-                        }
+                        conversationContext.getForWhom().sendRawMessage("Z: " + Integer.parseInt(s));
+                        state.update();
+                        return END_OF_CONVERSATION;
+                    }
+                };
+                Prompt askCoordX = new StringPrompt() {
+                    @Override
+                    public String getPromptText(ConversationContext conversationContext) {
+                        return "Input Coordinates X, Input exit to cancel";
+                    }
 
-                        @Override
-                        public Prompt acceptInput(ConversationContext conversationContext, String s) {
-                            try {
-                                cont.set(new NamespacedKey(MissileWarfare.getInstance(), "coords"), PersistentDataType.INTEGER_ARRAY, new int[]{Integer.parseInt(s), 0});
-                            } catch (NumberFormatException e) {
-                                conversationContext.getForWhom().sendRawMessage(Translations.get("messages.launchers.ground.setting.notacoord"));
-                                state.update();
-                                return END_OF_CONVERSATION;
-                            }
-                            conversationContext.getForWhom().sendRawMessage("X: " + Integer.parseInt(s));
-                            return askCoordY;
+                    @Override
+                    public Prompt acceptInput(ConversationContext conversationContext, String s) {
+                        try {
+                            cont.set(new NamespacedKey(MissileWarfare.getInstance(), "coords"), PersistentDataType.INTEGER_ARRAY, new int[]{Integer.parseInt(s), 0});
+                        } catch (NumberFormatException e) {
+                            conversationContext.getForWhom().sendRawMessage(Translations.get("messages.launchers.ground.setting.notacoord"));
+                            state.update();
+                            return END_OF_CONVERSATION;
                         }
-                    };
+                        conversationContext.getForWhom().sendRawMessage("X: " + Integer.parseInt(s));
+                        return askCoordY;
+                    }
+                };
 
-                    ConversationFactory cf = new ConversationFactory(MissileWarfare.getInstance());
-                    Conversation conversation = cf.withFirstPrompt(askCoordX)
-                            .withLocalEcho(false)
-                            .withEscapeSequence("exit")
-                            .withTimeout(20)
-                            .buildConversation(event.getPlayer());
-                    conversation.begin();
-            } catch (NullPointerException e){
+                ConversationFactory cf = new ConversationFactory(MissileWarfare.getInstance());
+                Conversation conversation = cf.withFirstPrompt(askCoordX)
+                        .withLocalEcho(false)
+                        .withEscapeSequence("exit")
+                        .withTimeout(20)
+                        .buildConversation(event.getPlayer());
+                conversation.begin();
+            } catch (NullPointerException e) {
                 state.update();
             }
-        } else if (event.getItem().getType() == Material.BLAZE_ROD){
+        } else if (event.getItem().getType() == Material.BLAZE_ROD) {
             event.cancel();
             TileState state = (TileState) Objects.requireNonNull(event.getInteractEvent().getClickedBlock()).getState();
             PersistentDataContainer cont = state.getPersistentDataContainer();
 
-            try{
+            try {
                 Prompt askCruiseAlt = new StringPrompt() {
                     @Override
                     public String getPromptText(ConversationContext conversationContext) {
@@ -202,10 +209,10 @@ public class GroundMissileLauncher extends SlimefunItem{
                         .withTimeout(20)
                         .buildConversation(event.getPlayer());
                 conversation.begin();
-            } catch (NullPointerException e){
+            } catch (NullPointerException e) {
                 state.update();
             }
-        } else if (SlimefunItem.getByItem(event.getItem()) == SlimefunItem.getById("PLAYERLIST")){
+        } else if (SlimefunItem.getByItem(event.getItem()) == SlimefunItem.getById("PLAYERLIST")) {
             event.cancel();
             TileState state = (TileState) event.getClickedBlock().get().getBlockData();
             state.update();
@@ -230,7 +237,7 @@ public class GroundMissileLauncher extends SlimefunItem{
         }
     }
      */
-    public void fireMissile(Dispenser disp){
+    public void fireMissile(Dispenser disp) {
         ItemStack missileitem = VariantsAPI.getFirstMissile(disp.getInventory());
         int type = VariantsAPI.getIntTypeFromSlimefunitem(SlimefunItem.getByItem(missileitem));
 
@@ -252,19 +259,19 @@ public class GroundMissileLauncher extends SlimefunItem{
         }*/
     }
 
-    public boolean fireMissile(Dispenser disp, MissileClass missile){
+    public boolean fireMissile(Dispenser disp, MissileClass missile) {
         TileState state = (TileState) disp.getBlock().getState();
         PersistentDataContainer cont = state.getPersistentDataContainer();
         int[] coords = cont.get(new NamespacedKey(MissileWarfare.getInstance(), "coords"), PersistentDataType.INTEGER_ARRAY);
         Integer alt = cont.get(new NamespacedKey(MissileWarfare.getInstance(), "alt"), PersistentDataType.INTEGER);
         if (coords == null) {
-            MissileWarfare.getInstance().getServer().broadcastMessage("Missile cannot fire at : "+new Vector(disp.getBlock().getLocation().getX(), disp.getBlock().getLocation().getY(), disp.getBlock().getLocation().getZ()) + " Invalid Coordinates!");
+            MissileWarfare.getInstance().getServer().broadcastMessage("Missile cannot fire at : " + new Vector(disp.getBlock().getLocation().getX(), disp.getBlock().getLocation().getY(), disp.getBlock().getLocation().getZ()) + " Invalid Coordinates!");
             return false;
-        } else if (VariantsAPI.isInRange((int) disp.getLocation().distanceSquared(new Vector(coords[0], 0, coords[1]).toLocation(disp.getWorld())), missile.type)){
-            MissileWarfare.getInstance().getServer().broadcastMessage("Missile cannot fire at : "+disp.getBlock().getLocation() + " Target out of distance!");
+        } else if (VariantsAPI.isInRange((int) disp.getLocation().distanceSquared(new Vector(coords[0], 0, coords[1]).toLocation(disp.getWorld())), missile.type)) {
+            MissileWarfare.getInstance().getServer().broadcastMessage("Missile cannot fire at : " + disp.getBlock().getLocation() + " Target out of distance!");
             return false;
         }
-        if (alt == null){
+        if (alt == null) {
             alt = 120;
         }
         if (MissileWarfare.plugin.getConfig().getBoolean("logging.logMissileShots")) {
@@ -288,7 +295,7 @@ public class GroundMissileLauncher extends SlimefunItem{
                         }
                     }.runTaskLater(MissileWarfare.getInstance(), 20L * MissileWarfare.getInstance().getConfig().getLong("logging.waitTimeBeforeBroadcast"));
                 }
-            } catch (NullPointerException e){
+            } catch (NullPointerException e) {
                 MissileWarfare.getInstance().getLogger().warning("No Players online to log missile shot");
             }
         }
