@@ -1,0 +1,387 @@
+missilegroupname: "&6Missile Warfare"
+translator: "davidcanas"
+
+messages:
+    launchers:
+        createantiair:
+            success: "Foi criado um lançador de anti-misseis."
+            failure: "Falta uma obsidiana embaixo do lançador."
+        createantielytra:
+            success: "Foi criado um lançador de anti-elytras"
+            failure: "Falta uma obsidiana embaixo do lançador"
+        ground:
+            create:
+                success: "Foi criado um lançador de misséis pequeno!"
+                # Formatting: {type}
+                failure: "O bloco embaixo é do tipo: {type} Ele precisa ser do tipo GREEN_CONCRETE"
+            # Formatting: {xcoord} {ycoord} {dist}
+            coords: "As coordenadas são: [{xcoord} , {ycoord}] E a distância é: {dist}"
+            setting:
+                notanumber: "Não é um número."
+                notacoord: "Não é uma coordenada válida."
+                cruisealt: "Altura de cruseiro: "
+
+    manpad:
+        locking: "Ativando modo de segmentação..."
+        itemchange: "Falha: Item alterado"
+        notarget: "Falha ao disparar: Sem alvo"
+
+    elytraattack:
+        locking: "!!!BLOQUEIO DO ALVO DO MÍSSIL!!!"
+        locked: "!!!ALVO DO MÍSSIL BLOQUEADO!!!"
+
+    radar: "Coloque um redstone no topo deste bloco para obter sinal, um repetidor é necessário para obter o pulso de um tique"
+
+    playerlist:
+        resetkey: "Resetar chave"
+        addedkey: "Adicionado ID "
+        noid: "Não foi possivel adicionar o ID ao lançador, Não existe um ID associado a essa PlayerList"
+        askwriteprompt: "Qual jogador você deseja adicionar (o nick) ? Digite exit para cancelar"
+        addedplayer: "Jogador adicionado."
+        invalidplayer: "Jogador Inválido!"
+        removeplayer: "Qual jogador você deseja remover (o nick)?"
+        removedplayer: "Jogador removido."
+        incorrectinput: "Input incorrecto."
+        asktoread: "Digita 'ler' para ver os jogadores associados a esse ID, Digita 'adicionar' para adicionar um jogador, Digita 'remover' para remover um jogador, Digita 'exit' para sair"
+        #INPUTS THE PLAYERLIST WILL TAKE IN AFTER SENDING ASKTOREAD
+        inputs:
+            read: "ler"
+            add: "adicionar"
+            remove: "remover"
+        askinputid: "Digita o ID para criar, digita 'exit' para cancelar"
+        #FORMATTING: {id}
+        createdid: "Foi criado o ID : {id}, agora você pode escrever nesse ID"
+        gottenid: "ID obtido"
+
+materials:
+    sugarfuel:
+        name: "Combustível de açúcar"
+        lore:
+            - "Barato, de alta energia, perfeito para pequenos mísseis."
+    guidebook:
+        name: "Livro Guia"
+        lore:
+            - "Ele vai te guiar?!? Eita..."
+    explosivepowder:
+        name: "Pó explosivo"
+        lore:
+            - "Manuseia com cuidado!"
+    compressedexplosives:
+        name: "Pó explosivo comprimido"
+        lore:
+            - "Foi comprimido com tanta força que se tornou um sólido."
+    ultraliteingot:
+        name: "UltraLite Ingot"
+        lore:
+            - "Ingot superleve usado para mísseis"
+    ultraliteplate:
+        name: "UltraLite Plate"
+        lore:
+            - "Uma placa super leve para mísseis"
+    simpleflightcomputer:
+        name: "Simple Flight Computer"
+        lore:
+            - "Um computador simples capaz de guiar um míssil"
+    radar:
+        name: "Radar"
+        lore:
+            - "Usado para rastrear mísseis ou jogadores."
+    rocketfuel:
+        name: "Combustível de foguete"
+        lore:
+            - "Queima com o poder de 1000 carvões..."
+    smallwarhead:
+        name: "Small Warhead"
+        lore:
+            - "Usado na criação de um míssil."
+            - "'Não toque na parte vermelha'"
+    smallbody:
+        name: "Small Missile Fuselage"
+        lore:
+            - "Usado na criação de um míssil"
+            - "'É melhor não amassar isso'"
+    smallfin:
+        name: "Small Missile Fins"
+        lore:
+            - "Usado na criação de um míssil"
+    missilebody:
+        name: "Missile Body"
+        lore:
+            - "Corpo do míssil contendo um Flight Computer"
+    missilefins:
+        name: "Missile Fins"
+        lore:
+            - "Capaz de direcionar melhor o míssil"
+    warhead:
+        name: "Missile Warhead"
+        lore:
+            - "Usado na criação de um míssil"
+            - "'A batata vai sumir...'"
+    reinforcedwarhead:
+        name: "Reinforced Warhead"
+        lore:
+            - "Usado para criar AP Missiles"
+            - "'O bunker vai sumir...'"
+    chlorine:
+        name: "Chlorine"
+        lore:
+            - "Venenoso"
+            - "Causa uma morte lenta e TERRÍVEL..."
+    chlorinepellet:
+        name: "Chlorine Pellet"
+        lore:
+            - "Uma pastilha de cloro"
+    advancedbody:
+        name: "Advanced Missile Body"
+        lore:
+            - "Uma versão melhorada do Missile Body"
+    heavywarhead:
+        name: "Heavy Warhead"
+        lore:
+            - "Uma ogiva carregada de explosivos pesados"
+    icbmbody:
+        name: "ICBM Body"
+        lore:
+            - "Projetado com perfeição, elegancia, MORTALIDADE."
+            - "O corpo de um ICBM missile"
+    mine:
+        name: "Mine"
+        lore:
+            - "Humm... Será que funciona em tanques??"
+
+
+missiles:
+    smallmissile:
+        lore: "Pequeno Míssil Terrestre"
+        missiles:
+            normal:
+                name: "Small GtG Missile"
+                variant: "Variante Normal"
+                lore: "'O pequeno Timmy nunca teve chance...'"
+            he:
+                name: "Small GtG Missile HE"
+                variant: "Variante mega-EXPLOSIVA"
+                lore: "'Grande Timmy nunca teve chance...'"
+            lr:
+                name: "Small GtG Missile LR"
+                variant: "Variante com longo-alcance"
+                lore: "'Muito longe, Timmy nunca teve chance'"
+            ac:
+                name: "Small GtG Missile AC"
+                variant: "Variante precisa."
+                lore: "'O pequeno Timmy nunca teve chance'"
+    anti-missiles:
+        lore: "Anti-Mísseis / Anti-Elytras"
+        missiles:
+            missile:
+                name: "Míssil Anti-Mísseis "
+                variant: "Variante Anti-Mísseis"
+                lore: "'Os fogos de artifício de Timmy foram cancelados'"
+            elytra:
+                name: "Míssil Anti-Elytras"
+                variant: "Variante Anti-Elytras"
+                lore: "'Aerotransportador do Timmy nunca teve uma chance'"
+    normalmissile:
+        lore: "GtG Missile"
+        missiles:
+            normal:
+                name: "GtG Missile"
+                variant: "Variante normal."
+                lore: "'Seu míssil de vizinhança amigável'"
+            he:
+                name: "GtG Missile HE"
+                variant: "Variante mega-EXPLOSIVA."
+                lore: "'Seu míssil de vizinhança não tão amigável'"
+            lr:
+                name: "GtG Missile LR"
+                variant: "Variante com longo-alcance"
+                lore: "'Seu míssil de cidade amigável'"
+            ac:
+                name: "GtG Missile AC"
+                variant: "Variante precisa."
+                lore: "'Seu amigável míssil de limpeza de salas'"
+    armourpiercing:
+        lore: "GtG Armour Piercing Missile"
+        missiles:
+            tierone:
+                name: "GtG Missile AP"
+                variant: "Tier 1 AP"
+                lore:
+                    - "Passa por 1 bloco antes de explodir"
+                    - "Não passará pela obsidiana"
+                    - "'A sua base não é segura por muito tempo!'"
+            tiertwo:
+                name: "GtG Missile AP"
+                variant: "Tier 2 AP"
+                lore:
+                    - "Passa por 1 bloco antes de explodir"
+                    - "50% de chance de passar por obsidiana"
+                    - "10% de chance de quebrar a obsidiana atingida"
+                    - "'A sua base não é segura por muito tempo!'"
+            tierthree:
+                name: "GtG Missile AP"
+                variant: "Tier 3 AP"
+                lore:
+                    - "Passa por 2 blocos antes de explodir"
+                    - "75% de chance de passar por obsidiana"
+                    - "20% de chance de quebrar a obsidiana atingida"
+                    - "'A sua base definitivamente não é segura por muito tempo!'"
+    advanced:
+        lore: "GtG Advanced Missiles"
+        missiles:
+            normal:
+                name: "GtG Advanced Missile"
+                variant: "Variante Normal"
+                lore: "'Alimentado por IA (tecnicamente)'"
+            he:
+                name: "GtG Advanced Missile HE"
+                variant: "Variante mega-EXPLOSIVA"
+                lore: "'Muito perigoso, não toque'"
+            lr:
+                name: "GtG Advanced Missile LR"
+                variant: "Variante com longo-alcance"
+                lore: "'Estou ficando sem ideias de lore'"
+            ac:
+                name: "GtG Advanced Missile AC"
+                variant: "Variante precisa"
+                lore: "'Muito preciso, eu acho, hmmm.'"
+
+specialmissiles:
+    gasmissile:
+        name: "Gas Missile"
+        lore:
+            - "Míssil de aniquilação"
+            - "Aplica gás venenoso ao atingir um alvo"
+        afterlore: "'Cometer Timmicídio.'"
+    excavmissile:
+        name: "Míssil de escavação"
+        lore:
+            - "Míssil útil"
+            - "Tem um grande raio de explosão, com pouco dano"
+            - "Usado para minerar"
+        afterlore: "'Bem melhor que 100 picaretass!'"
+    stickymissile:
+        name: "Sticky Missile"
+        lore:
+            - "Missil de trap"
+            - "Uma pequeninha explosão que lança teias de aranha!"
+        afterlore: "'Não me pergunte do que é feito hehe.'"
+    icbm:
+        name: "ICBM Missile"
+        lore:
+            - "Míssil de longo alcance"
+            - "Míssil balístico intercontinental"
+        afterlore:
+            - "'Nenhum lugar é seguro haha.'"
+    clustermissile:
+        name: "Cluster Missile"
+        lore:
+            - "Cluster Missile, implanta muitos mísseis antes de atingir"
+        afterlore:
+            - "'Remove aldeias mais rápido do que você pode gritar!'"
+    napalmmissile:
+        name: "Napalm Missile"
+        lore:
+            - "Míssil de Fogo"
+            - "Míssil Napalm, lança fogo em todos os lugares ao ser atingido."
+        afterlore:
+            - "'Destruidor de jardins de infância! Experimentado e testado™'"
+
+
+launchers:
+    ground:
+        name: "Lançador de GtG Missile"
+        lore:
+            - "Atira uma área especificada no chão."
+            - "Use um graveto para definir as coordenadas do alvo"
+            - "Pressione SHIFT com um graveto para verificar se ele pode disparar"
+            - "Clique com o botão direito com uma vara de blaze para definir a altura de cruseiro"
+            - "Altura de cruzeiro padrão é Y:120"
+            - "Precisa ser construído em cima de 1 bloco de concreto verde."
+    antimissile:
+        name: "Lançador de Anti Missile"
+        lore:
+            - "Mira e abate outros mísseis na área."
+            - "Use redstone para desativá-lo"
+            - "Precisa ser construído em cima deobsidiana"
+            - "Precisa de Mísseis Anti-Mísseis"
+    antielytra:
+        name: "Lançador de Anti Elytra"
+        lore:
+            - "Dispara um míssil nos jogadores próximos"
+            - "que estão usando uma elytra"
+            - "Excluindo os do"
+            - "ID atribuído."
+            - "use um graveto para definir o ID do grupo"
+            - "Precisa de mísseis anti-Elytra"
+
+other:
+    manpad:
+        name: "Manpad"
+        lore:
+           - "Dispositivo anti-míssil portátil"
+            - "Shift+Botão direito do mouse para iniciar o rastreamento"
+            - "Shift para liberar fogo"
+    playerlist:
+        name: Lista de players
+        lore:
+           - "Clique com o botão direito para definir os jogadores"
+            - "com uma identificação"
+            - "ESTES ID'S SÃO GLOBAIS"
+            - "QUALQUER UM PODE EDITAR SE"
+            - "ELES TIVEREM A ID"
+
+# Color Codes: https://wiki.ess3.net/mc/
+guidebook:
+    title: "Guia de mísseis para Noobinhos"
+    author: "davidcanas" # Feel free to put your name here | E.G: author: "kiease"
+    homepage:
+        title: "Missile Warfare"
+        subtitle: "O livro de guia do add-on Missile Warfare"
+        contenttitle: "Conteúdos:"
+        content:
+            - "Lançador de mísseis terrestres"
+            - "Lançador de anti-míssieis"
+            - "ManPad"
+            - "Lançadores Anti-Elytra"
+    groundlauncherpage:
+        title: "Lançador de mísseis terrestres"
+        content:
+          - "O lançador de mísseis terrestres dispara mísseis nas coordenadas fornecidas."
+            - "Se clicar com o botão direito com um graveto você irá definir as suas coordenadas"
+            - "Clicar com o botão direito com uma vara de blaze vai definir a altura de cruseiro"
+            - "&lAcertará mísseis amigos"
+    antimissilepage:
+        title: "Lançador de anti-mísseis"
+        content:
+            - "O lançador de antimíssieis mira e abate qualquer míssil que se aproxime."
+            - "Ele derrubará qualquer míssil, amigável ou não, que entrar em seu alcance"
+            - "Use redstone para desativá-lo de disparar."
+    manpadpage:
+        title: "Manpads"
+        content:
+            - "Manpads são itens portáteis que podem ser usados ​​para identificar e derrubar mísseis inimigos"
+            - "Ao contrário dos lançadores de antimísseis, os manpads têm uma chance garantida de derrubar mísseis oponentes"
+            - "Manpads são usados ​​segurando shift para iniciar a varredura"
+    antielytrapage:
+        title: "Lançador de anti-elytras"
+        content:
+            - "Lançador de anti-elytras disparam mísseis contra jogadores dentro de seu raio, quebrando as suas elytras."
+            - "Isto é realmente útil para a defesa da cidade durante as guerras.\nDefina jogadores ignorados usando PlayerID"
+            - "Use um graveto para definir o ID do lançador."
+    playeridpage:
+        title: "PlayerID"
+        content:
+           - "PlayerID é usado para definir jogadores que os lançadores vão ignorar"
+            - "Use um 'Lista de Jogadores' para definir o ID e os jogadores que ele deve ignorar."
+            - "&lQUALQUER UM PODE DEFINIR QUALQUER ID, MANTENHA SEU ID EM SEGREDO"
+
+radar:
+    name: "Radar de mísseis"
+    lore: "Emite um sinal redstone quando um míssil está dentro de 700 blocos"
+
+missiledesc:
+    range: "Alcance: "
+    power: "Poder: "
+    speed: "Velocidade: "
+    accuracy: "Precisão: Dentro de {blocks} blocos"
