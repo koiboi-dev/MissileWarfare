@@ -8,8 +8,8 @@
     <version>1.6.13</version>
 
     <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>16</maven.compiler.source>
+        <maven.compiler.target>16</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <sonar.organization>koiboi-dev</sonar.organization>
@@ -61,7 +61,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.1.0</version>
+                <version>3.4.1</version>
                 <configuration>
                     <relocations>
                         <relocation>
@@ -100,7 +100,7 @@
         <dependency>
             <groupId>com.github.Slimefun</groupId>
             <artifactId>Slimefun4</artifactId>
-            <version>RC-28</version>
+            <version>RC-33</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
@@ -112,7 +112,7 @@
         <dependency>
             <groupId>com.sk89q.worldguard</groupId>
             <artifactId>worldguard-bukkit</artifactId>
-            <version>7.0.0</version>
+            <version>7.0.7</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
@@ -136,7 +136,7 @@
         <dependency>
             <groupId>com.palmergames.bukkit.towny</groupId>
             <artifactId>towny</artifactId>
-            <version>0.98.1.0</version>
+            <version>0.98.6.7</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

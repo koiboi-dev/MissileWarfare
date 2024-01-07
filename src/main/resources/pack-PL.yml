@@ -1,0 +1,387 @@
+missilegroupname: "&6Missile Warfare"
+translator: "Kaiyan2006"
+
+messages:
+    launchers:
+        createantiair:
+            success: "Stworzono wyrzutnię przeciwrakietową"
+            failure: "Pod wyrzutnią brakuje bloku obsydianu"
+        createantielytra:
+            success: "Stworzono wyrzutnię przeciw-elytrową"
+            failure: "Pod wyrzutnią brakuje bloku obsydianu"
+        ground:
+            create:
+                success: "Stworzono niewielką wyrzutnię!"
+                # Formatting: {type}
+                failure: "Blok poniżej to: {type} Powinien być to blok: GREEN_CONCRETE"
+            # Formatting: {xcoord} {ycoord} {dist}
+            coords: "Koordynaty to: [{xcoord} , {ycoord}] A dystans to: {dist}"
+            setting:
+                notanumber: "Liczba niecałkowita (bez ułamka)"
+                notacoord: "TO NIE SĄ KOORDYNATY"
+                cruisealt: "Wysokość wyrzutu: "
+
+    manpad:
+        locking: "Inicjalizuję Tryb namierzania..."
+        itemchange: "Niepowodzenie: Zmieniono przedmiot"
+        notarget: "Nie udało się wystrzelić: Brak celu"
+
+    elytraattack:
+        locking: "!!!Blokowanie celu!!!"
+        locked: "!!!Rakieta zablokowana na celu!!!"
+
+    radar: "Umieść redstone aby uzyskać sygnał wyjściowy, potrzebujesz repeatera aby uzyskać sygnał jedno-tickowy"
+
+    playerlist:
+        resetkey: "Zresetuj klucz"
+        addedkey: "Dodano ID "
+        noid: "Nie udało się dodać tego ID do wyrzutni, żadne ID nie jest przypisane do żadnego gracza"
+        askwriteprompt: "Którego gracza chcesz dodać? Napisz exit aby anulować"
+        addedplayer: "Dodano gracza"
+        invalidplayer: "NIEPOPRAWNA NAZWA GRACZA"
+        removeplayer: "Którego gracza chcesz usunąć?"
+        removedplayer: "Usunięto gracza"
+        incorrectinput: "Niepoprawne dane"
+        asktoread: "Napisz 'read' aby zobaczyć listę graczy skojarzonych z tym ID, Napisz 'add' aby dodać gracza, Napisz 'remove' aby usunąć gracza, Napisz 'exit' aby anulować"
+        #INPUTS THE PLAYERLIST WILL TAKE IN AFTER SENDING ASKTOREAD
+        inputs:
+            read: "read"
+            add: "add"
+            remove: "remove"
+        askinputid: "Wprowadź  ID aby stworzyć, napisz exit aby anulować"
+        #FORMATTING: {id}
+        createdid: "Stworzono ID : {id}, Możesz go teraz używać"
+        gottenid: "Zajęte ID"
+
+materials:
+    sugarfuel:
+        name: "Paliwo cukrowe"
+        lore:
+            - "Tanie, zapewniające dużo energii, idealne dla małych rakiet."
+    guidebook:
+        name: "Poradnik"
+        lore:
+            - "Czy ten poradnik ci pomoże?!?"
+    explosivepowder:
+        name: "Wybuchowy proch"
+        lore:
+            - "Postępuj z tym ostrożnie!"
+    compressedexplosives:
+        name: "Sprężony proch wybuchowy"
+        lore:
+            - "Tak mocno sprężony, że stał się zbity"
+    ultraliteingot:
+        name: "Ultralekka sztabka"
+        lore:
+            - "Super lekka sztabka używana w rakietach"
+    ultraliteplate:
+        name: "Ultralekka Płytka"
+        lore:
+            - "Super lekka płytka używana w rakietach"
+    simpleflightcomputer:
+        name: "Prosty komputer lotu"
+        lore:
+            - "Prosty komputer pozwalający na kierowanie rakietą"
+    radar:
+        name: "Radar"
+        lore:
+            - "Używany aby śledzić rakiety oraz graczy do trafienia"
+    rocketfuel:
+        name: "Paliwo Rakietowe"
+        lore:
+            - "Płonie z mocą 1000 sztuk węgla..."
+    smallwarhead:
+        name: "Mała głowica"
+        lore:
+            - "Używana do produkcji małych rakiet."
+            - "'Nie dotykaj tej czerwonej części'"
+    smallbody:
+        name: "Kadłub Małej Rakiety"
+        lore:
+            - "Używany do tworzenia rakiet"
+            - "'Tylko tego nie wgnieć'"
+    smallfin:
+        name: "Statecznik Małej Rakiety"
+        lore:
+            - "Używany do tworzenia rakiet"
+    missilebody:
+        name: "Ciało Rakiety"
+        lore:
+            - "Ciało rakiety zawierające komputer lotu"
+    missilefins:
+        name: "Stateczniki Rakiety"
+        lore:
+            - "Pozwala lepiej sterować rakietą"
+    warhead:
+        name: "Głowica Rakietowa"
+        lore:
+            - "Używana do tworzenia rakiet."
+            - "'Potato-be-gone'"
+    reinforcedwarhead:
+        name: "Wzmocniona Głowica"
+        lore:
+            - "Używana przy tworzeniu rakiet typu AP"
+            - "'Bunker-be-Gone'"
+    chlorine:
+        name: "Chlor"
+        lore:
+            - "Trujący"
+            - "Powoduje powolną i bolesną śmierć!"
+    chlorinepellet:
+        name: "Kulka Chloru"
+        lore:
+            - "Kulka chloru."
+    advancedbody:
+        name: "Ciało Zaawansowanej Rakiety"
+        lore:
+            - "Ulepszona wersja ciała rakiety."
+    heavywarhead:
+        name: "Ciężka Głowica"
+        lore:
+            - "Głowica naładowana ciężkie materiały wybuchowe."
+    icbmbody:
+        name: "Ciało ICBM"
+        lore:
+            - "Zaprojektowana do perfekcji, elegancka, zabójcza"
+            - "Ciało rakiety typu ICBM"
+    mine:
+        name: "Mina"
+        lore:
+            - "Czy to zadziała na czołgi?"
+
+
+missiles:
+    smallmissile:
+        lore: "Mała rakieta Ziemia-Ziemia"
+        missiles:
+            normal:
+                name: "Mała rakieta Z-Z"
+                variant: "Wariant Zwykły"
+                lore: "'Mały Timmy nigdy nie miał szans...'"
+            he:
+                name: "Mała Głowica Z-Z HE"
+                variant: "Wariant mocno wybuchowy"
+                lore: "'Duży Timmy nigdy nie miał szans...'"
+            lr:
+                name: "Mała Rakieta Z-Z LR"
+                variant: "Wariant Długodystansowy"
+                lore: "'Bardzo odległy Timmy nigdy nie miał szans.'"
+            ac:
+                name: "Mała rakieta Z-Z AC"
+                variant: "Wariant Dokładny"
+                lore: "'Malutki Timmy nigdy nie miał szans.'"
+    anti-missiles:
+        lore: "Anty-Rakietowa / Anty-Elytrowa"
+        missiles:
+            missile:
+                name: "Pocisk Przeciw-rakietowy"
+                variant: "Wariant Przeciw-rakietowy"
+                lore: "'Pokaz Fajerwerków Timmiego został anulowany.'"
+            elytra:
+                name: "Pocisk Przeciw-Elytrowy"
+                variant: "Wariant Przeciw-elytrowy"
+                lore: "'Powietrznodesantowy Timmy nigdy nie miał szans.'"
+    normalmissile:
+        lore: "Rakieta Z-Z"
+        missiles:
+            normal:
+                name: "Rakieta Z-Z"
+                variant: "Wariant zwykły"
+                lore: "'Rakieta przyjazna dla twojego sąsiedztwa.'"
+            he:
+                name: "GtG Missile HE"
+                variant: "High Explosive Variant"
+                lore: "'Rakieta już nie tak przyjazna dla twojego sąsiedztwa.'"
+            lr:
+                name: "Rakieta Z-Z LR"
+                variant: "Wariant Dalekodystansowy"
+                lore: "'Rakieta przyjazna dla twojego miasta.'"
+            ac:
+                name: "Rakieta Z-Z AC"
+                variant: "Wariant Dokładny"
+                lore: "'Twoja przyjazna rakieta sprzątająca pokój.'"
+    armourpiercing:
+        lore: "Rakieta Z-Z Przebijająca Zbroję"
+        missiles:
+            tierone:
+                name: "Rakieta Z-Z AP"
+                variant: "Tier 1 AP"
+                lore:
+                    - "Przebija się przez 1 blok przed wybuchem"
+                    - "Nie przenika obsydianu"
+                    - "'Twoja piwnica nie jest już bezpieczna!'"
+            tiertwo:
+                name: "Rakieta Z-Z AP"
+                variant: "Tier 2 AP"
+                lore:
+                    - "Przebija się przez 1 blok przed wybuchem"
+                    - "50% szans na to aby przueniknąć obsydian"
+                    - "10% szans na zniszczenie uderzonego absydianu"
+                    - "'Twój bunkier nie jest już bezpieczny!'"
+            tierthree:
+                name: "Rakieta Z-Z AP"
+                variant: "Tier 3 AP"
+                lore:
+                    - "Przebija się przez 2 bloki przed wybuchem"
+                    - "75% szans na przeniknięcie obsydianu"
+                    - "20% szans na zniszczenie uderzonego obsydianu"
+                    - "'Twój bunkier definitywnie nie jest już bezpieczny!'"
+    advanced:
+        lore: "Zaawansowane Rakiety Z-Z"
+        missiles:
+            normal:
+                name: "Zaawansowana Rakieta Z-Z"
+                variant: "Wariant domyślny"
+                lore: "'Oparta na AI (z technicznego punktu widzenia)'"
+            he:
+                name: "Zaawansowana Rakieta Z-Z HE"
+                variant: "Wariant Mocno Wybuchowy"
+                lore: "'Bardzo niebezpieczna, nie dotykać'"
+            lr:
+                name: "Zaawansowana Rakieta Z-Z LR"
+                variant: "Wariant Dalekodystansowy"
+                lore: "'Kończą mi się pomysły na te przypisy'"
+            ac:
+                name: "Zaawansowana Rakieta Z-Z AC"
+                variant: "Wariant Dokładny"
+                lore: "'Zakładam, że jest bardzo dokładna.'"
+
+specialmissiles:
+    gasmissile:
+        name: "Rakieta Gazowa"
+        lore:
+            - "Czyszcząca Rakieta"
+            - "Wypuszcza gaz po trafieniu w cel"
+        afterlore: "'Popełnij Timmybójstwo.'"
+    excavmissile:
+        name: "Rakieta Odkrywkowa"
+        lore:
+            - "Rakieta Funkcjonalna"
+            - "Duży zasięg rażenia, ale niewielkie obrażenia"
+            - "Dobra do kopania"
+        afterlore: "'Lepsza niż 100 kilofów!'"
+    stickymissile:
+        name: "Klejąca Rakieta"
+        lore:
+            - "Rakieta-Pułapka"
+            - "Niewielka eksplozja uwalniająca pajęczyny"
+        afterlore: "'Nie pytaj się mnie z czego jest zrobiona.'"
+    icbm:
+        name: "ICBM Missile"
+        lore:
+            - "Long-Range Missile"
+            - "Między-Kontynentalna Rakieta Balistyczna/ Inter-Continental Ballistic Missile"
+        afterlore:
+            - "'Nigdzie nie jest bezpiecznie.'"
+    clustermissile:
+        name: "Rakieta Klastrowa"
+        lore:
+            - "Rakieta Klastrowa, Wypuszcza wiele mniejszych rakiet przed wybuchem."
+        afterlore:
+            - "'Usuwa wioski szybciej niż ty potrafić krzyknąć!'"
+    napalmmissile:
+        name: "Rakieta Napalmowa"
+        lore:
+            - "Rakieta Ogniowa"
+            - "Rakieta Napalmowa, Zapala wszystko wokół po wybuchu."
+        afterlore:
+            - "'Pogromca przedszkoli! Wypróbowana i przetestowana™'"
+
+
+launchers:
+    ground:
+        name: "Wyrzutnia Rakiet Z-Z"
+        lore:
+            - "Trafia konkretny cel na ziemi."
+            - "Użyj patyka aby ustawić kooradynaty"
+            - "Przytrzymaj shift i kliknij patykiem aby sprawdzić czy wyrzutnia może wystrzelić"
+            - "Kliknij PPM z pałką blaze aby ustawić wysokość lotu"
+            - "Domyślna wysokość lotu to Y:120"
+            - "Musi być postawiona na 1 bloku zielonego betonu."
+    antimissile:
+        name: "Wyrzutnia Przeciw-rakietowa"
+        lore:
+            - "Namierza i zestrzeliwuje inne rakiety."
+            - "Użyj redstone aby dezaktywować"
+            - "Musi być postawiona na bloku obsydianu"
+            - "Wymaga Pocisków Przeciw-rakietowych"
+    antielytra:
+        name: "Wyrzutnia Przeciw-Elytrowa"
+        lore:
+            - "Wystrzeliwuje w najbliższego wykrytego gracza"
+            - "używającego elytry"
+            - "Nie strzela do graczy z"
+            - "ID przypisanym do niej"
+            - "użyj patyka aby ustawić ID grupy"
+            - "Wymaga Rakiet Przeciw-Elytrowych"
+
+other:
+    manpad:
+        name: "Manpad"
+        lore:
+            - "Manualne urządzenie przeciw-rakietowe"
+            - "Shift+PPm aby rozpocząć namierzanie"
+            - "Puść shifta aby wystrzelić"
+    playerlist:
+        name: Player List
+        lore:
+            - "Kliknij PPM aby przypisać graczy"
+            - "do ID"
+            - "TE ID SĄ GLOBALNE"
+            - "KAŻDY MOŻE JE MODYFIKOWAĆ"
+            - "JEŚLI ZNA TO ID"
+
+# Color Codes: https://wiki.ess3.net/mc/
+guidebook:
+    title: "Missiles for Dummies"
+    author: "Kaiyan2006" # Feel free to put your name here | E.G: author: "kiease"
+    homepage:
+        title: "Missile Warfare"
+        subtitle: "Poradnik dla Missile Warfare"
+        contenttitle: "Contents:"
+        content:
+            - "Naziemna Wyrzutnia Rakiet"
+            - "Wyrzutnia Przeciw-Rakietowa"
+            - "ManPad"
+            - "Wyrzutnia Przeciw-Elytrowa"
+    groundlauncherpage:
+        title: "Naziemna Wyrzutnia Rakiet"
+        content:
+            - "Naziemna Wyrzutnia Rakiet wystrzeliwuje pociski na wskanaze przez gracza koordynaty."
+            - "Kliknij PPM trzymając patyk aby ustawić koordynaty"
+            - "Kliknij PPM trzymając pałkę blaze aby ustawić wysokość lotu"
+            - "&lUderzy przyjazne rakiety"
+    antimissilepage:
+        title: "Wyrzutnia Przeciw-Rakietowa"
+        content:
+            - "Wyrzutnia Przeciw-Rakietowa wystrzeliwuje pociski w kierunku nadlatujących rakiet."
+            - "Zestrzeli każdą rakietę niezależnie od typu jeśli ta znajdzie się w polu strzału wyrzutni."
+            - "Użyj redstonowego wejścia mocy aby zatrzymać przed wystrzeleniem."
+    manpadpage:
+        title: "Manpads"
+        content:
+            - "Manpady to urządzenia służące do identyfikacji i zestrzeliwania wrogich pocisków."
+            - "W odróżnieniu do wyrzutni przeciw-rakietowych manpady zawsze zestrzelą rakietę przeciwnika."
+            - "Manpada można użyć przytrzymująć shift. W ten sposób rozpoczyna się skanowanie."
+    antielytrapage:
+        title: "Wytrzutnie Przeciw-Elytrowe"
+        content:
+            - "Wyrzutnie Przeciw-Elytrowe wystrzelą w kierunku gracza znajdującego się w polu rażenia i zniszczą jego elytrę."
+            - "Bardzo przydatne w obronie miasta w trakcie wojny.\nUstaw ignorowanych graczy za pomocą PlayerID"
+            - "Użyj patyka aby ustawić ID wyrzutni."
+    playeridpage:
+        title: "PlayerID"
+        content:
+            - "PlayerID jest używane aby część wyrzutni mogła ich ignorować."
+            - "Użyj PlayerList aby ustawić ID oraz gracza, który ma być ignorowany."
+            - "&lKAŻDY MOŻE USTAWIĆ DOWOLNE ID, UTRZYMUJ SWOJE ID W TAJEMNICY ZA WSZELKĄ CENĘ"
+
+radar:
+    name: "Radar Rakietowy"
+    lore: "Wydziela sygnał redstone jeśli wykryje rakietę w promieniu 700 bloków."
+
+missiledesc:
+    range: "Zakres: "
+    power: "Moc: "
+    speed: "Prędkośc: "
+    accuracy: "Dokładność: W obrębie {blocks} Bloków"
